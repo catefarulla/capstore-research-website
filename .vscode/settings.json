@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": "explicit"
+    },
+    "prettier.documentSelectors": ["**/*.astro"],
+    "eslint.validate": [
+      "javascript",
+      "javascriptreact", 
+      "astro",
+      "typescript",
+      "typescriptreact"
+    ],
+    "[astro]": {
+      "editor.defaultFormatter": "astro-build.astro-vscode"
+    }
+  }
