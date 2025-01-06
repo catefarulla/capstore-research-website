@@ -156,9 +156,22 @@ export default function BenefitsCarousel() {
           {benefits.map((benefit, index) => (
             <CarouselItem
               key={index}
-              className="pl-4 basis-[45%] md:basis-[calc(30%)] cursor-pointer"
+              className="pl-4 basis-[45%] md:basis-[calc(30%)]"
             >
-              <div className="relative h-[400px] overflow-hidden rounded-3xl group">
+              <div
+                className="relative h-[400px] overflow-hidden rounded-3xl group cursor-pointer"
+                onClick={() =>
+                  setActiveIndex(activeIndex === index ? null : index)
+                }
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    setActiveIndex(activeIndex === index ? null : index);
+                  }
+                }}
+              >
                 {/* Background Image */}
                 <img
                   src="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
