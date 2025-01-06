@@ -26,10 +26,10 @@ const Hero = () => {
         <div className="relative h-full flex items-center">
           <div className="container mx-auto px-6">
             <div className="max-w-[600px]">
-              <h1 className="text-5xl font-bold text-white mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 md:mb-6">
                 Health on your wrist
               </h1>
-              <p className="text-xl text-white/90">
+              <p className="text-base sm:text-lg md:text-xl text-white/90">
                 Advanced health tracking meets intelligent coaching. Chronos
                 helps you understand your body, optimize your workouts, and
                 achieve your fitness goals with precision.
