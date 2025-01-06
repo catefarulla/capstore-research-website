@@ -11,6 +11,8 @@
       "typescript",
       "typescriptreact"
     ],
+    "eslint.useFlatConfig": true,
+    "eslint.format.enable": true,
     "[astro]": {
       "editor.defaultFormatter": "astro-build.astro-vscode"
     }
