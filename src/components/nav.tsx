@@ -65,7 +65,7 @@ export default function Nav({ dropdownContent }: NavProps) {
       {/* Desktop Navigation */}
       <div className="hidden md:block">
         <NavigationMenu>
-          <NavigationMenuList>
+          <NavigationMenuList className="gap-6">
             <NavigationMenuItem>
               <NavigationMenuLink
                 className="text-sm font-medium leading-none"

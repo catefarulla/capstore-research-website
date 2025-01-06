@@ -1,6 +1,10 @@
 ---
+import CentreText from "@/components/centre-text.astro";
+import FullWidthImage from "@/components/full-width-image.astro";
 import ProductHero from "@/components/product-hero";
 import Layout from "@/layouts/Layout.astro";
+import ProductBenefits from "@/components/product-benefits/list";
+import ProductShowcase from "@/components/product-showcase";
 
 const products = [
   {
@@ -31,4 +35,30 @@ const { title, description } = product;
 
 <Layout>
   <ProductHero client:load />
+  <CentreText
+    title={{ sans: "Bring your fitness goals", serif: "into focus" }}
+    titleSize="sm"
+    description="Kelvin is a cost effective, smart electric heater, designed to help you reduce energy consumption, save money and live more sustainably. Comes included with a truly wireless smart thermostat and access to the Boldr Energy mobile app. Simple to install, with zero maintenance."
+  />
+  <FullWidthImage
+    src="https://reebok.bynder.com/transform/992a1d94-a3ad-4ce3-87b0-b11dafa03826/SS25_NanoGym-Barrys_Masthead_DT?fm=jpg&q=90&fit=fill&w=1200p"
+    alt="Black-2"
+  />
+  <ProductBenefits />
+  {/* Normal layout */}
+  <ProductShowcase
+    label="LIGHTWEIGHT AND AFFORDABLE"
+    title="Lily 2 Active"
+    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared heaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
+    image="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
+  />
+
+  {/* Reversed layout */}
+  <ProductShowcase
+    reverse
+    label="LIGHTWEIGHT AND AFFORDABLE"
+    title="Lily 2 Active"
+    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared heaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
+    image="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
+  />
 </Layout>

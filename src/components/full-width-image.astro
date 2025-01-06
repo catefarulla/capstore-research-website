@@ -1,0 +1,20 @@
+---
+type Props = {
+  src: string;
+  alt: string;
+  caption?: string;
+};
+
+const { src, alt, caption }: Props = Astro.props;
+---
+
+<div class="relative w-full max-h-[600px]">
+  <img src={src} alt={alt} class="w-full h-full max-h-[600px] object-cover" />
+  {
+    caption && (
+      <div class="absolute bottom-0 left-0 right-0 bg-black/50 p-4">
+        <p class="text-sm text-white">{caption}</p>
+      </div>
+    )
+  }
+</div>
