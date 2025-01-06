@@ -6,6 +6,8 @@ import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
 import tsPlugin from "@typescript-eslint/eslint-plugin";
 import globals from "globals";
 
+const tsconfigRootDir = process.cwd();
+
 export default [
   {
     // Global settings for all files
@@ -23,6 +25,10 @@ export default [
       sourceType: "module",
       globals: {
         ...globals.node,
+      },
+      parserOptions: {
+        tsconfigRootDir,
+        project: "./tsconfig.json",
       },
     },
     settings: {
@@ -44,12 +50,13 @@ export default [
   {
     files: ["**/*.astro"],
     languageOptions: {
-      parser: "astro-eslint-parser",
+      parser: eslintPluginAstro.parser,
       parserOptions: {
         parser: tsParser,
         extraFileExtensions: [".astro"],
         sourceType: "module",
         project: "./tsconfig.json",
+        tsconfigRootDir,
         ecmaFeatures: {
           jsx: true,
         },
@@ -73,6 +80,7 @@ export default [
           jsx: true,
         },
         project: "./tsconfig.json",
+        tsconfigRootDir,
       },
       globals: {
         ...globals.browser,
@@ -86,6 +94,7 @@ export default [
       parser: tsParser,
       parserOptions: {
         project: "./tsconfig.json",
+        tsconfigRootDir,
       },
       globals: {
         ...globals.browser,

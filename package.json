@@ -10,7 +10,7 @@
     "deploy": "astro build && wrangler deploy",
     "cf-typegen": "wrangler types",
     "prettify": "prettier . --write",
-    "lint": "eslint src --ext .js,.jsx,.ts,.tsx,.astro"
+    "lint": "eslint \"src/**\""
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.1.0",
