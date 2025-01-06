@@ -144,87 +144,36 @@ export default function BenefitsCarousel() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   return (
-    <Carousel
-      opts={{
-        align: "start",
-        loop: true,
-        dragFree: true,
-      }}
-      className="w-full max-w-[95%] mx-auto"
-    >
-      <CarouselContent className="-ml-4">
-        {benefits.map((benefit, index) => (
-          <CarouselItem
-            key={index}
-            className="pl-4 basis-[85%] sm:basis-[45%] lg:basis-[33%] cursor-pointer"
-          >
-            <div className="relative aspect-[4/3] overflow-hidden rounded-3xl group">
-              {/* Background Image */}
-              <img
-                src="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
+    <div className="relative overflow-hidden">
+      <Carousel
+        opts={{
+          align: "start",
+          loop: true,
+        }}
+        className="w-[calc(100%+240px)] md:w-[calc(100%+400px)] ml-4 md:ml-8"
+      >
+        <CarouselContent className="-ml-4">
+          {benefits.map((benefit, index) => (
+            <CarouselItem
+              key={index}
+              className="pl-4 basis-[85%] md:basis-[calc(42%-1rem)] cursor-pointer"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl group">
+                {/* Background Image */}
+                <img
+                  src="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                />
 
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
-
-              {/* Content */}
-              <div className="relative h-full p-6 flex flex-col">
-                {/* Label with Icon */}
-                <div className="flex items-center gap-2 text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
-                  <div className="w-4 h-4">{benefit.icon}</div>
-                  <span className="text-xs font-medium">{benefit.label}</span>
-                </div>
-
-                {/* Title */}
-                <div className="mt-auto">
-                  <h3 className="text-white">
-                    <span className="block text-xl sm:text-2xl font-sans font-light leading-tight">
-                      {benefit.title.sans}
-                    </span>
-                    {benefit.title.serif && (
-                      <span className="block text-xl sm:text-2xl font-serif italic leading-tight">
-                        {benefit.title.serif}
-                      </span>
-                    )}
-                  </h3>
-                </div>
-
-                {/* Plus Button */}
-                <button
-                  onClick={() =>
-                    setActiveIndex(activeIndex === index ? null : index)
-                  }
-                  className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white hover:bg-white/90 transition-colors flex items-center justify-center text-black"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="w-4 h-4"
-                  >
-                    {activeIndex === index ? (
-                      <path d="M5 12h14" />
-                    ) : (
-                      <path d="M12 5v14m-7-7h14" />
-                    )}
-                  </svg>
-                </button>
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
                 {/* Description Overlay */}
                 {activeIndex === index && (
-                  <button
+                  <div
                     className="absolute inset-0 bg-black/95 p-6 flex flex-col justify-center items-start transition-all duration-300"
-                    onClick={() => setActiveIndex(null)}
-                    onKeyDown={(e) => {
-                      if (e.key === "Escape") setActiveIndex(null);
-                    }}
-                    aria-label="Close details"
+                    aria-label="Details"
                   >
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-4 h-4 text-white">{benefit.icon}</div>
@@ -235,17 +184,66 @@ export default function BenefitsCarousel() {
                     <p className="text-white/90 text-sm leading-relaxed text-left">
                       {benefit.description}
                     </p>
-                  </button>
+                  </div>
                 )}
+
+                {/* Content */}
+                <div className="relative h-full p-8 flex flex-col">
+                  {/* Label with Icon */}
+                  <div className="flex items-center gap-2 text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
+                    <div className="w-4 h-4">{benefit.icon}</div>
+                    <span className="text-xs font-medium">{benefit.label}</span>
+                  </div>
+
+                  {/* Title */}
+                  <div
+                    className={`mt-auto transition-opacity duration-300 ${activeIndex === index ? "opacity-0" : "opacity-100"}`}
+                  >
+                    <h3 className="text-white">
+                      <span className="block text-3xl md:text-4xl font-sans font-light leading-tight">
+                        {benefit.title.sans}
+                      </span>
+                      {benefit.title.serif && (
+                        <span className="block text-3xl md:text-4xl font-serif italic leading-tight">
+                          {benefit.title.serif}
+                        </span>
+                      )}
+                    </h3>
+                  </div>
+
+                  {/* Plus Button */}
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setActiveIndex(activeIndex === index ? null : index);
+                    }}
+                    className={`absolute top-8 right-8 w-8 h-8 rounded-full bg-white hover:bg-white/90 transition-all flex items-center justify-center text-black z-50 ${
+                      activeIndex === index ? "rotate-45 transform" : ""
+                    }`}
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="w-4 h-4"
+                    >
+                      <path d="M12 5v14m-7-7h14" />
+                    </svg>
+                  </button>
+                </div>
               </div>
-            </div>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-      <div className="flex justify-end gap-2 mt-4 px-4">
-        <CarouselPrevious className="relative bg-white/10 hover:bg-white/20 border-white/20" />
-        <CarouselNext className="relative bg-white/10 hover:bg-white/20 border-white/20" />
-      </div>
-    </Carousel>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+        <div className="flex justify-end gap-1 mt-8 absolute right-8 bottom-0">
+          <CarouselPrevious className="relative bg-white/10 hover:bg-white/20 border-white/20" />
+          <CarouselNext className="relative bg-white/10 hover:bg-white/20 border-white/20" />
+        </div>
+      </Carousel>
+    </div>
   );
 }
