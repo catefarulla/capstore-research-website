@@ -1,27 +1,33 @@
 ---
 const navigation = [
-  { name: "About", href: "#" },
+  { name: "Why Chronos", href: "#" },
+  { name: "Products", href: "#" },
+  { name: "Speak to Advisor", href: "#" },
+  { name: "Contact Us", href: "#" },
   { name: "Blog", href: "#" },
-  { name: "Jobs", href: "#" },
   { name: "Press", href: "#" },
-  { name: "Accessibility", href: "#" },
-  { name: "Partners", href: "#" },
 ];
 ---
 
-<footer class="bg-white pt-12">
-  <div class="mx-auto max-w-7xl overflow-hidden px-6 py-20 sm:py-24 lg:px-8">
-    <nav aria-label="Footer" class="-mb-6 flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm/6">
+<footer class="bg-white border-t">
+  <div class="mx-auto max-w-7xl overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
+    <nav
+      aria-label="Footer"
+      class="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center gap-y-4 sm:gap-x-8"
+    >
       {
         navigation.map((item) => (
-          <a href={item.href} class="text-gray-600 hover:text-gray-900">
+          <a
+            href={item.href}
+            class="text-sm font-medium leading-none text-center sm:text-left text-muted-foreground hover:text-accent-foreground transition-colors"
+          >
             {item.name}
           </a>
         ))
       }
     </nav>
-    <p class="mt-10 text-center text-sm/6 text-gray-600">
-      &copy; 2024 Your Company, Inc. All rights reserved.
+    <p class="mt-10 text-center text-sm text-muted-foreground">
+      &copy; 2024 Chronos, Inc. All rights reserved.
     </p>
   </div>
 </footer>
