@@ -8,6 +8,7 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
+import { Button } from "./ui/button";
 
 type ListItemProps = React.ComponentPropsWithoutRef<"a"> & {
   title: string;
@@ -55,7 +56,12 @@ const components: { title: string; href: string; description: string }[] = [
 
 export default function Nav() {
   return (
-    <div>
+    <div className="flex justify-between items-center px-12 py-4">
+      <div>
+        <span className="text-2xl font-heading font-black tracking-tight uppercase">
+          Chronos
+        </span>
+      </div>
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -96,6 +102,9 @@ export default function Nav() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
+      <div>
+        <Button>Contact us</Button>
+      </div>
     </div>
   );
 }
