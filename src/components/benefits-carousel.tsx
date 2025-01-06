@@ -28,7 +28,7 @@ const benefits: Benefit[] = [
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-6 h-6"
+        className="w-4 h-4"
       >
         <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
       </svg>
@@ -51,7 +51,7 @@ const benefits: Benefit[] = [
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-6 h-6"
+        className="w-4 h-4"
       >
         <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.421a6 6 0 0 1 3.176 -10.215z" />
       </svg>
@@ -74,7 +74,7 @@ const benefits: Benefit[] = [
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-6 h-6"
+        className="w-4 h-4"
       >
         <path d="M12 9m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" />
         <path d="M12 15l0 6" />
@@ -99,7 +99,7 @@ const benefits: Benefit[] = [
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-6 h-6"
+        className="w-4 h-4"
       >
         <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z" />
         <path d="M12 3a9 9 0 0 1 9 9" />
@@ -125,7 +125,7 @@ const benefits: Benefit[] = [
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
-        className="w-6 h-6"
+        className="w-4 h-4"
       >
         <path d="M3 12h4l3 8l4-16l3 8h4" />
       </svg>
@@ -188,22 +188,16 @@ export default function BenefitsCarousel() {
                     className="absolute inset-0 bg-black/95 p-6 flex flex-col justify-center items-start transition-all duration-300"
                     aria-label="Details"
                   >
-                    <div className="flex items-center gap-2 mb-4">
-                      <div className="w-4 h-4 text-white">{benefit.icon}</div>
-                      <span className="text-xs font-medium text-white">
-                        {benefit.label}
-                      </span>
-                    </div>
-                    <p className="text-white/90 text-sm leading-relaxed text-left">
+                    <p className="text-white/90 text-lg leading-relaxed text-left">
                       {benefit.description}
                     </p>
                   </div>
                 )}
 
                 {/* Content */}
-                <div className="relative h-full p-8 flex flex-col">
+                <div className="relative h-full p-4 md:p-8 flex flex-col">
                   {/* Label with Icon */}
-                  <div className="flex items-center gap-2 text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
+                  <div className="flex items-center gap-2 justify-center text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
                     <div className="w-4 h-4">{benefit.icon}</div>
                     <span className="text-xs font-medium">{benefit.label}</span>
                   </div>
@@ -213,7 +207,7 @@ export default function BenefitsCarousel() {
                     className={`mt-auto transition-opacity duration-300 ${activeIndex === index ? "opacity-0" : "opacity-100"}`}
                   >
                     <h3 className="text-white">
-                      <span className="block text-2xl md:text-3xl font-sans font-light leading-tight">
+                      <span className="block text-xl md:text-3xl font-sans font-light leading-tight">
                         {benefit.title.sans}
                       </span>
                       {benefit.title.serif && (
@@ -230,7 +224,7 @@ export default function BenefitsCarousel() {
                       e.stopPropagation();
                       setActiveIndex(activeIndex === index ? null : index);
                     }}
-                    className={`absolute top-8 right-8 w-8 h-8 rounded-full bg-white hover:bg-white/90 transition-all flex items-center justify-center text-black z-50 ${
+                    className={`absolute top-4 right-4 md:top-8 md:right-8 w-8 h-8 rounded-full bg-white hover:bg-white/90 transition-all flex items-center justify-center text-black z-50 ${
                       activeIndex === index ? "rotate-45 transform" : ""
                     }`}
                   >

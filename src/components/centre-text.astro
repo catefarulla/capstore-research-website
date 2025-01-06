@@ -55,7 +55,7 @@ const { title, description, cta, titleSize = "md", padding = "md" } = Astro.prop
     paddingStyles({ padding })
   )}
 >
-  <h1 class="max-w-sm">
+  <h1 class={cn("max-w-sm", titleSize === "sm" && "max-w-xs")}>
     <span class={cn(sansTitleStyles({ size: titleSize }))}>
       {title.sans}
     </span>
