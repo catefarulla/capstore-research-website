@@ -9,6 +9,14 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Button } from "./ui/button";
+import { Menu } from "lucide-react";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
 
 type ListItemProps = React.ComponentPropsWithoutRef<"a"> & {
   title: string;
@@ -35,74 +43,113 @@ const ListItem = ({ className, title, children, ...props }: ListItemProps) => {
   );
 };
 
-const components: { title: string; href: string; description: string }[] = [
-  {
-    title: "Alert Dialog",
-    href: "/docs/primitives/alert-dialog",
-    description: "A modal dialog that interrupts the.",
-  },
-  {
-    title: "Hover Card",
-    href: "/docs/primitives/hover-card",
-    description: "For sighted users to preview content.",
-  },
-  {
-    title: "Progress",
-    href: "/docs/primitives/progress",
-    description:
-      "Displays an indicator showing the completion progress of a task.",
-  },
-];
+export type NavItem = {
+  title: string;
+  href: string;
+  description?: string;
+};
 
-export default function Nav() {
+export type NavProps = {
+  dropdownContent: NavItem[];
+};
+
+export default function Nav({ dropdownContent }: NavProps) {
   return (
-    <div className="flex justify-between items-center px-12 py-4">
+    <div className="flex justify-between items-center px-4 md:px-12 py-4">
       <div>
         <span className="text-2xl font-heading font-black tracking-tight uppercase">
           Chronos
         </span>
       </div>
-      <NavigationMenu>
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              className="
-            text-sm font-medium leading-none
-            "
-              href="/docs"
-            >
-              Why Chronos
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuTrigger>Products</NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px] ">
-                {components.map((component) => (
-                  <ListItem
-                    key={component.title}
-                    title={component.title}
-                    href={component.href}
-                  >
-                    {component.description}
-                  </ListItem>
-                ))}
-              </ul>
-            </NavigationMenuContent>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <NavigationMenuLink
-              className="
-            text-sm font-medium leading-none
-            "
-              href="/docs"
-            >
-              Speak to Advisor
-            </NavigationMenuLink>
-          </NavigationMenuItem>
-        </NavigationMenuList>
-      </NavigationMenu>
-      <div>
+
+      {/* Desktop Navigation */}
+      <div className="hidden md:block">
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                className="text-sm font-medium leading-none"
+                href="/docs"
+              >
+                Why Chronos
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <ul className="grid w-[300px] gap-3 p-4 md:w-[300px] md:grid-cols-1 lg:w-[300px]">
+                  {dropdownContent.map((item) => (
+                    <ListItem
+                      key={item.title}
+                      title={item.title}
+                      href={item.href}
+                    >
+                      {item.description}
+                    </ListItem>
+                  ))}
+                </ul>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <NavigationMenuLink
+                className="text-sm font-medium leading-none"
+                href="/docs"
+              >
+                Speak to Advisor
+              </NavigationMenuLink>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      </div>
+
+      {/* Mobile Menu */}
+      <div className="md:hidden">
+        <Drawer>
+          <DrawerTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Menu className="h-6 w-6" />
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <div className="mx-auto w-full max-w-sm">
+              <DrawerHeader>
+                <div className="flex flex-col space-y-4 px-4">
+                  <DrawerClose asChild>
+                    <a href="/docs" className="text-lg font-medium">
+                      Why Chronos
+                    </a>
+                  </DrawerClose>
+                  <div className="space-y-3">
+                    <div className="font-medium text-lg">Products</div>
+                    <div className="pl-4 space-y-3">
+                      {dropdownContent.map((item) => (
+                        <DrawerClose asChild key={item.title}>
+                          <a
+                            href={item.href}
+                            className="block text-base text-muted-foreground"
+                          >
+                            {item.title}
+                          </a>
+                        </DrawerClose>
+                      ))}
+                    </div>
+                  </div>
+                  <DrawerClose asChild>
+                    <a href="/docs" className="text-lg font-medium">
+                      Speak to Advisor
+                    </a>
+                  </DrawerClose>
+                  <DrawerClose asChild>
+                    <Button className="w-full">Contact us</Button>
+                  </DrawerClose>
+                </div>
+              </DrawerHeader>
+            </div>
+          </DrawerContent>
+        </Drawer>
+      </div>
+
+      <div className="hidden md:block">
         <Button>Contact us</Button>
       </div>
     </div>
