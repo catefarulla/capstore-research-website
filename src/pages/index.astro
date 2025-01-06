@@ -1,12 +1,12 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import Hero from "../components/hero.astro";
+import Hero from "@/components/hero.astro";
 import CentreText from "@/components/centre-text.astro";
 import ProductList from "@/components/list/product-list.astro";
 ---
 
 <Layout>
-  <Hero client:load />
+  <Hero />
   <CentreText
     title={{ sans: "Your health", serif: "your way" }}
     titleSize="lg"
