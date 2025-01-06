@@ -1,11 +1,5 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
-import {
-  useQueryState,
-  useQueryStates,
-  parseAsString,
-  parseAsBoolean,
-} from "nuqs";
 
 interface ProductImage {
   src: string;
@@ -23,15 +17,15 @@ const productVariants: Record<string, ProductVariant> = {
     color: "Black",
     images: [
       {
-        src: "/placeholder.svg?height=600&width=600&text=Black-1",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
         alt: "Black Lily 2 Active - View 1",
       },
       {
-        src: "/placeholder.svg?height=600&width=600&text=Black-2",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
         alt: "Black Lily 2 Active - View 2",
       },
       {
-        src: "/placeholder.svg?height=600&width=600&text=Black-3",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
         alt: "Black Lily 2 Active - View 3",
       },
     ],
@@ -40,15 +34,15 @@ const productVariants: Record<string, ProductVariant> = {
     color: "Pink",
     images: [
       {
-        src: "/placeholder.svg?height=600&width=600&text=Pink-1",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/white-1.png",
         alt: "Pink Lily 2 Active - View 1",
       },
       {
-        src: "/placeholder.svg?height=600&width=600&text=Pink-2",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/white-2.png",
         alt: "Pink Lily 2 Active - View 2",
       },
       {
-        src: "/placeholder.svg?height=600&width=600&text=Pink-3",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/white-3.png",
         alt: "Pink Lily 2 Active - View 3",
       },
     ],
@@ -57,15 +51,15 @@ const productVariants: Record<string, ProductVariant> = {
     color: "Blue",
     images: [
       {
-        src: "/placeholder.svg?height=600&width=600&text=Blue-1",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/brown-1.png",
         alt: "Blue Lily 2 Active - View 1",
       },
       {
-        src: "/placeholder.svg?height=600&width=600&text=Blue-2",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/brown-2.png",
         alt: "Blue Lily 2 Active - View 2",
       },
       {
-        src: "/placeholder.svg?height=600&width=600&text=Blue-3",
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/brown-3.png",
         alt: "Blue Lily 2 Active - View 3",
       },
     ],
@@ -74,15 +68,9 @@ const productVariants: Record<string, ProductVariant> = {
 
 export default function ProductHero() {
   const [selectedImage, setSelectedImage] = useState(0);
-
-  const [selectedColor, setSelectedColor] = useQueryState(
-    "color",
-    parseAsString.withDefault("black"),
-  );
-  const [{ size, cellular }, setOptions] = useQueryStates({
-    size: parseAsString.withDefault("38mm"),
-    cellular: parseAsBoolean.withDefault(false),
-  });
+  const [selectedColor, setSelectedColor] = useState("black");
+  const [size, setSize] = useState("38mm");
+  const [cellular, setCellular] = useState(false);
 
   const currentVariant = productVariants[selectedColor];
 
@@ -163,7 +151,7 @@ export default function ProductHero() {
               {["38mm", "40mm"].map((sizeOption) => (
                 <button
                   key={sizeOption}
-                  onClick={() => setOptions({ size: sizeOption })}
+                  onClick={() => setSize(sizeOption)}
                   className={`px-4 py-2 rounded-full border ${
                     size === sizeOption
                       ? "border-blue-500 bg-blue-50"
@@ -186,7 +174,7 @@ export default function ProductHero() {
               ].map((option) => (
                 <button
                   key={option.label}
-                  onClick={() => setOptions({ cellular: option.value })}
+                  onClick={() => setCellular(option.value)}
                   className={`px-4 py-2 rounded-full border ${
                     cellular === option.value
                       ? "border-blue-500 bg-blue-50"

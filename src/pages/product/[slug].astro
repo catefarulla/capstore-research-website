@@ -1,0 +1,34 @@
+---
+import ProductHero from "@/components/product-hero";
+import Layout from "@/layouts/Layout.astro";
+
+const products = [
+  {
+    slug: "lily-2-active",
+    title: "Lily 2 Active",
+    description: "The ultimate activewear for the modern woman.",
+  },
+  {
+    slug: "forerunner-955",
+    title: "Forerunner 955",
+    description: "The ultimate running watch for the modern woman.",
+  },
+  {
+    slug: "vesu-2",
+    title: "Vesu 2",
+    description: "The ultimate running watch for the modern woman.",
+  },
+];
+
+const { slug } = Astro.params;
+const product = products.find((product) => product.slug === slug);
+if (!product) {
+  return Astro.redirect("/404");
+}
+
+const { title, description } = product;
+---
+
+<Layout>
+  <ProductHero client:load />
+</Layout>
