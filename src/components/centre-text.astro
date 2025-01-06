@@ -13,9 +13,10 @@ type Props = {
     href: string;
   };
   titleSize?: "sm" | "md" | "lg";
+  padding?: "sm" | "md" | "lg";
 };
 
-const sansTitleStyles = cva(["font-sans leading-tight"], {
+const sansTitleStyles = cva(["font-sans font-semibold !leading-[1.1]"], {
   variants: {
     size: {
       sm: "text-2xl sm:text-3xl md:text-4xl",
@@ -25,7 +26,7 @@ const sansTitleStyles = cva(["font-sans leading-tight"], {
   },
 });
 
-const serifTitleStyles = cva(["font-serif leading-tight"], {
+const serifTitleStyles = cva(["font-serif !leading-[1.1]"], {
   variants: {
     size: {
       sm: "text-[1.7rem] sm:text-[2.15rem] md:text-[2.5rem]",
@@ -35,11 +36,26 @@ const serifTitleStyles = cva(["font-serif leading-tight"], {
   },
 });
 
-const { title, description, cta, titleSize = "md" } = Astro.props;
+const paddingStyles = cva(["py-16 md:py-24 px-4 md:px-8"], {
+  variants: {
+    padding: {
+      sm: "py-16 md:py-24 px-4",
+      md: "py-24 md:py-32 px-4",
+      lg: "py-32 md:py-40 px-4",
+    },
+  },
+});
+
+const { title, description, cta, titleSize = "md", padding = "md" } = Astro.props;
 ---
 
-<div class="flex flex-col gap-8 py-8 md:py-16 px-4 md:px-8 items-center justify-center text-center">
-  <h1 class="max-w-md">
+<div
+  class={cn(
+    "flex flex-col gap-8 md:gap-10 py-16 md:py-24 px-4 md:px-8 items-center justify-center text-center",
+    paddingStyles({ padding })
+  )}
+>
+  <h1 class="max-w-sm">
     <span class={cn(sansTitleStyles({ size: titleSize }))}>
       {title.sans}
     </span>
@@ -47,13 +63,13 @@ const { title, description, cta, titleSize = "md" } = Astro.props;
   </h1>
   {
     description && (
-      <p class="text-base max-w-2xl sm:text-lg md:text-xl text-black/70">{description}</p>
+      <p class="text-base max-w-xl sm:text-lg md:text-xl text-black/70">{description}</p>
     )
   }
   {
     cta && (
       <div>
-        <a class={cn(buttonVariants({ variant: "outline" }))} href={cta.href}>
+        <a class={cn(buttonVariants({ variant: "default" }))} href={cta.href}>
           {cta.text}
         </a>
       </div>

@@ -1,0 +1,44 @@
+---
+import Product from "./product.astro";
+
+type ProductItem = {
+  title: string;
+  price: number;
+  href: string;
+  image: string;
+};
+
+const products: ProductItem[] = [
+  {
+    title: "Oura Ring 4",
+    price: 349,
+    href: "/oura-ring-4",
+    image:
+      "https://ourahealth.imgix.net/blue-sky/home/OR4-ring%20module-v2-desktop.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=eab45cbd8e7999070c12007e56243754",
+  },
+  {
+    title: "Oura Ring Gen3",
+    price: 299,
+    href: "/oura-ring-gen3",
+    image:
+      "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
+  },
+  {
+    title: "Oura Ring Gen3",
+    price: 299,
+    href: "/oura-ring-gen3",
+    image:
+      "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
+  },
+];
+---
+
+<div class="flex flex-wrap gap-6 mx-auto px-4 py-16">
+  {
+    products.map((product) => (
+      <div class="flex-1 min-w-[300px] relative group">
+        <Product {...product} />
+      </div>
+    ))
+  }
+</div>

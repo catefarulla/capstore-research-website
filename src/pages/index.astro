@@ -2,13 +2,16 @@
 import Layout from "../layouts/Layout.astro";
 import Hero from "../components/hero.astro";
 import CentreText from "@/components/centre-text.astro";
+import ProductList from "@/components/list/product-list.astro";
 ---
 
 <Layout>
   <Hero client:load />
   <CentreText
     title={{ sans: "Your health", serif: "your way" }}
-    description="Kelvin is a cost effective, smart electric heater, designed to help you reduce energy consumption, save money and live more sustainably. Comes included with a truly wireless smart thermostat and access to the Boldr Energy mobile app. Simple to install, with zero maintenance."
-    cta={{ text: "Click me", href: "/test" }}
+    titleSize="lg"
+    padding="lg"
+    cta={{ text: "Learn more", href: "/test" }}
   />
+  <ProductList />
 </Layout>
