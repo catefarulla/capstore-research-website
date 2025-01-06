@@ -15,22 +15,22 @@ type Props = {
   titleSize?: "sm" | "md" | "lg";
 };
 
-const sansTitleStyles = cva(["font-sans"], {
+const sansTitleStyles = cva(["font-sans leading-tight"], {
   variants: {
     size: {
-      sm: "text-3xl sm:text-4xl md:text-5xl",
-      md: "text-4xl sm:text-5xl md:text-6xl",
-      lg: "text-5xl sm:text-6xl md:text-7xl",
+      sm: "text-2xl sm:text-3xl md:text-4xl",
+      md: "text-3xl sm:text-4xl md:text-5xl",
+      lg: "text-4xl sm:text-5xl md:text-6xl",
     },
   },
 });
 
-const serifTitleStyles = cva(["font-serif"], {
+const serifTitleStyles = cva(["font-serif leading-tight"], {
   variants: {
     size: {
-      sm: "text-3xl sm:text-4xl md:text-5xl",
-      md: "text-4xl sm:text-5xl md:text-6xl",
-      lg: "text-5xl sm:text-6xl md:text-7xl",
+      sm: "text-[1.7rem] sm:text-[2.15rem] md:text-[2.5rem]",
+      md: "text-[2.15rem] sm:text-[2.5rem] md:text-[3.25rem]",
+      lg: "text-[2.5rem] sm:text-[3.25rem] md:text-[4rem]",
     },
   },
 });
