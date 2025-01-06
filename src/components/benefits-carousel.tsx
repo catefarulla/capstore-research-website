@@ -14,6 +14,7 @@ type Benefit = {
     sans: string;
     serif?: string;
   };
+  image: string;
 };
 
 const benefits: Benefit[] = [
@@ -37,6 +38,7 @@ const benefits: Benefit[] = [
       sans: "Listen to what your heart is ",
       serif: "telling you",
     },
+    image: "https://ourahealth.imgix.net/home/heart-health.jpg",
   },
   {
     icon: (
@@ -58,6 +60,7 @@ const benefits: Benefit[] = [
       sans: "Bring your fitness goals ",
       serif: "into focus",
     },
+    image: "https://ourahealth.imgix.net/home/activity-fitness.jpg",
   },
   {
     icon: (
@@ -81,6 +84,55 @@ const benefits: Benefit[] = [
       sans: "Understand the ins and outs of ",
       serif: "women's health",
     },
+    image: "https://ourahealth.imgix.net/home/womens-health.jpg",
+  },
+  // Additional items
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-6 h-6"
+      >
+        <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z" />
+        <path d="M12 3a9 9 0 0 1 9 9" />
+        <path d="M12 3a9 9 0 0 0-9 9" />
+        <path d="M12 3v18" />
+      </svg>
+    ),
+    label: "Sleep Tracking",
+    title: {
+      sans: "Optimize your sleep for ",
+      serif: "better recovery",
+    },
+    image: "https://ourahealth.imgix.net/home/sleep-tracking.jpg",
+  },
+  {
+    icon: (
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        className="w-6 h-6"
+      >
+        <path d="M3 12h4l3 8l4-16l3 8h4" />
+      </svg>
+    ),
+    label: "Recovery",
+    title: {
+      sans: "Track your daily ",
+      serif: "readiness score",
+    },
+    image: "https://ourahealth.imgix.net/home/recovery.jpg",
   },
 ];
 
@@ -90,23 +142,31 @@ export default function BenefitsCarousel() {
       opts={{
         align: "start",
         loop: true,
+        dragFree: true,
       }}
-      className="w-full max-w-7xl mx-auto px-4"
+      className="w-full max-w-[95%] mx-auto"
     >
       <CarouselContent className="-ml-4">
         {benefits.map((benefit, index) => (
           <CarouselItem
             key={index}
-            className="pl-4 basis-full md:basis-1/2 lg:basis-1/3"
+            className="pl-4 basis-[85%] sm:basis-[45%] lg:basis-[33%] cursor-pointer"
           >
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl group">
-              {/* Background Image - in real implementation, you'd use actual images */}
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-blue-800 group-hover:scale-105 transition-transform duration-300" />
+              {/* Background Image */}
+              <img
+                src={benefit.image}
+                alt=""
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+
+              {/* Gradient Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
               {/* Content */}
               <div className="relative h-full p-8 flex flex-col">
                 {/* Label with Icon */}
-                <div className="flex items-center gap-2 text-white/90">
+                <div className="flex items-center gap-2 text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-2 px-4 w-fit">
                   {benefit.icon}
                   <span className="text-sm font-medium">{benefit.label}</span>
                 </div>
@@ -114,7 +174,7 @@ export default function BenefitsCarousel() {
                 {/* Title */}
                 <div className="mt-auto">
                   <h3 className="text-white">
-                    <span className="block text-3xl md:text-4xl font-sans font-semibold leading-tight">
+                    <span className="block text-3xl md:text-4xl font-sans font-light leading-tight">
                       {benefit.title.sans}
                     </span>
                     {benefit.title.serif && (
@@ -126,7 +186,7 @@ export default function BenefitsCarousel() {
                 </div>
 
                 {/* Plus Button */}
-                <button className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white/20 hover:bg-white/30 transition-colors flex items-center justify-center text-white">
+                <button className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white hover:bg-white/90 transition-colors flex items-center justify-center text-black">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -146,8 +206,8 @@ export default function BenefitsCarousel() {
         ))}
       </CarouselContent>
       <div className="flex justify-end gap-2 mt-4 px-4">
-        <CarouselPrevious className="relative" />
-        <CarouselNext className="relative" />
+        <CarouselPrevious className="relative bg-white/10 hover:bg-white/20 border-white/20" />
+        <CarouselNext className="relative bg-white/10 hover:bg-white/20 border-white/20" />
       </div>
     </Carousel>
   );
