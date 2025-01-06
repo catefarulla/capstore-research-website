@@ -3,6 +3,7 @@ import Layout from "../layouts/Layout.astro";
 import Hero from "@/components/hero.astro";
 import CentreText from "@/components/centre-text.astro";
 import ProductList from "@/components/list/product-list.astro";
+import BenefitsCarousel from "@/components/benefits-carousel";
 ---
 
 <Layout>
@@ -14,4 +15,5 @@ import ProductList from "@/components/list/product-list.astro";
     cta={{ text: "Learn more", href: "/test" }}
   />
   <ProductList />
+  <BenefitsCarousel client:load />
 </Layout>
