@@ -1,0 +1,62 @@
+---
+import { cva, type VariantProps } from "class-variance-authority";
+import { cn } from "../lib/utils";
+import { Button, buttonVariants } from "./ui/button";
+type Props = {
+  title: {
+    sans: string;
+    serif?: string;
+  };
+  description?: string;
+  cta?: {
+    text: string;
+    href: string;
+  };
+  titleSize?: "sm" | "md" | "lg";
+};
+
+const sansTitleStyles = cva(["font-sans"], {
+  variants: {
+    size: {
+      sm: "text-3xl sm:text-4xl md:text-5xl",
+      md: "text-4xl sm:text-5xl md:text-6xl",
+      lg: "text-5xl sm:text-6xl md:text-7xl",
+    },
+  },
+});
+
+const serifTitleStyles = cva(["font-serif"], {
+  variants: {
+    size: {
+      sm: "text-3xl sm:text-4xl md:text-5xl",
+      md: "text-4xl sm:text-5xl md:text-6xl",
+      lg: "text-5xl sm:text-6xl md:text-7xl",
+    },
+  },
+});
+
+const { title, description, cta, titleSize = "md" } = Astro.props;
+---
+
+<div class="flex flex-col gap-8 py-8 md:py-16 px-4 md:px-8 items-center justify-center text-center">
+  <h1 class="max-w-md">
+    <span class={cn(sansTitleStyles({ size: titleSize }))}>
+      {title.sans}
+    </span>
+    {title.serif && <span class={cn(serifTitleStyles({ size: titleSize }))}>{title.serif}</span>}
+  </h1>
+  {
+    description && (
+      <p class="text-base max-w-2xl sm:text-lg md:text-xl text-black/70">{description}</p>
+    )
+  }
+  {
+    cta && (
+      <div>
+        <a class={cn(buttonVariants({ variant: "outline" }))} href={cta.href}>
+          {cta.text}
+        </a>
+      </div>
+    )
+  }
+</div>
