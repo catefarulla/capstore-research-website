@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "../../store";
-import { DEFAULT_SYSTEM_PROMPT } from "../../services/ai/prompts/default-system-prompt";
+import { queryClient } from "../store";
+import { DEFAULT_SYSTEM_PROMPT } from "../services/ai/prompts/default-system-prompt";
 
 type Message = {
   role: "user" | "assistant";
@@ -41,8 +41,10 @@ export default function AiDemo() {
           { role: "assistant", content: data.response },
         ]);
       },
-      onError: (error: any) => {
-        setError("AI request failed: " + error.message);
+      onError: (error: unknown) => {
+        const errorMessage =
+          error instanceof Error ? error.message : "Unknown error";
+        setError("AI request failed: " + errorMessage);
       },
     },
     queryClient,
