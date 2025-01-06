@@ -150,15 +150,15 @@ export default function BenefitsCarousel() {
           align: "start",
           loop: true,
         }}
-        className="w-[calc(100%+240px)] md:w-[calc(100%+400px)] ml-4 md:ml-8"
+        className="w-[calc(100%+240px)] md:w-[calc(100%+500px)] ml-4 md:ml-8"
       >
         <CarouselContent className="-ml-4">
           {benefits.map((benefit, index) => (
             <CarouselItem
               key={index}
-              className="pl-4 basis-[85%] md:basis-[calc(42%-1rem)] cursor-pointer"
+              className="pl-4 basis-[45%] md:basis-[calc(30%)] cursor-pointer"
             >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl group">
+              <div className="relative h-[400px] overflow-hidden rounded-3xl group">
                 {/* Background Image */}
                 <img
                   src="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
@@ -200,11 +200,11 @@ export default function BenefitsCarousel() {
                     className={`mt-auto transition-opacity duration-300 ${activeIndex === index ? "opacity-0" : "opacity-100"}`}
                   >
                     <h3 className="text-white">
-                      <span className="block text-3xl md:text-4xl font-sans font-light leading-tight">
+                      <span className="block text-2xl md:text-3xl font-sans font-light leading-tight">
                         {benefit.title.sans}
                       </span>
                       {benefit.title.serif && (
-                        <span className="block text-3xl md:text-4xl font-serif italic leading-tight">
+                        <span className="block text-2xl md:text-3xl font-serif italic leading-tight">
                           {benefit.title.serif}
                         </span>
                       )}
