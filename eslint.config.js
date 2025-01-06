@@ -60,6 +60,8 @@ export default [
         ecmaFeatures: {
           jsx: true,
         },
+        allowImportingTsExtensions: true,
+        stylistic: true,
       },
       globals: {
         ...globals.node,
@@ -69,6 +71,7 @@ export default [
     rules: {
       "astro/no-conflict-set-directives": "error",
       "astro/no-unused-define-vars-in-style": "error",
+      "import/no-unresolved": ["error", { ignore: ["\\.css$"] }],
     },
   },
   {
