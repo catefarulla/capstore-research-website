@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -14,7 +14,7 @@ type Benefit = {
     sans: string;
     serif?: string;
   };
-  image: string;
+  description: string;
 };
 
 const benefits: Benefit[] = [
@@ -38,7 +38,8 @@ const benefits: Benefit[] = [
       sans: "Listen to what your heart is ",
       serif: "telling you",
     },
-    image: "https://ourahealth.imgix.net/home/heart-health.jpg",
+    description:
+      "Track your heart rate variability, resting heart rate, and other vital metrics to understand your cardiovascular health better.",
   },
   {
     icon: (
@@ -60,7 +61,8 @@ const benefits: Benefit[] = [
       sans: "Bring your fitness goals ",
       serif: "into focus",
     },
-    image: "https://ourahealth.imgix.net/home/activity-fitness.jpg",
+    description:
+      "Monitor your daily activity, workout intensity, and recovery needs to optimize your training and reach your fitness goals.",
   },
   {
     icon: (
@@ -84,9 +86,9 @@ const benefits: Benefit[] = [
       sans: "Understand the ins and outs of ",
       serif: "women's health",
     },
-    image: "https://ourahealth.imgix.net/home/womens-health.jpg",
+    description:
+      "Get insights into your menstrual cycle, fertility window, and overall reproductive health with personalized tracking and predictions.",
   },
-  // Additional items
   {
     icon: (
       <svg
@@ -110,7 +112,8 @@ const benefits: Benefit[] = [
       sans: "Optimize your sleep for ",
       serif: "better recovery",
     },
-    image: "https://ourahealth.imgix.net/home/sleep-tracking.jpg",
+    description:
+      "Analyze your sleep stages, duration, and quality to improve your rest and wake up feeling refreshed.",
   },
   {
     icon: (
@@ -132,11 +135,14 @@ const benefits: Benefit[] = [
       sans: "Track your daily ",
       serif: "readiness score",
     },
-    image: "https://ourahealth.imgix.net/home/recovery.jpg",
+    description:
+      "Understand your body's recovery status and get personalized recommendations for training and rest.",
   },
 ];
 
 export default function BenefitsCarousel() {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
   return (
     <Carousel
       opts={{
@@ -155,7 +161,7 @@ export default function BenefitsCarousel() {
             <div className="relative aspect-[4/3] overflow-hidden rounded-3xl group">
               {/* Background Image */}
               <img
-                src={benefit.image}
+                src="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
               />
@@ -164,21 +170,21 @@ export default function BenefitsCarousel() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
               {/* Content */}
-              <div className="relative h-full p-8 flex flex-col">
+              <div className="relative h-full p-6 flex flex-col">
                 {/* Label with Icon */}
-                <div className="flex items-center gap-2 text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-2 px-4 w-fit">
-                  {benefit.icon}
-                  <span className="text-sm font-medium">{benefit.label}</span>
+                <div className="flex items-center gap-2 text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
+                  <div className="w-4 h-4">{benefit.icon}</div>
+                  <span className="text-xs font-medium">{benefit.label}</span>
                 </div>
 
                 {/* Title */}
                 <div className="mt-auto">
                   <h3 className="text-white">
-                    <span className="block text-3xl md:text-4xl font-sans font-light leading-tight">
+                    <span className="block text-xl sm:text-2xl font-sans font-light leading-tight">
                       {benefit.title.sans}
                     </span>
                     {benefit.title.serif && (
-                      <span className="block text-3xl md:text-4xl font-serif italic leading-tight">
+                      <span className="block text-xl sm:text-2xl font-serif italic leading-tight">
                         {benefit.title.serif}
                       </span>
                     )}
@@ -186,7 +192,12 @@ export default function BenefitsCarousel() {
                 </div>
 
                 {/* Plus Button */}
-                <button className="absolute top-8 right-8 w-10 h-10 rounded-full bg-white hover:bg-white/90 transition-colors flex items-center justify-center text-black">
+                <button
+                  onClick={() =>
+                    setActiveIndex(activeIndex === index ? null : index)
+                  }
+                  className="absolute top-6 right-6 w-8 h-8 rounded-full bg-white hover:bg-white/90 transition-colors flex items-center justify-center text-black"
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -195,11 +206,37 @@ export default function BenefitsCarousel() {
                     strokeWidth="2"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="w-5 h-5"
+                    className="w-4 h-4"
                   >
-                    <path d="M12 5v14m-7-7h14" />
+                    {activeIndex === index ? (
+                      <path d="M5 12h14" />
+                    ) : (
+                      <path d="M12 5v14m-7-7h14" />
+                    )}
                   </svg>
                 </button>
+
+                {/* Description Overlay */}
+                {activeIndex === index && (
+                  <button
+                    className="absolute inset-0 bg-black/95 p-6 flex flex-col justify-center items-start transition-all duration-300"
+                    onClick={() => setActiveIndex(null)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Escape") setActiveIndex(null);
+                    }}
+                    aria-label="Close details"
+                  >
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-4 h-4 text-white">{benefit.icon}</div>
+                      <span className="text-xs font-medium text-white">
+                        {benefit.label}
+                      </span>
+                    </div>
+                    <p className="text-white/90 text-sm leading-relaxed text-left">
+                      {benefit.description}
+                    </p>
+                  </button>
+                )}
               </div>
             </div>
           </CarouselItem>
