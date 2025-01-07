@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { X } from "lucide-react";
 import { useChat } from "ai/react";
 import { nanoid } from "nanoid";
+import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -86,7 +87,9 @@ export function ChatModal({
                         : "bg-muted"
                     }`}
                   >
-                    {message.content}
+                    <div className="prose prose-sm dark:prose-invert prose-p:my-0 prose-headings:my-0">
+                      <ReactMarkdown>{message.content}</ReactMarkdown>
+                    </div>
                   </div>
                 </div>
               ))
