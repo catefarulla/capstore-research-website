@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
+import Advisor from "./advisor";
 
 interface ProductImage {
   src: string;
@@ -192,9 +193,10 @@ export default function ProductHero() {
             <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
               Buy now
             </button>
-            <button className="w-full bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            {/* <button className="w-full bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
               Chat to advisor
-            </button>
+            </button> */}
+            <Advisor />
           </div>
 
           {/* Features */}

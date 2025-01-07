@@ -41,7 +41,7 @@ const benefits = [
 
 export default function ProductBenefits() {
   return (
-    <div className="py-12 px-4 sm:px-12 md:px-24">
+    <div className="pt-48 pb-36 px-4 sm:px-12 md:px-24">
       <h2 className="text-3xl font-bold text-center mb-12">
         Lily 2 Active Benefits
       </h2>
