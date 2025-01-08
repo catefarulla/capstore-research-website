@@ -31,7 +31,14 @@ export function ChatModal({
     const { productName, color, size, cellular } = selectedOptions;
     const basePrompt = `You are a helpful product advisor for ${productName}. The customer is currently looking at the following configuration:
 - Color: ${color}
-- Size: ${size}${cellular !== undefined ? `\n- Cellular: ${cellular ? "Yes" : "No"}` : ""}`;
+- Size: ${size}${cellular !== undefined ? `\n- Cellular: ${cellular ? "Yes" : "No"}` : ""}
+
+AVAILABLE PRODUCTS (use these slugs for links):
+- Chronos Elite: [Chronos Elite](/product/chronos-elite)
+- Chronos Pro: [Chronos Pro](/product/chronos-pro)
+- Chronos Active: [Chronos Active](/product/chronos-active)
+
+When suggesting other products, use markdown links with these exact URLs.`;
 
     if (withFriction) {
       return `${basePrompt}
@@ -42,7 +49,8 @@ IMPORTANT INSTRUCTIONS FOR YOUR RESPONSES:
 3. Ask one clear question at a time
 4. Hold off on making recommendations until you understand their needs
 5. Always end with a focused question about their specific needs or preferences
-6. Keep the conversation focused and guided`;
+6. Keep the conversation focused and guided
+7. When suggesting other products, use the markdown links provided above`;
     }
 
     return `${basePrompt}
@@ -53,7 +61,9 @@ INSTRUCTIONS FOR YOUR RESPONSES:
 3. Feel free to make recommendations based on common use cases
 4. You can cover multiple aspects in one response
 5. Be conversational but professional
-6. Share specific benefits and comparisons when relevant`;
+6. Share specific benefits and comparisons when relevant
+7. When comparing with other products, use the markdown links provided above
+8. Feel free to suggest alternative products that might better suit their needs`;
   };
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
@@ -148,7 +158,7 @@ INSTRUCTIONS FOR YOUR RESPONSES:
                       }`}
                     >
                       <div
-                        className={`flex flex-col gap-6 prose prose-sm ${
+                        className={`flex flex-col gap-2 prose prose-sm ${
                           message.role === "assistant"
                             ? "dark:prose-invert"
                             : ""
