@@ -98,7 +98,7 @@ Please help them make a decision about their purchase. You can discuss features,
                       }`}
                     >
                       <div
-                        className={`prose prose-sm ${
+                        className={`flex flex-col gap-6 prose prose-sm ${
                           message.role === "assistant"
                             ? "dark:prose-invert"
                             : ""
