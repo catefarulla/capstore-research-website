@@ -20,6 +20,7 @@ const SUGGESTION_BUTTONS = [
 
 export function ChatModal({ isOpen, onClose, selectedOptions }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const generateSystemPrompt = () => {
     const { productName, color, size, cellular } = selectedOptions;
@@ -49,6 +50,23 @@ Please help them make a decision about their purchase. You can discuss features,
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  // Focus input when modal opens or after AI response
+  useEffect(() => {
+    if (isOpen) {
+      // Small delay to ensure the modal is rendered
+      setTimeout(() => {
+        inputRef.current?.focus();
+      }, 100);
+    }
+  }, [isOpen]);
+
+  // Focus input after AI finishes responding
+  useEffect(() => {
+    if (!isLoading && messages.length > 0) {
+      inputRef.current?.focus();
+    }
+  }, [isLoading, messages.length]);
 
   if (!isOpen) return null;
 
@@ -138,6 +156,7 @@ Please help them make a decision about their purchase. You can discuss features,
           <form onSubmit={handleSubmit} className="shrink-0 border-t p-6">
             <div className="flex gap-2">
               <Input
+                ref={inputRef}
                 value={input}
                 onChange={handleInputChange}
                 placeholder="Message Chronos advisor..."
