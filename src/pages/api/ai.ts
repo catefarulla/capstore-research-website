@@ -1,8 +1,8 @@
 import { streamText, type CoreMessage } from "ai";
 import type { APIRoute } from "astro";
 import { z } from "zod";
-import { createWorkersAI } from "workers-ai-provider";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { createAnthropic } from "@ai-sdk/anthropic";
 
 // Define types for our collections
 type Product = CollectionEntry<"products">;
@@ -115,6 +115,7 @@ Instructions for AI Advisor:
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
+    console.dir({ locals }, { depth: null });
     const body = await request.json();
     const parsed = requestSchema.safeParse(body);
 
@@ -131,7 +132,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const { messages, systemPrompt, temperature, maxTokens } = parsed.data;
+    const { messages, systemPrompt, temperature } = parsed.data;
 
     // Generate the enhanced system prompt
     const fullSystemPrompt = await generateFullSystemPrompt(systemPrompt || "");
@@ -153,13 +154,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    const workersai = createWorkersAI({ binding: locals.runtime.env.AI });
-    const model = workersai("@cf/meta/llama-3.3-70b-instruct-fp8-fast");
+    // Create Anthropic instance with API key from runtime
+    const anthropicClient = createAnthropic({
+      apiKey: locals.runtime.env.ANTHROPIC_API_KEY,
+    });
+    const model = anthropicClient("claude-3-sonnet-20240229");
+
     const result = streamText({
       model,
       messages: finalMessages as CoreMessage[],
       temperature,
-      maxTokens,
     });
 
     return result.toDataStreamResponse();
