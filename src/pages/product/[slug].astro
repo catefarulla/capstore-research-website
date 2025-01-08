@@ -6,10 +6,31 @@ import Layout from "@/layouts/Layout.astro";
 import ProductBenefits from "@/components/product-benefits/benefit-wrapper.astro";
 import ProductShowcase from "@/components/product-showcase";
 import { getCollection, type CollectionEntry } from "astro:content";
+import { z } from "zod";
 
 type Product = CollectionEntry<"products">;
 type Color = CollectionEntry<"colors">;
 type Size = CollectionEntry<"sizes">;
+
+// Zod schemas for validation
+const ColorSchema = z.object({
+  Name: z.string(),
+});
+
+const SizeSchema = z.object({
+  Name: z.string(),
+});
+
+const ProductSchema = z.object({
+  Name: z.string(),
+  Blurb: z.string(),
+  Tagline: z.string(),
+  "Has Cellular": z.boolean().optional().default(false),
+  "Available Colours": z.array(z.string()),
+  "Available Sizes": z.array(z.string()),
+  Benefits: z.array(z.string()),
+  Slug: z.string(),
+});
 
 const tableProducts = await getCollection("products");
 const colorsData = await getCollection("colors");
@@ -34,38 +55,63 @@ if (!product) {
   return Astro.redirect("/404");
 }
 
+// Validate product data
+const validationResult = ProductSchema.safeParse(product.data);
+if (!validationResult.success) {
+  console.error("Product validation failed:", validationResult.error);
+  return Astro.redirect("/404");
+}
+
+const validatedProduct = validationResult.data;
+const hasCellular = validatedProduct["Has Cellular"];
+
+// Filter and validate colors
 const availableColors = colorsData
-  .filter((color: Color) => (product.data["Available Colours"] as string[]).includes(color.id))
-  .map((color: Color) => color.data.Name);
+  .filter((color: Color) => validatedProduct["Available Colours"].includes(color.id))
+  .map((color: Color) => {
+    const colorValidation = ColorSchema.safeParse(color.data);
+    return colorValidation.success ? colorValidation.data.Name : null;
+  })
+  .filter((name): name is string => name !== null);
 
+// Filter and validate sizes
 const availableSizes = sizesData
-  .filter((size: Size) => (product.data["Available Sizes"] as string[]).includes(size.id))
-  .map((size: Size) => size.data.Name);
+  .filter((size: Size) => validatedProduct["Available Sizes"].includes(size.id))
+  .map((size: Size) => {
+    const sizeValidation = SizeSchema.safeParse(size.data);
+    return sizeValidation.success ? sizeValidation.data.Name : null;
+  })
+  .filter((name): name is string => name !== null);
 
-// TODO: Get product variant images from Airtable
-const productVariants = availableColors.reduce(
-  (acc, color: any) => {
-    acc[color.toLowerCase()] = {
-      color,
-      images: [
-        {
-          src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
-          alt: `${color} ${product.data.Name} - View 1`,
-        },
-        {
-          src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
-          alt: `${color} ${product.data.Name} - View 2`,
-        },
-        {
-          src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
-          alt: `${color} ${product.data.Name} - View 3`,
-        },
-      ],
-    };
-    return acc;
-  },
-  {} as Record<string, { color: string; images: { src: string; alt: string }[] }>
-);
+// Validate that we have at least one color and size
+if (availableColors.length === 0 || availableSizes.length === 0) {
+  console.error("Product has no valid colors or sizes");
+  return Astro.redirect("/404");
+}
+
+// Create product variants with validated colors
+const productVariants = availableColors.reduce<
+  Record<string, { color: string; images: { src: string; alt: string }[] }>
+>((acc, color) => {
+  acc[color.toLowerCase()] = {
+    color,
+    images: [
+      {
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
+        alt: `${color} ${validatedProduct.Name} - View 1`,
+      },
+      {
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
+        alt: `${color} ${validatedProduct.Name} - View 2`,
+      },
+      {
+        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
+        alt: `${color} ${validatedProduct.Name} - View 3`,
+      },
+    ],
+  };
+  return acc;
+}, {});
 
 const { title, description } = product;
 ---
@@ -73,12 +119,12 @@ const { title, description } = product;
 <Layout title={title} description={description}>
   <ProductHero
     client:load
-    name={product.data.Name as string}
-    tagline={product.data.Tagline as string}
-    blurb={product.data.Blurb as string}
-    hasCellular={product.data["Has Cellular"] as boolean}
-    availableColors={availableColors as string[]}
-    availableSizes={availableSizes as string[]}
+    name={validatedProduct.Name}
+    tagline={validatedProduct.Tagline}
+    blurb={validatedProduct.Blurb}
+    hasCellular={hasCellular}
+    availableColors={availableColors}
+    availableSizes={availableSizes}
     variants={productVariants}
   />
   <CentreText
@@ -90,15 +136,12 @@ const { title, description } = product;
     src="https://reebok.bynder.com/transform/992a1d94-a3ad-4ce3-87b0-b11dafa03826/SS25_NanoGym-Barrys_Masthead_DT?fm=jpg&q=90&fit=fill&w=1200p"
     alt="Black-2"
   />
-  <ProductBenefits
-    benefitIds={product.data.Benefits as string[]}
-    productName={product.data.Name as string}
-  />
+  <ProductBenefits benefitIds={validatedProduct.Benefits} productName={validatedProduct.Name} />
   {/* Normal layout */}
   <ProductShowcase
     label="LIGHTWEIGHT AND AFFORDABLE"
     title="Lily 2 Active"
-    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared eaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
+    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared heaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
     image="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
   />
 
