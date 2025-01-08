@@ -54,91 +54,101 @@ Please help them make a decision about their purchase. You can discuss features,
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-50">
-      <div className="fixed inset-4 md:inset-x-auto md:inset-y-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-2xl bg-white rounded-lg shadow-lg flex flex-col">
-        {/* Header */}
-        <div className="flex items-center justify-between border-b px-4 py-3">
-          <h2 className="text-lg font-semibold">CHRONOS</h2>
-          <Button variant="ghost" size="icon" onClick={onClose}>
-            <X className="h-5 w-5" />
-            <span className="sr-only">Close</span>
-          </Button>
-        </div>
+    <div className="fixed inset-0 z-50">
+      {/* Dark overlay + blur backdrop */}
+      <div className="absolute inset-0 bg-black/20 backdrop-blur-md" />
 
-        {/* Chat Messages */}
-        <ScrollArea ref={scrollRef} className="flex-1 p-4">
-          <div className="space-y-4">
-            {messages.length === 0 ? (
-              <div className="text-2xl font-semibold text-center py-8">
-                How can I help you today?
-              </div>
-            ) : (
-              messages.map((message) => (
-                <div
-                  key={message.id}
-                  className={`flex items-start gap-2 ${
-                    message.role === "user" ? "justify-end" : "justify-start"
-                  }`}
-                >
-                  {message.role === "assistant" && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary bg-slate-200 text-primary-foreground flex items-center justify-center font-semibold">
-                      C
-                    </div>
-                  )}
-                  <div
-                    className={`max-w-[80%] ${
-                      message.role === "user"
-                        ? "text-gray-900"
-                        : "bg-slate-100 rounded-xl px-4 py-2"
-                    }`}
-                  >
-                    <div
-                      className={`prose prose-sm ${
-                        message.role === "assistant" ? "dark:prose-invert" : ""
-                      } prose-p:my-0 prose-headings:my-0`}
-                    >
-                      <ReactMarkdown>{message.content}</ReactMarkdown>
-                    </div>
-                  </div>
-                </div>
-              ))
-            )}
-          </div>
-
-          {messages.length === 0 && (
-            <div className="flex flex-wrap gap-2 mt-4">
-              {SUGGESTION_BUTTONS.map((suggestion) => (
-                <Button
-                  key={suggestion}
-                  variant="secondary"
-                  className="text-sm"
-                  onClick={() => {
-                    handleInputChange({ target: { value: suggestion } } as any);
-                    handleSubmit({ preventDefault: () => {} } as any);
-                  }}
-                >
-                  {suggestion}
-                </Button>
-              ))}
-            </div>
-          )}
-        </ScrollArea>
-
-        {/* Input Form */}
-        <form onSubmit={handleSubmit} className="border-t p-4">
-          <div className="flex gap-2">
-            <Input
-              value={input}
-              onChange={handleInputChange}
-              placeholder="Message Chronos advisor..."
-              disabled={isLoading}
-              className="flex-1"
-            />
-            <Button type="submit" disabled={isLoading || !input.trim()}>
-              Send
+      {/* Modal container */}
+      <div className="relative flex items-center justify-center p-4 min-h-screen">
+        <div className="w-full max-w-4xl max-h-[85vh] bg-white rounded-lg shadow-lg flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b px-6 py-4">
+            <h2 className="text-xl font-semibold">CHRONOS</h2>
+            <Button variant="ghost" size="icon" onClick={onClose}>
+              <X className="h-5 w-5" />
+              <span className="sr-only">Close</span>
             </Button>
           </div>
-        </form>
+
+          {/* Chat Messages */}
+          <ScrollArea className="flex-1 p-6" style={{ maxHeight: "60vh" }}>
+            <div className="space-y-4">
+              {messages.length === 0 ? (
+                <div className="text-2xl font-semibold text-center py-8">
+                  How can I help you today?
+                </div>
+              ) : (
+                messages.map((message) => (
+                  <div
+                    key={message.id}
+                    className={`flex items-start gap-2 ${
+                      message.role === "user" ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    {message.role === "assistant" && (
+                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary bg-slate-200 text-primary-foreground flex items-center justify-center font-semibold">
+                        C
+                      </div>
+                    )}
+                    <div
+                      className={`max-w-[80%] ${
+                        message.role === "user"
+                          ? "text-gray-900"
+                          : "bg-slate-100 rounded-xl px-4 py-2"
+                      }`}
+                    >
+                      <div
+                        className={`prose prose-sm ${
+                          message.role === "assistant"
+                            ? "dark:prose-invert"
+                            : ""
+                        } prose-p:my-0 prose-headings:my-0`}
+                      >
+                        <ReactMarkdown>{message.content}</ReactMarkdown>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {messages.length === 0 && (
+              <div className="flex flex-wrap gap-2 mt-4">
+                {SUGGESTION_BUTTONS.map((suggestion) => (
+                  <Button
+                    key={suggestion}
+                    variant="secondary"
+                    className="text-sm"
+                    onClick={() => {
+                      handleInputChange({
+                        target: { value: suggestion },
+                      } as any);
+                      handleSubmit({ preventDefault: () => {} } as any);
+                    }}
+                  >
+                    {suggestion}
+                  </Button>
+                ))}
+              </div>
+            )}
+          </ScrollArea>
+
+          {/* Input Form */}
+          <form onSubmit={handleSubmit} className="border-t p-6">
+            <div className="flex gap-2">
+              <Input
+                value={input}
+                onChange={handleInputChange}
+                placeholder="Message Chronos advisor..."
+                disabled={isLoading}
+                className="flex-1"
+              />
+              <Button type="submit" disabled={isLoading || !input.trim()}>
+                Send
+              </Button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   );
