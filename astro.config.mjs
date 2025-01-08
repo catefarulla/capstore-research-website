@@ -15,6 +15,11 @@ export default defineConfig({
       enabled: true,
     },
   }),
+  vite: {
+    build: {
+      minify: false,
+    },
+  },
 
   integrations: [
     react(),
@@ -22,4 +27,8 @@ export default defineConfig({
       applyBaseStyles: false,
     }),
   ],
+  experimental: {
+    contentIntellisense: true,
+    responsiveImages: true,
+  },
 });
