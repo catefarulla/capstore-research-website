@@ -56,11 +56,11 @@ export type NavProps = {
 export default function Nav({ dropdownContent }: NavProps) {
   return (
     <div className="flex justify-between items-center px-4 md:px-12 py-4">
-      <div>
+      <a href="/" className="select-none">
         <span className="text-xl md:text-2xl font-heading font-black tracking-tight uppercase">
           Chronos
         </span>
-      </div>
+      </a>
 
       {/* Desktop Navigation */}
       <div className="hidden md:block">
