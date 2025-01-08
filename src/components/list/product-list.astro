@@ -1,36 +1,41 @@
 ---
 import Product from "./product.astro";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { z } from "zod";
 
-type ProductItem = {
-  title: string;
-  price: number;
-  href: string;
-  image: string;
-};
+type Product = CollectionEntry<"products">;
 
-const products: ProductItem[] = [
-  {
-    title: "Oura Ring 4",
-    price: 349,
-    href: "/oura-ring-4",
-    image:
-      "https://ourahealth.imgix.net/blue-sky/home/OR4-ring%20module-v2-desktop.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=eab45cbd8e7999070c12007e56243754",
-  },
-  {
-    title: "Oura Ring Gen3",
-    price: 299,
-    href: "/oura-ring-gen3",
-    image:
-      "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
-  },
-  {
-    title: "Oura Ring Gen3",
-    price: 299,
-    href: "/oura-ring-gen3",
-    image:
-      "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
-  },
-];
+// Zod schema for product validation
+const ProductSchema = z.object({
+  Name: z.string(),
+  Blurb: z.string(),
+  Slug: z.string(),
+  Price: z.number().optional(),
+  Thumbnail: z.string().optional(),
+});
+
+// Fetch products from Airtable
+const tableProducts = await getCollection("products");
+
+// Filter out empty products and validate
+const products = tableProducts
+  .filter((product: Product) => product.data !== undefined && Object.keys(product.data).length > 0)
+  .map((product: Product) => {
+    const validation = ProductSchema.safeParse(product.data);
+    if (!validation.success) {
+      console.error(`Product validation failed for ${product.id}:`, validation.error);
+      return null;
+    }
+    return {
+      title: validation.data.Name,
+      price: validation.data.Price ?? 299, // Default price if not set
+      href: `/product/${validation.data.Slug}`,
+      image:
+        validation.data.Thumbnail ||
+        "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
+    };
+  })
+  .filter((product): product is NonNullable<typeof product> => product !== null);
 ---
 
 <div class="flex flex-wrap gap-6 mx-auto px-4">
