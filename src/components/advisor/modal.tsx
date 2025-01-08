@@ -29,11 +29,31 @@ export function ChatModal({
 
   const generateSystemPrompt = () => {
     const { productName, color, size, cellular } = selectedOptions;
-    return `You are a helpful product advisor for ${productName}. The customer is currently looking at the following configuration:
+    const basePrompt = `You are a helpful product advisor for ${productName}. The customer is currently looking at the following configuration:
 - Color: ${color}
-- Size: ${size}${cellular !== undefined ? `\n- Cellular: ${cellular ? "Yes" : "No"}` : ""}
+- Size: ${size}${cellular !== undefined ? `\n- Cellular: ${cellular ? "Yes" : "No"}` : ""}`;
 
-Please help them make a decision about their purchase. You can discuss features, benefits, and answer any questions about this specific model and configuration.`;
+    if (withFriction) {
+      return `${basePrompt}
+
+IMPORTANT INSTRUCTIONS FOR YOUR RESPONSES:
+1. Keep responses very concise (2-3 sentences maximum)
+2. Focus on asking investigative questions to understand user needs
+3. Ask one clear question at a time
+4. Hold off on making recommendations until you understand their needs
+5. Always end with a focused question about their specific needs or preferences
+6. Keep the conversation focused and guided`;
+    }
+
+    return `${basePrompt}
+
+INSTRUCTIONS FOR YOUR RESPONSES:
+1. Be thorough and informative in your explanations
+2. Focus on highlighting relevant features for this configuration
+3. Feel free to make recommendations based on common use cases
+4. You can cover multiple aspects in one response
+5. Be conversational but professional
+6. Share specific benefits and comparisons when relevant`;
   };
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
