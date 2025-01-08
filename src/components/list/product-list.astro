@@ -10,7 +10,7 @@ const ProductSchema = z.object({
   Name: z.string(),
   Blurb: z.string(),
   Slug: z.string(),
-  Price: z.number().optional(),
+  Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
   Thumbnail: z.string().optional(),
 });
 
@@ -28,7 +28,7 @@ const products = tableProducts
     }
     return {
       title: validation.data.Name,
-      price: validation.data.Price ?? 299, // Default price if not set
+      price: validation.data.Price,
       href: `/product/${validation.data.Slug}`,
       image:
         validation.data.Thumbnail ||

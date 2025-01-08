@@ -30,7 +30,7 @@ const ProductSchema = z.object({
   "Available Sizes": z.array(z.string()),
   Benefits: z.array(z.string()),
   Slug: z.string(),
-  Price: z.number().default(299),
+  Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
 });
 
 const tableProducts = await getCollection("products");
