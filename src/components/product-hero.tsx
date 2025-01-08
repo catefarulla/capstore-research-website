@@ -20,6 +20,7 @@ interface Props {
   availableColors: string[];
   availableSizes: string[];
   variants: Record<string, ProductVariant>;
+  price: number;
 }
 
 export default function ProductHero({
@@ -30,6 +31,7 @@ export default function ProductHero({
   availableColors,
   availableSizes,
   variants,
+  price,
 }: Props) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(
@@ -157,8 +159,9 @@ export default function ProductHero({
 
           {/* Action Buttons */}
           <div className="space-y-3">
-            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
-              Buy now
+            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2">
+              <span>Buy now</span>
+              <span className="text-sm opacity-90">£{price}</span>
             </button>
             <Advisor selectedOptions={selectedOptions} />
           </div>
