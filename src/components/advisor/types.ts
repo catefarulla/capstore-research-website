@@ -1,17 +1,12 @@
+export interface SelectedOptions {
+  productName: string;
+  color: string;
+  size: string;
+  cellular?: boolean;
+}
+
 export interface ChatProps {
-  initialMessage?: boolean;
-  systemPrompt?: string;
-  enableStreaming?: boolean;
-  productId?: string;
+  selectedOptions: SelectedOptions;
+  isOpen?: boolean;
+  onClose?: () => void;
 }
-
-export interface ChatModalProps extends ChatProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
-
-export type Message = {
-  id: string;
-  role: "system" | "user" | "assistant";
-  content: string;
-};

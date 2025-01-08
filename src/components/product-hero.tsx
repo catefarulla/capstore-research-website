@@ -40,6 +40,14 @@ export default function ProductHero({
 
   const currentVariant = variants[selectedColor];
 
+  // Create selected options object for the advisor
+  const selectedOptions = {
+    productName: name,
+    color: variants[selectedColor].color,
+    size,
+    cellular: hasCellular ? cellular : undefined,
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 md:py-20 max-w-7xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
@@ -152,7 +160,7 @@ export default function ProductHero({
             <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
               Buy now
             </button>
-            <Advisor />
+            <Advisor selectedOptions={selectedOptions} />
           </div>
 
           {/* Features */}

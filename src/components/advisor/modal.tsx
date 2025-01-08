@@ -7,7 +7,7 @@ import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import type { ChatModalProps } from "./types";
+import type { ChatProps } from "./types";
 
 const SUGGESTION_BUTTONS = [
   "Which watch has the right features for me?",
@@ -18,30 +18,30 @@ const SUGGESTION_BUTTONS = [
   "What are the main selling points of this watch",
 ];
 
-export function ChatModal({
-  isOpen,
-  onClose,
-  initialMessage = false,
-  systemPrompt,
-  productId,
-}: ChatModalProps) {
+export function ChatModal({ isOpen, onClose, selectedOptions }: ChatProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const generateSystemPrompt = () => {
+    const { productName, color, size, cellular } = selectedOptions;
+    return `You are a helpful product advisor for ${productName}. The customer is currently looking at the following configuration:
+- Color: ${color}
+- Size: ${size}${cellular !== undefined ? `\n- Cellular: ${cellular ? "Yes" : "No"}` : ""}
+
+Please help them make a decision about their purchase. You can discuss features, benefits, and answer any questions about this specific model and configuration.`;
+  };
 
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       api: "/api/ai",
-      initialMessages:
-        initialMessage && productId
-          ? [
-              {
-                id: nanoid(),
-                role: "assistant",
-                content: `Looks like you're interested in the ${productId}. Is there anything you'd like to ask me about this product?`,
-              },
-            ]
-          : [],
+      initialMessages: [
+        {
+          id: nanoid(),
+          role: "assistant",
+          content: `Looks like you're interested in the ${selectedOptions.productName}. Is there anything you'd like to ask me about this product?`,
+        },
+      ],
       body: {
-        systemPrompt,
+        systemPrompt: generateSystemPrompt(),
       },
     });
 
@@ -81,7 +81,7 @@ export function ChatModal({
                   }`}
                 >
                   {message.role === "assistant" && (
-                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary  bg-slate-200 text-primary-foreground flex items-center justify-center font-semibold">
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary bg-slate-200 text-primary-foreground flex items-center justify-center font-semibold">
                       C
                     </div>
                   )}
@@ -93,7 +93,9 @@ export function ChatModal({
                     }`}
                   >
                     <div
-                      className={`prose prose-sm ${message.role === "assistant" ? "dark:prose-invert" : ""} prose-p:my-0 prose-headings:my-0`}
+                      className={`prose prose-sm ${
+                        message.role === "assistant" ? "dark:prose-invert" : ""
+                      } prose-p:my-0 prose-headings:my-0`}
                     >
                       <ReactMarkdown>{message.content}</ReactMarkdown>
                     </div>
