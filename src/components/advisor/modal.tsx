@@ -19,7 +19,7 @@ const SUGGESTION_BUTTONS = [
 ];
 
 export function ChatModal({ isOpen, onClose, selectedOptions }: ChatProps) {
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const generateSystemPrompt = () => {
     const { productName, color, size, cellular } = selectedOptions;
@@ -45,10 +45,9 @@ Please help them make a decision about their purchase. You can discuss features,
       },
     });
 
+  // Scroll to bottom when new messages arrive
   useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo(0, scrollRef.current.scrollHeight);
-    }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   if (!isOpen) return null;
@@ -60,9 +59,9 @@ Please help them make a decision about their purchase. You can discuss features,
 
       {/* Modal container */}
       <div className="relative flex items-center justify-center p-4 min-h-screen">
-        <div className="w-full max-w-4xl max-h-[85vh] bg-white rounded-lg shadow-lg flex flex-col">
+        <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg flex flex-col h-[85vh] max-h-[900px]">
           {/* Header */}
-          <div className="flex items-center justify-between border-b px-6 py-4">
+          <div className="shrink-0 flex items-center justify-between border-b px-6 py-4">
             <h2 className="text-xl font-semibold">CHRONOS</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
@@ -71,8 +70,8 @@ Please help them make a decision about their purchase. You can discuss features,
           </div>
 
           {/* Chat Messages */}
-          <ScrollArea className="flex-1 p-6" style={{ maxHeight: "60vh" }}>
-            <div className="space-y-4">
+          <ScrollArea className="flex-1 px-6">
+            <div className="space-y-4 py-6 pr-4">
               {messages.length === 0 ? (
                 <div className="text-2xl font-semibold text-center py-8">
                   How can I help you today?
@@ -110,6 +109,8 @@ Please help them make a decision about their purchase. You can discuss features,
                   </div>
                 ))
               )}
+              {/* Invisible element for scrolling */}
+              <div ref={messagesEndRef} />
             </div>
 
             {messages.length === 0 && (
@@ -134,7 +135,7 @@ Please help them make a decision about their purchase. You can discuss features,
           </ScrollArea>
 
           {/* Input Form */}
-          <form onSubmit={handleSubmit} className="border-t p-6">
+          <form onSubmit={handleSubmit} className="shrink-0 border-t p-6">
             <div className="flex gap-2">
               <Input
                 value={input}
