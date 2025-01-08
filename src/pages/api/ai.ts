@@ -177,7 +177,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const anthropicClient = createAnthropic({
       apiKey: locals.runtime.env.ANTHROPIC_API_KEY,
     });
-    const model = anthropicClient("claude-3-5-sonnet-latest");
+    const model = anthropicClient("claude-3-5-haiku-latest");
 
     // Use different methods based on friction mode
     if (withFriction) {
