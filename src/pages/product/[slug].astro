@@ -3,38 +3,84 @@ import CentreText from "@/components/centre-text.astro";
 import FullWidthImage from "@/components/full-width-image.astro";
 import ProductHero from "@/components/product-hero";
 import Layout from "@/layouts/Layout.astro";
-import ProductBenefits from "@/components/product-benefits/list";
+import ProductBenefits from "@/components/product-benefits/benefit-wrapper.astro";
 import ProductShowcase from "@/components/product-showcase";
+import { getCollection, type CollectionEntry } from "astro:content";
 
-const products = [
-  {
-    slug: "lily-2-active",
-    title: "Lily 2 Active",
-    description: "The ultimate activewear for the modern woman.",
-  },
-  {
-    slug: "forerunner-955",
-    title: "Forerunner 955",
-    description: "The ultimate running watch for the modern woman.",
-  },
-  {
-    slug: "vesu-2",
-    title: "Vesu 2",
-    description: "The ultimate running watch for the modern woman.",
-  },
-];
+type Product = CollectionEntry<"products">;
+type Color = CollectionEntry<"colors">;
+type Size = CollectionEntry<"sizes">;
+
+const tableProducts = await getCollection("products");
+const colorsData = await getCollection("colors");
+const sizesData = await getCollection("sizes");
+
+const productData = tableProducts.filter(
+  (product: Product) => product.data !== undefined && Object.keys(product.data).length > 0
+);
+
+const productsWithSeo = productData.map((product: Product) => {
+  return {
+    slug: product.data.Slug,
+    title: product.data.Name,
+    description: product.data.Blurb,
+    ...product,
+  };
+});
 
 const { slug } = Astro.params;
-const product = products.find((product) => product.slug === slug);
+const product = productsWithSeo.find((product) => product.slug === slug);
 if (!product) {
   return Astro.redirect("/404");
 }
 
+const availableColors = colorsData
+  .filter((color: Color) => (product.data["Available Colours"] as string[]).includes(color.id))
+  .map((color: Color) => color.data.Name);
+
+const availableSizes = sizesData
+  .filter((size: Size) => (product.data["Available Sizes"] as string[]).includes(size.id))
+  .map((size: Size) => size.data.Name);
+
+// TODO: Get product variant images from Airtable
+const productVariants = availableColors.reduce(
+  (acc, color: any) => {
+    acc[color.toLowerCase()] = {
+      color,
+      images: [
+        {
+          src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
+          alt: `${color} ${product.data.Name} - View 1`,
+        },
+        {
+          src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
+          alt: `${color} ${product.data.Name} - View 2`,
+        },
+        {
+          src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
+          alt: `${color} ${product.data.Name} - View 3`,
+        },
+      ],
+    };
+    return acc;
+  },
+  {} as Record<string, { color: string; images: { src: string; alt: string }[] }>
+);
+
 const { title, description } = product;
 ---
 
-<Layout>
-  <ProductHero client:load />
+<Layout title={title} description={description}>
+  <ProductHero
+    client:load
+    name={product.data.Name as string}
+    tagline={product.data.Tagline as string}
+    blurb={product.data.Blurb as string}
+    hasCellular={product.data["Has Cellular"] as boolean}
+    availableColors={availableColors as string[]}
+    availableSizes={availableSizes as string[]}
+    variants={productVariants}
+  />
   <CentreText
     title={{ sans: "Bring your fitness goals", serif: "into focus" }}
     titleSize="sm"
@@ -44,12 +90,15 @@ const { title, description } = product;
     src="https://reebok.bynder.com/transform/992a1d94-a3ad-4ce3-87b0-b11dafa03826/SS25_NanoGym-Barrys_Masthead_DT?fm=jpg&q=90&fit=fill&w=1200p"
     alt="Black-2"
   />
-  <ProductBenefits />
+  <ProductBenefits
+    benefitIds={product.data.Benefits as string[]}
+    productName={product.data.Name as string}
+  />
   {/* Normal layout */}
   <ProductShowcase
     label="LIGHTWEIGHT AND AFFORDABLE"
     title="Lily 2 Active"
-    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared heaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
+    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared eaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
     image="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
   />
 

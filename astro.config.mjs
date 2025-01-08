@@ -11,6 +11,8 @@ import tailwind from "@astrojs/tailwind";
 export default defineConfig({
   output: "server",
   adapter: cloudflare({
+    imageService: "cloudflare",
+
     platformProxy: {
       enabled: true,
     },
@@ -20,7 +22,6 @@ export default defineConfig({
       minify: false,
     },
   },
-
   integrations: [
     react(),
     tailwind({

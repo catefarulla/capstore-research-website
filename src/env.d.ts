@@ -7,3 +7,7 @@ declare namespace App {
     };
   }
 }
+interface ImportMetaEnv {
+  AIRTABLE_ACCESS_TOKEN: string;
+  AIRTABLE_BASE_ID: string;
+}

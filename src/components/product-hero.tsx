@@ -12,68 +12,33 @@ interface ProductVariant {
   images: ProductImage[];
 }
 
-// Product data
-const productVariants: Record<string, ProductVariant> = {
-  black: {
-    color: "Black",
-    images: [
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
-        alt: "Black Lily 2 Active - View 1",
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
-        alt: "Black Lily 2 Active - View 2",
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
-        alt: "Black Lily 2 Active - View 3",
-      },
-    ],
-  },
-  pink: {
-    color: "Pink",
-    images: [
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/white-1.png",
-        alt: "Pink Lily 2 Active - View 1",
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/white-2.png",
-        alt: "Pink Lily 2 Active - View 2",
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/white-3.png",
-        alt: "Pink Lily 2 Active - View 3",
-      },
-    ],
-  },
-  blue: {
-    color: "Blue",
-    images: [
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/brown-1.png",
-        alt: "Blue Lily 2 Active - View 1",
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/brown-2.png",
-        alt: "Blue Lily 2 Active - View 2",
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/brown-3.png",
-        alt: "Blue Lily 2 Active - View 3",
-      },
-    ],
-  },
-};
+interface Props {
+  name: string;
+  tagline: string;
+  blurb: string;
+  hasCellular: boolean;
+  availableColors: string[];
+  availableSizes: string[];
+  variants: Record<string, ProductVariant>;
+}
 
-export default function ProductHero() {
+export default function ProductHero({
+  name,
+  tagline,
+  blurb,
+  hasCellular,
+  availableColors,
+  availableSizes,
+  variants,
+}: Props) {
   const [selectedImage, setSelectedImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState("black");
-  const [size, setSize] = useState("38mm");
-  const [cellular, setCellular] = useState(false);
+  const [selectedColor, setSelectedColor] = useState(
+    availableColors[0]?.toLowerCase() || "black",
+  );
+  const [size, setSize] = useState(availableSizes[0] || "38mm");
+  const [cellular, setCellular] = useState(hasCellular);
 
-  const currentVariant = productVariants[selectedColor];
+  const currentVariant = variants[selectedColor];
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-20 max-w-7xl">
@@ -112,34 +77,26 @@ export default function ProductHero() {
 
         <div className="space-y-6">
           <div>
-            <p className="text-sm font-medium text-blue-600">
-              LIGHTWEIGHT AND AFFORDABLE
-            </p>
-            <h1 className="text-4xl font-bold mt-2">Lily 2 Active</h1>
-            <p className="mt-4 text-gray-600">
-              Kelvin is a cost effective, smart electric heater, designed to
-              help you reduce energy consumption, save money and live more
-              sustainably. Comes included with a truly wireless smart thermostat
-              and access to the Boldr Energy mobile app. Simple to install, with
-              zero maintenance.
-            </p>
+            <p className="text-sm font-medium text-blue-600">{tagline}</p>
+            <h1 className="text-4xl font-bold mt-2">{name}</h1>
+            <p className="mt-4 text-gray-600">{blurb}</p>
           </div>
 
           {/* Color Selection */}
           <div>
             <h3 className="font-medium mb-3">COLOUR</h3>
             <div className="flex gap-2">
-              {Object.entries(productVariants).map(([key, variant]) => (
+              {availableColors.map((color) => (
                 <button
-                  key={key}
-                  onClick={() => setSelectedColor(key)}
+                  key={color}
+                  onClick={() => setSelectedColor(color.toLowerCase())}
                   className={`px-4 py-2 rounded-full border ${
-                    selectedColor === key
+                    selectedColor === color.toLowerCase()
                       ? "border-blue-500 bg-blue-50"
                       : "border-gray-200"
                   }`}
                 >
-                  {variant.color}
+                  {color}
                 </button>
               ))}
             </div>
@@ -149,7 +106,7 @@ export default function ProductHero() {
           <div>
             <h3 className="font-medium mb-3">FACE SIZE</h3>
             <div className="flex gap-2">
-              {["38mm", "40mm"].map((sizeOption) => (
+              {availableSizes.map((sizeOption) => (
                 <button
                   key={sizeOption}
                   onClick={() => setSize(sizeOption)}
@@ -166,36 +123,35 @@ export default function ProductHero() {
           </div>
 
           {/* Cellular Option */}
-          <div>
-            <h3 className="font-medium mb-3">CELLULAR</h3>
-            <div className="flex gap-2">
-              {[
-                { label: "Yes", value: true },
-                { label: "No", value: false },
-              ].map((option) => (
-                <button
-                  key={option.label}
-                  onClick={() => setCellular(option.value)}
-                  className={`px-4 py-2 rounded-full border ${
-                    cellular === option.value
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200"
-                  }`}
-                >
-                  {option.label}
-                </button>
-              ))}
+          {hasCellular && (
+            <div>
+              <h3 className="font-medium mb-3">CELLULAR</h3>
+              <div className="flex gap-2">
+                {[
+                  { label: "Yes", value: true },
+                  { label: "No", value: false },
+                ].map((option) => (
+                  <button
+                    key={option.label}
+                    onClick={() => setCellular(option.value)}
+                    className={`px-4 py-2 rounded-full border ${
+                      cellular === option.value
+                        ? "border-blue-500 bg-blue-50"
+                        : "border-gray-200"
+                    }`}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Action Buttons */}
           <div className="space-y-3">
             <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
               Buy now
             </button>
-            {/* <button className="w-full bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
-              Chat to advisor
-            </button> */}
             <Advisor />
           </div>
 
