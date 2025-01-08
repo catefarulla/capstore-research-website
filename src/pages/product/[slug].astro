@@ -31,9 +31,21 @@ const ProductSchema = z.object({
   Benefits: z.array(z.string()),
   Slug: z.string(),
   Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
+  "Product Images": z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        filename: z.string(),
+        size: z.number().optional(),
+        type: z.string().optional(),
+      })
+    )
+    .optional(),
 });
 
 const tableProducts = await getCollection("products");
+
 const colorsData = await getCollection("colors");
 const sizesData = await getCollection("sizes");
 
@@ -96,20 +108,25 @@ const productVariants = availableColors.reduce<
 >((acc, color) => {
   acc[color.toLowerCase()] = {
     color,
-    images: [
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
-        alt: `${color} ${validatedProduct.Name} - View 1`,
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
-        alt: `${color} ${validatedProduct.Name} - View 2`,
-      },
-      {
-        src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
-        alt: `${color} ${validatedProduct.Name} - View 3`,
-      },
-    ],
+    images: validatedProduct["Product Images"]
+      ? validatedProduct["Product Images"].map((img, index) => ({
+          src: img.url,
+          alt: `${color} ${validatedProduct.Name} - View ${index + 1}`,
+        }))
+      : [
+          {
+            src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
+            alt: `${color} ${validatedProduct.Name} - View 1`,
+          },
+          {
+            src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
+            alt: `${color} ${validatedProduct.Name} - View 2`,
+          },
+          {
+            src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
+            alt: `${color} ${validatedProduct.Name} - View 3`,
+          },
+        ],
   };
   return acc;
 }, {});

@@ -80,7 +80,7 @@ export default function ProductHero({
             <img
               src={currentVariant.images[selectedImage].src}
               alt={currentVariant.images[selectedImage].alt}
-              className="w-full h-full object-cover rounded-lg"
+              className="w-full h-full object-cover rounded-lg border-2 border-gray-200"
             />
           </div>
         </div>

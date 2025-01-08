@@ -11,7 +11,17 @@ const ProductSchema = z.object({
   Blurb: z.string(),
   Slug: z.string(),
   Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
-  Thumbnail: z.string().optional(),
+  "Product Images": z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        filename: z.string(),
+        size: z.number().optional(),
+        type: z.string().optional(),
+      })
+    )
+    .optional(),
 });
 
 // Fetch products from Airtable
@@ -31,7 +41,7 @@ const products = tableProducts
       price: validation.data.Price,
       href: `/product/${validation.data.Slug}`,
       image:
-        validation.data.Thumbnail ||
+        validation.data["Product Images"]?.[0]?.url ||
         "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
     };
   })
