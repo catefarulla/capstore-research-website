@@ -21,6 +21,8 @@ interface Props {
   availableSizes: string[];
   variants: Record<string, ProductVariant>;
   price: number;
+  withFriction: boolean;
+  aiEnabled: boolean;
 }
 
 export default function ProductHero({
@@ -32,6 +34,8 @@ export default function ProductHero({
   availableSizes,
   variants,
   price,
+  withFriction,
+  aiEnabled,
 }: Props) {
   const [selectedImage, setSelectedImage] = useState(0);
   const [selectedColor, setSelectedColor] = useState(
@@ -163,7 +167,12 @@ export default function ProductHero({
               <span>Buy now</span>
               <span className="text-sm opacity-90">£{price}</span>
             </button>
-            <Advisor selectedOptions={selectedOptions} />
+            {aiEnabled && (
+              <Advisor
+                selectedOptions={selectedOptions}
+                withFriction={withFriction}
+              />
+            )}
           </div>
 
           {/* Features */}

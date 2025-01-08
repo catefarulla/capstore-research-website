@@ -1,4 +1,4 @@
-import { streamText, type CoreMessage } from "ai";
+import { streamText, generateText, type CoreMessage } from "ai";
 import type { APIRoute } from "astro";
 import { z } from "zod";
 import { getCollection, type CollectionEntry } from "astro:content";
@@ -40,7 +40,7 @@ const requestSchema = z.object({
   maxTokens: z.number().positive().optional().default(1024),
 });
 
-// Company information - we can move this to a config file later
+// Base system prompt
 const COMPANY_INFO = `
 Chronos is a premium smartwatch manufacturer focused on delivering high-quality, feature-rich wearables.
 Our products combine cutting-edge technology with elegant design, offering:
@@ -51,7 +51,30 @@ Our products combine cutting-edge technology with elegant design, offering:
 - Seamless integration with smartphones
 `;
 
-async function generateFullSystemPrompt(userSystemPrompt: string) {
+// Additional instructions for friction mode
+const FRICTION_MODE_INSTRUCTIONS = `
+IMPORTANT INSTRUCTIONS FOR YOUR RESPONSES:
+1. Keep your responses very concise and to the point
+2. Ask investigative questions to understand the user's needs before making recommendations
+3. Focus on one aspect at a time
+4. Encourage user questions about specific features they care about
+5. Keep responses to 2-3 sentences maximum
+6. Always end with a question to understand more about their needs
+`;
+
+// Standard mode instructions
+const STANDARD_MODE_INSTRUCTIONS = `
+INSTRUCTIONS FOR YOUR RESPONSES:
+1. Be thorough but conversational
+2. Feel free to provide detailed explanations
+3. You can cover multiple aspects in one response
+4. Focus on the features that match their current selection
+`;
+
+async function generateFullSystemPrompt(
+  userSystemPrompt: string,
+  withFriction: boolean,
+) {
   // Fetch all product data
   const products = await getCollection("products");
   const benefits = await getCollection("benefits");
@@ -89,7 +112,7 @@ Available Sizes: ${(data["Available Sizes"] || []).length} options
     .filter(Boolean)
     .join("\n");
 
-  // Combine all information
+  // Combine all information with mode-specific instructions
   return `
 ${COMPANY_INFO}
 
@@ -102,20 +125,12 @@ ${benefitsCatalog}
 CURRENT USER CONTEXT:
 ${userSystemPrompt}
 
-Instructions for AI Advisor:
-1. You are a knowledgeable product advisor for Chronos.
-2. Use the product catalog to make informed comparisons and recommendations.
-3. Consider the user's current product selection when making suggestions.
-4. Be honest about trade-offs between different models.
-5. Focus on features that match the user's implied needs.
-6. You can reference specific benefits and features from the catalogs above.
-7. Always maintain a helpful and professional tone.
+${withFriction ? FRICTION_MODE_INSTRUCTIONS : STANDARD_MODE_INSTRUCTIONS}
 `;
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
-    console.dir({ locals }, { depth: null });
     const body = await request.json();
     const parsed = requestSchema.safeParse(body);
 
@@ -133,9 +148,13 @@ export const POST: APIRoute = async ({ request, locals }) => {
     }
 
     const { messages, systemPrompt, temperature } = parsed.data;
+    const withFriction = locals.runtime.env.WITH_AI_FRICTION === "true";
 
     // Generate the enhanced system prompt
-    const fullSystemPrompt = await generateFullSystemPrompt(systemPrompt || "");
+    const fullSystemPrompt = await generateFullSystemPrompt(
+      systemPrompt || "",
+      withFriction,
+    );
 
     const finalMessages = [
       { role: "system", content: fullSystemPrompt },
@@ -160,13 +179,30 @@ export const POST: APIRoute = async ({ request, locals }) => {
     });
     const model = anthropicClient("claude-3-sonnet-20240229");
 
-    const result = streamText({
-      model,
-      messages: finalMessages as CoreMessage[],
-      temperature,
-    });
+    // Use different methods based on friction mode
+    if (withFriction) {
+      const { text } = await generateText({
+        model,
+        messages: finalMessages as CoreMessage[],
+        temperature,
+      });
 
-    return result.toDataStreamResponse();
+      // Return just the text content for text protocol
+      return new Response(text, {
+        headers: {
+          "Content-Type": "text/plain",
+        },
+      });
+    } else {
+      const result = streamText({
+        model,
+        messages: finalMessages as CoreMessage[],
+        temperature,
+      });
+
+      // For streaming mode, use the default data stream response
+      return result.toDataStreamResponse();
+    }
   } catch (error) {
     console.error("AI request failed:", error);
     return new Response(

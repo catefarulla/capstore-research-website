@@ -18,7 +18,12 @@ const SUGGESTION_BUTTONS = [
   "What are the main selling points of this watch",
 ];
 
-export function ChatModal({ isOpen, onClose, selectedOptions }: ChatProps) {
+export function ChatModal({
+  isOpen,
+  onClose,
+  selectedOptions,
+  withFriction,
+}: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -44,6 +49,14 @@ Please help them make a decision about their purchase. You can discuss features,
       body: {
         systemPrompt: generateSystemPrompt(),
       },
+      onFinish: (message) => {
+        console.log("Message finished:", message);
+      },
+      onError: (error) => {
+        console.error("Chat error:", error);
+      },
+      // Use text protocol in friction mode, data protocol otherwise
+      streamProtocol: withFriction ? "text" : "data",
     });
 
   // Scroll to bottom when new messages arrive

@@ -8,6 +8,13 @@ import ProductShowcase from "@/components/product-showcase";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { z } from "zod";
 
+const { env } = Astro.locals.runtime;
+
+console.log(env);
+const withFriction = env.WITH_AI_FRICTION === "true" ? true : false;
+
+const aiEnabled = env.AI_ENABLED === "true" ? true : false;
+
 type Product = CollectionEntry<"products">;
 type Color = CollectionEntry<"colors">;
 type Size = CollectionEntry<"sizes">;
@@ -145,6 +152,8 @@ const { title, description } = product;
     availableSizes={availableSizes}
     variants={productVariants}
     price={validatedProduct.Price}
+    withFriction={withFriction}
+    aiEnabled={aiEnabled}
   />
   <CentreText
     title={{ sans: "Bring your fitness goals", serif: "into focus" }}

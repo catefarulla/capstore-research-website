@@ -9,4 +9,5 @@ export interface ChatProps {
   selectedOptions: SelectedOptions;
   isOpen?: boolean;
   onClose?: () => void;
+  withFriction?: boolean;
 }
