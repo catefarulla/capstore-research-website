@@ -5,6 +5,48 @@ import "@fontsource/ibm-plex-serif";
 import Nav from "@/components/nav";
 import Footer from "@/components/footer.astro";
 import "../styles/global.css";
+import { getCollection, type CollectionEntry } from "astro:content";
+import { z } from "zod";
+
+type Product = CollectionEntry<"products">;
+
+// Zod schema for product validation
+const ProductSchema = z.object({
+  Name: z.string(),
+  Blurb: z.string(),
+  Slug: z.string(),
+  Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
+  "Product Images": z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        filename: z.string(),
+        size: z.number().optional(),
+        type: z.string().optional(),
+      })
+    )
+    .optional(),
+});
+
+// Fetch products from Airtable
+const tableProducts = await getCollection("products");
+
+// Filter out empty products and validate
+const products = tableProducts
+  .filter((product: Product) => product.data !== undefined && Object.keys(product.data).length > 0)
+  .map((product: Product) => {
+    const validation = ProductSchema.safeParse(product.data);
+    if (!validation.success) {
+      console.error(`Product validation failed for ${product.id}:`, validation.error);
+      return null;
+    }
+    return {
+      title: validation.data.Name,
+      href: `/product/${validation.data.Slug}`,
+    };
+  })
+  .filter((product): product is NonNullable<typeof product> => product !== null);
 
 type Props = {
   title?: string;
@@ -28,26 +70,7 @@ const {
     <meta name="description" content={description} />
   </head>
   <body>
-    <Nav
-      client:load
-      dropdownContent={[
-        {
-          title: "Alert Dialog",
-          href: "/docs/primitives/alert-dialog",
-          description: "A modal dialog that interrupts the.",
-        },
-        {
-          title: "Hover Card",
-          href: "/docs/primitives/hover-card",
-          description: "For sighted users to preview content.",
-        },
-        {
-          title: "Progress",
-          href: "/docs/primitives/progress",
-          description: "Displays an indicator showing the completion progress of a task.",
-        },
-      ]}
-    />
+    <Nav client:load items={products} />
     <slot />
     <Footer />
   </body>
