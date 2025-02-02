@@ -1,12 +1,12 @@
 ---
-const navigation = [
-  { name: "Why Chronos", href: "#" },
-  { name: "Products", href: "#" },
-  { name: "Speak to Advisor", href: "#" },
-  { name: "Contact Us", href: "#" },
-  { name: "Blog", href: "#" },
-  { name: "Press", href: "#" },
-];
+type Props = {
+  items: {
+    title: string;
+    href: string;
+  }[];
+};
+
+const { items } = Astro.props;
 ---
 
 <footer class="bg-white border-t">
@@ -16,12 +16,12 @@ const navigation = [
       class="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center gap-y-4 sm:gap-x-8"
     >
       {
-        navigation.map((item) => (
+        items.map((item) => (
           <a
             href={item.href}
             class="text-sm font-medium leading-none text-center sm:text-left text-muted-foreground hover:text-accent-foreground transition-colors"
           >
-            {item.name}
+            {item.title}
           </a>
         ))
       }
