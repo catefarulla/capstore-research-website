@@ -172,15 +172,21 @@ export default function BenefitsCarousel() {
                   }
                 }}
               >
-                {/* Background Image */}
-                <img
-                  src="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
-                  alt=""
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                {/* Gradient Background */}
+                <div
+                  className="absolute inset-0 w-full h-full transition-transform duration-500 group-hover:scale-105"
+                  style={{
+                    background:
+                      index % 3 === 0
+                        ? "linear-gradient(225deg, #162761 0%, #090f24 100%)" // Medium dark blue gradient
+                        : index % 3 === 1
+                          ? "linear-gradient(225deg, #124024 0%, #091c10 100%)" // Medium dark green gradient
+                          : "linear-gradient(225deg, #641919 0%, #240909 100%)", // Medium dark red gradient
+                  }}
                 />
 
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                {/* Gradient Overlay - adjusted for better blend */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
 
                 {/* Description Overlay */}
                 {activeIndex === index && (
