@@ -5,6 +5,7 @@ import ProductHero from "@/components/product-hero";
 import Layout from "@/layouts/Layout.astro";
 import ProductBenefits from "@/components/product-benefits/benefit-wrapper.astro";
 import ProductShowcase from "@/components/product-showcase";
+import ComparisonWrapper from "@/components/comparison/comparison-wrapper.astro";
 import { getCollection, type CollectionEntry } from "astro:content";
 import { z } from "zod";
 
@@ -164,6 +165,7 @@ const { title, description } = product;
     alt="Black-2"
   />
   <ProductBenefits benefitIds={validatedProduct.Benefits} productName={validatedProduct.Name} />
+  <ComparisonWrapper />
   {/* Normal layout */}
   <ProductShowcase
     label="LIGHTWEIGHT AND AFFORDABLE"
