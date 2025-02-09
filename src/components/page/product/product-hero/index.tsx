@@ -110,7 +110,7 @@ export default function ProductHero({
           )}
 
           <div className="space-y-3">
-            <BuyNowButton price={price} />
+            <BuyNowButton price={price} productName={name} />
             {aiEnabled && (
               <Advisor
                 selectedOptions={selectedOptions}
