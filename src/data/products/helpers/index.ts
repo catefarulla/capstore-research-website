@@ -1,7 +1,7 @@
-import { elite } from "./elite";
-import { pro } from "./pro";
-import { sport } from "./sport";
-import type { Product } from "./type";
+import { elite } from "../elite";
+import { pro } from "../pro";
+import { sport } from "../sport";
+import type { Product } from "../type";
 
 export type ProductListItem = {
   title: string;

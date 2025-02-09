@@ -1,6 +1,6 @@
-import { elite } from "./products/elite";
-import { pro } from "./products/pro";
-import { sport } from "./products/sport";
+import { elite } from "../elite";
+import { pro } from "../pro";
+import { sport } from "../sport";
 
 export interface ComparisonFeature {
   name: string;
