@@ -3,7 +3,7 @@ import CentreText from "@/components/page/shared/centre-text.astro";
 import FullWidthImage from "@/components/page/shared/full-width-image.astro";
 import ProductHero from "@/components/page/product/product-hero";
 import Layout from "@/layouts/Layout.astro";
-import ProductBenefits from "@/components/pages/product/product-benefits/benefit-wrapper.astro";
+import BenefitWrapper from "@/components/page/product/product-benefits/benefit-wrapper.astro";
 import ProductShowcase from "@/components/page/product/product-showcase";
 import ComparisonWrapper from "@/components/page/product/comparison/comparison-wrapper.astro";
 import { getProductBySlug, getProductHeroData } from "@/data/products/helpers";
@@ -33,7 +33,7 @@ const heroData = getProductHeroData(product);
     description={product.centreTextBlock.description}
   />
   <FullWidthImage src={product.lifestyleImage} alt={`${product.name} lifestyle image`} />
-  <ProductBenefits benefits={product.benefits} productName={product.name} />
+  <BenefitWrapper benefits={product.benefits} productName={product.name} />
   <ComparisonWrapper />
   {/* Feature blocks */}
   {
