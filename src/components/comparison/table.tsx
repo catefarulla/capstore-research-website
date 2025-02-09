@@ -1,5 +1,5 @@
 import { Check, X } from "lucide-react";
-import { getComparisonTableData } from "../../data/comparison";
+import { getComparisonTableData } from "@/data/products/helpers/comparison";
 
 const { features, products } = getComparisonTableData();
 
