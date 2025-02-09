@@ -2,8 +2,8 @@ import { streamText, generateText, type CoreMessage } from "ai";
 import type { APIRoute } from "astro";
 import { z } from "zod";
 import { createAnthropic } from "@ai-sdk/anthropic";
-import { withFrictionSystemPrompt } from "@/data/ai/with-friction";
-import { withoutFrictionSystemPrompt } from "@/data/ai/without-friction";
+import { withFrictionSystemPrompt } from "@/data/ai-prompts/with-friction";
+import { withoutFrictionSystemPrompt } from "@/data/ai-prompts/without-friction";
 
 const messageSchema = z.object({
   role: z.union([

@@ -28,14 +28,11 @@ const heroData = getProductHeroData(product);
 <Layout title={product.name} description={product.blurb}>
   <ProductHero client:load {...heroData} withFriction={withFriction} aiEnabled={aiEnabled} />
   <CentreText
-    title="Bring your fitness goals into focus"
+    title={product.centreTextBlock.title}
     titleSize="sm"
     description={product.centreTextBlock.description}
   />
-  <FullWidthImage
-    src="https://reebok.bynder.com/transform/992a1d94-a3ad-4ce3-87b0-b11dafa03826/SS25_NanoGym-Barrys_Masthead_DT?fm=jpg&q=90&fit=fill&w=1200p"
-    alt="Black-2"
-  />
+  <FullWidthImage src={product.lifestyleImage} alt={`${product.name} lifestyle image`} />
   <ProductBenefits benefits={product.benefits} productName={product.name} />
   <ComparisonWrapper />
   {/* Feature blocks */}

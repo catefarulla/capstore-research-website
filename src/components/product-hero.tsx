@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Check } from "lucide-react";
-import Advisor from "./advisor";
+import Advisor from "../components/advisor";
 
 interface ProductImage {
   src: string;
