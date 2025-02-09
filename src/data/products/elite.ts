@@ -6,31 +6,32 @@ export const elite: Product = {
   blurb:
     "Meet our flagship smartwatch with industry-leading battery life and comprehensive health tracking. The Elite combines premium sensors, advanced fitness metrics, and smart features in a sleek aluminum design with Gorilla Glass DX+. Perfect for tech enthusiasts who want the complete package, from ECG monitoring to voice control.",
   tagline: "PRECISION MEETS PREMIUM PERFORMANCE.",
-  thumbnail: "/products/elite/thumbnail.jpg",
+  thumbnail:
+    "https://placehold.co/600/1a1a1a/ffffff?text=Chronos+Elite&font=montserrat",
   slug: "elite",
   images: [
     {
       color: "blue",
       srcs: [
-        "/products/elite/blue/1.jpg",
-        "/products/elite/blue/2.jpg",
-        "/products/elite/blue/3.jpg",
+        "https://placehold.co/600/000066/ffffff?text=Elite+Blue+1&font=montserrat",
+        "https://placehold.co/600/000066/ffffff?text=Elite+Blue+2&font=montserrat",
+        "https://placehold.co/600/000066/ffffff?text=Elite+Blue+3&font=montserrat",
       ],
     },
     {
       color: "pink",
       srcs: [
-        "/products/elite/pink/1.jpg",
-        "/products/elite/pink/2.jpg",
-        "/products/elite/pink/3.jpg",
+        "https://placehold.co/600/ff69b4/ffffff?text=Elite+Pink+1&font=montserrat",
+        "https://placehold.co/600/ff69b4/ffffff?text=Elite+Pink+2&font=montserrat",
+        "https://placehold.co/600/ff69b4/ffffff?text=Elite+Pink+3&font=montserrat",
       ],
     },
     {
       color: "purple",
       srcs: [
-        "/products/elite/purple/1.jpg",
-        "/products/elite/purple/2.jpg",
-        "/products/elite/purple/3.jpg",
+        "https://placehold.co/600/800080/ffffff?text=Elite+Purple+1&font=montserrat",
+        "https://placehold.co/600/800080/ffffff?text=Elite+Purple+2&font=montserrat",
+        "https://placehold.co/600/800080/ffffff?text=Elite+Purple+3&font=montserrat",
       ],
     },
   ],
@@ -72,15 +73,18 @@ export const elite: Product = {
       title: "Advanced Health Monitoring",
       description:
         "From heart rate variability to sleep stages, our sophisticated sensors provide detailed insights into your wellbeing. Make informed decisions about your health with comprehensive data at your fingertips.",
-      image: "/products/elite/features/health-monitoring.jpg",
+      image:
+        "https://placehold.co/600/1a1a1a/ffffff?text=Elite+Health+Monitoring&font=montserrat",
     },
     {
       subtitle: "PERFORMANCE FOCUSED",
       title: "Personalized Fitness Guidance",
       description:
         "Whether you're training for a marathon or starting your fitness journey, Chronos adapts to your goals. Get real-time metrics, custom workouts, and recovery insights tailored to your performance level.",
-      image: "/products/elite/features/training.jpg",
+      image:
+        "https://placehold.co/600/1a1a1a/ffffff?text=Elite+Fitness+Guidance&font=montserrat",
     },
   ],
-  lifestyleImage: "/products/elite/lifestyle.jpg",
+  lifestyleImage:
+    "https://placehold.co/1600x900/1a1a1a/ffffff?text=Elite+Lifestyle&font=montserrat",
 };

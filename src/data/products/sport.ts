@@ -6,37 +6,38 @@ export const sport: Product = {
   blurb:
     "Built for active lifestyles with enhanced workout features and durable design. The Sport delivers reliable fitness tracking and extended battery life in a lightweight polymer case. Essential for fitness enthusiasts who prioritize performance monitoring and durability.",
   tagline: "LIGHTWEIGHT AND PERFORMANCE-FOCUSED",
-  thumbnail: "/products/sport/thumbnail.jpg",
+  thumbnail:
+    "https://placehold.co/600/00cc00/ffffff?text=Chronos+Sport&font=montserrat",
   slug: "sport",
   images: [
     {
       color: "red",
       srcs: [
-        "/products/sport/red/1.jpg",
-        "/products/sport/red/2.jpg",
-        "/products/sport/red/3.jpg",
+        "https://placehold.co/600/ff0000/ffffff?text=Sport+Red+1&font=montserrat",
+        "https://placehold.co/600/ff0000/ffffff?text=Sport+Red+2&font=montserrat",
+        "https://placehold.co/600/ff0000/ffffff?text=Sport+Red+3&font=montserrat",
       ],
     },
     {
       color: "blue",
       srcs: [
-        "/products/sport/blue/1.jpg",
-        "/products/sport/blue/2.jpg",
-        "/products/sport/blue/3.jpg",
+        "https://placehold.co/600/0066cc/ffffff?text=Sport+Blue+1&font=montserrat",
+        "https://placehold.co/600/0066cc/ffffff?text=Sport+Blue+2&font=montserrat",
+        "https://placehold.co/600/0066cc/ffffff?text=Sport+Blue+3&font=montserrat",
       ],
     },
     {
       color: "green",
       srcs: [
-        "/products/sport/green/1.jpg",
-        "/products/sport/green/2.jpg",
-        "/products/sport/green/3.jpg",
+        "https://placehold.co/600/00cc00/ffffff?text=Sport+Green+1&font=montserrat",
+        "https://placehold.co/600/00cc00/ffffff?text=Sport+Green+2&font=montserrat",
+        "https://placehold.co/600/00cc00/ffffff?text=Sport+Green+3&font=montserrat",
       ],
     },
   ],
   availableColors: ["red", "blue", "green"],
   availableSizes: ["40mm"],
-  price: 499.99,
+  price: 299.99,
   cellularOptionAvailable: false,
   benefits: [
     benefits.wristHeartRate,
@@ -60,15 +61,18 @@ export const sport: Product = {
       title: "Performance That Lasts",
       description:
         "Our lightweight polymer case and optimized battery management deliver up to 1.8 days of continuous tracking, so you never miss a workout.",
-      image: "/products/sport/features/health-monitoring.jpg",
+      image:
+        "https://placehold.co/600/00cc00/ffffff?text=Sport+Performance&font=montserrat",
     },
     {
       subtitle: "PRECISION TRACKING",
       title: "Your Training Partner",
       description:
         "25+ workout modes and enhanced running basics help you track every rep, step, and sprint with accuracy.",
-      image: "/products/sport/features/training.jpg",
+      image:
+        "https://placehold.co/600/00cc00/ffffff?text=Sport+Training&font=montserrat",
     },
   ],
-  lifestyleImage: "/products/sport/lifestyle.jpg",
+  lifestyleImage:
+    "https://placehold.co/1600x900/00cc00/ffffff?text=Sport+Lifestyle&font=montserrat",
 };

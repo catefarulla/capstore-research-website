@@ -6,31 +6,32 @@ export const pro: Product = {
   blurb:
     "Your dedicated health companion with advanced wellness monitoring and smart functionality. The Pro balances comprehensive health tracking with essential fitness features in a refined aluminum case. Ideal for health-conscious users seeking detailed insights into their wellbeing.",
   tagline: "SMART AND VERSATILE",
-  thumbnail: "/products/pro/thumbnail.jpg",
+  thumbnail:
+    "https://placehold.co/600/004d99/ffffff?text=Chronos+Pro&font=montserrat",
   slug: "pro",
   images: [
     {
       color: "blue",
       srcs: [
-        "/products/pro/blue/1.jpg",
-        "/products/pro/blue/2.jpg",
-        "/products/pro/blue/3.jpg",
+        "https://placehold.co/600/0066cc/ffffff?text=Pro+Blue+1&font=montserrat",
+        "https://placehold.co/600/0066cc/ffffff?text=Pro+Blue+2&font=montserrat",
+        "https://placehold.co/600/0066cc/ffffff?text=Pro+Blue+3&font=montserrat",
       ],
     },
     {
       color: "pink",
       srcs: [
-        "/products/pro/pink/1.jpg",
-        "/products/pro/pink/2.jpg",
-        "/products/pro/pink/3.jpg",
+        "https://placehold.co/600/ff69b4/ffffff?text=Pro+Pink+1&font=montserrat",
+        "https://placehold.co/600/ff69b4/ffffff?text=Pro+Pink+2&font=montserrat",
+        "https://placehold.co/600/ff69b4/ffffff?text=Pro+Pink+3&font=montserrat",
       ],
     },
     {
       color: "purple",
       srcs: [
-        "/products/pro/purple/1.jpg",
-        "/products/pro/purple/2.jpg",
-        "/products/pro/purple/3.jpg",
+        "https://placehold.co/600/800080/ffffff?text=Pro+Purple+1&font=montserrat",
+        "https://placehold.co/600/800080/ffffff?text=Pro+Purple+2&font=montserrat",
+        "https://placehold.co/600/800080/ffffff?text=Pro+Purple+3&font=montserrat",
       ],
     },
   ],
@@ -66,15 +67,18 @@ export const pro: Product = {
       title: "Complete Wellness Tracking",
       description:
         "Advanced sensors monitor ECG, temperature, and SpO2 for comprehensive health",
-      image: "/products/pro/features/health-monitoring.jpg",
+      image:
+        "https://placehold.co/600/004d99/ffffff?text=Pro+Health+Monitoring&font=montserrat",
     },
     {
       subtitle: "SMART ASSISTANCE",
       title: "Seamless Integration",
       description:
         "NFC payments and smart notifications keep you connected while maintaining focus on your wellbeing.",
-      image: "/products/pro/features/training.jpg",
+      image:
+        "https://placehold.co/600/004d99/ffffff?text=Pro+Smart+Features&font=montserrat",
     },
   ],
-  lifestyleImage: "/products/pro/lifestyle.jpg",
+  lifestyleImage:
+    "https://placehold.co/1600x900/004d99/ffffff?text=Pro+Lifestyle&font=montserrat",
 };
