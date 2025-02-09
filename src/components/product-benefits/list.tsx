@@ -1,5 +1,4 @@
-import { Watch } from "lucide-react";
-import { BenefitItem } from "./item";
+import BenefitItem from "./item";
 
 type Props = {
   benefits: {
@@ -20,7 +19,7 @@ export default function ProductBenefits({ benefits, productName }: Props) {
         {benefits.map((benefit, index) => (
           <BenefitItem
             key={index}
-            icon={<Watch className="w-8 h-8" />}
+            icon={benefit.icon}
             title={benefit.title}
             description={benefit.description}
           />
