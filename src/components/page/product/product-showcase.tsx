@@ -45,7 +45,6 @@ export default function ProductShowcase({
           </div>
           <div className="space-y-4 text-muted-foreground">
             <p>{description}</p>
-            <p>{description}</p>
           </div>
         </div>
       </div>

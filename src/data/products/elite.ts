@@ -1,5 +1,5 @@
 import type { Product } from "./type";
-import { benefits } from "./benefits";
+import { benefits } from "./shared/benefits";
 
 export const elite: Product = {
   name: "Chronos Elite",

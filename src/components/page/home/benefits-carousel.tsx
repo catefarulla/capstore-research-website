@@ -7,7 +7,7 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "./ui/carousel";
+} from "../../ui/carousel";
 import { getCarouselBenefits } from "@/data/general-benefits";
 
 const benefits = getCarouselBenefits();

@@ -1,11 +1,11 @@
 ---
-import CentreText from "@/components/centre-text.astro";
-import FullWidthImage from "@/components/full-width-image.astro";
-import ProductHero from "@/components/product-hero";
+import CentreText from "@/components/page/shared/centre-text.astro";
+import FullWidthImage from "@/components/page/shared/full-width-image.astro";
+import ProductHero from "@/components/page/product/product-hero";
 import Layout from "@/layouts/Layout.astro";
-import ProductBenefits from "@/components/product-benefits/benefit-wrapper.astro";
-import ProductShowcase from "@/components/product-showcase";
-import ComparisonWrapper from "@/components/comparison/comparison-wrapper.astro";
+import ProductBenefits from "@/components/pages/product/product-benefits/benefit-wrapper.astro";
+import ProductShowcase from "@/components/page/product/product-showcase";
+import ComparisonWrapper from "@/components/page/product/comparison/comparison-wrapper.astro";
 import { getProductBySlug, getProductHeroData } from "@/data/products/helpers";
 
 const { env } = Astro.locals.runtime;

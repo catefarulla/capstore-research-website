@@ -1,5 +1,5 @@
 import type { Product } from "./type";
-import { benefits } from "./benefits";
+import { benefits } from "./shared/benefits";
 
 export const sport: Product = {
   name: "Chronos Sport",
