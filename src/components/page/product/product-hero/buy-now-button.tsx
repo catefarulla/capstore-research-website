@@ -1,4 +1,8 @@
-import { generateBuyNowButtonText } from "../../../../data/products/shared";
+import {
+  generateBuyNowButtonText,
+  purchaseConfirmation,
+  generateSurveyUrl,
+} from "../../../../data/products/shared";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -10,6 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../../ui/alert-dialog";
+import { useEffect, useState } from "react";
 
 interface BuyNowButtonProps {
   price: number;
@@ -20,10 +25,27 @@ export default function BuyNowButton({
   price,
   productName,
 }: BuyNowButtonProps) {
+  const [prolificId, setProlificId] = useState<string | null>(null);
+
+  useEffect(() => {
+    // Get PROLIFIC_PID from URL parameters when component mounts
+    const urlParams = new URLSearchParams(window.location.search);
+    const pid = urlParams.get("PROLIFIC_PID");
+    if (pid) setProlificId(pid);
+  }, []);
+
   const handlePurchase = () => {
-    // Redirect to checkout/payment page
-    window.location.href =
-      "https://qualtricsxmfkz7rl8n3.pdx1.qualtrics.com/jfe/preview/previewId/2e65311a-4baf-4132-927f-a259b2cce5ae/SV_3DlfLuw5gk5H1Pw?Q_CHL=preview&Q_SurveyVersionID=current";
+    // Redirect to checkout/payment page with product details and Prolific ID if available
+    const params: Record<string, string | number> = {
+      productName,
+      price,
+    };
+
+    if (prolificId) {
+      params.PROLIFIC_PID = prolificId;
+    }
+
+    window.location.href = generateSurveyUrl(params);
   };
 
   return (
@@ -35,15 +57,17 @@ export default function BuyNowButton({
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Confirm Purchase</AlertDialogTitle>
+          <AlertDialogTitle>{purchaseConfirmation.title}</AlertDialogTitle>
           <AlertDialogDescription>
-            Are you sure you want to purchase the {productName} for £{price}?
+            {purchaseConfirmation.description(productName, price)}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel>
+            {purchaseConfirmation.cancelButton}
+          </AlertDialogCancel>
           <AlertDialogAction onClick={handlePurchase}>
-            Confirm Purchase
+            {purchaseConfirmation.confirmButton}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
