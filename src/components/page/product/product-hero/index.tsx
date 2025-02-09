@@ -1,13 +1,10 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import Advisor from "../../../advisor";
-import SelectionButton from "./selection-button";
 import ProductGallery from "./product-gallery";
-import {
-  generateBuyNowButtonText,
-  guarantees,
-  selectionLabels,
-} from "../../../../data/products/shared";
+import BuyNowButton from "./buy-now-button";
+import SelectionButtonsList from "./selection-buttons-list";
+import { guarantees, selectionLabels } from "../../../../data/products/shared";
 
 interface ProductImage {
   src: string;
@@ -77,64 +74,43 @@ export default function ProductHero({
             <p className="mt-4 text-gray-600">{blurb}</p>
           </div>
 
-          {/* Color Selection */}
-          <div>
-            <h3 className="font-medium mb-3">{selectionLabels.color}</h3>
-            <div className="flex gap-2">
-              {availableColors.map((color) => (
-                <SelectionButton
-                  key={color}
-                  selected={selectedColor === color.toLowerCase()}
-                  onClick={() => setSelectedColor(color.toLowerCase())}
-                >
-                  {color.charAt(0).toUpperCase() + color.slice(1).toLowerCase()}
-                </SelectionButton>
-              ))}
-            </div>
-          </div>
+          <SelectionButtonsList
+            label={selectionLabels.color}
+            options={availableColors.map((color) => ({
+              key: color,
+              value: color.toLowerCase(),
+              label:
+                color.charAt(0).toUpperCase() + color.slice(1).toLowerCase(),
+            }))}
+            selectedValue={selectedColor}
+            onSelect={(value) => setSelectedColor(value as string)}
+          />
 
-          {/* Face Size Selection */}
-          <div>
-            <h3 className="font-medium mb-3">{selectionLabels.faceSize}</h3>
-            <div className="flex gap-2">
-              {availableSizes.map((sizeOption) => (
-                <SelectionButton
-                  key={sizeOption}
-                  selected={size === sizeOption}
-                  onClick={() => setSize(sizeOption)}
-                >
-                  {sizeOption}
-                </SelectionButton>
-              ))}
-            </div>
-          </div>
+          <SelectionButtonsList
+            label={selectionLabels.faceSize}
+            options={availableSizes.map((size) => ({
+              key: size,
+              value: size,
+              label: size,
+            }))}
+            selectedValue={size}
+            onSelect={(value) => setSize(value as string)}
+          />
 
-          {/* Cellular Option */}
           {hasCellular && (
-            <div>
-              <h3 className="font-medium mb-3">{selectionLabels.cellular}</h3>
-              <div className="flex gap-2">
-                {[
-                  { label: "Yes", value: true },
-                  { label: "No", value: false },
-                ].map((option) => (
-                  <SelectionButton
-                    key={option.label}
-                    selected={cellular === option.value}
-                    onClick={() => setCellular(option.value)}
-                  >
-                    {option.label}
-                  </SelectionButton>
-                ))}
-              </div>
-            </div>
+            <SelectionButtonsList
+              label={selectionLabels.cellular}
+              options={[
+                { key: "yes", value: true, label: "Yes" },
+                { key: "no", value: false, label: "No" },
+              ]}
+              selectedValue={cellular}
+              onSelect={(value) => setCellular(value as boolean)}
+            />
           )}
 
-          {/* Action Buttons */}
           <div className="space-y-3">
-            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2">
-              <span>{generateBuyNowButtonText(price)}</span>
-            </button>
+            <BuyNowButton price={price} />
             {aiEnabled && (
               <Advisor
                 selectedOptions={selectedOptions}
@@ -143,7 +119,6 @@ export default function ProductHero({
             )}
           </div>
 
-          {/* Features */}
           <div className="grid grid-cols-2 gap-4 pt-6">
             {guarantees.map((feature: string) => (
               <div key={feature} className="flex items-center gap-2">
