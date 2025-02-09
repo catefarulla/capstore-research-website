@@ -8,15 +8,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import type { ChatProps } from "./types";
-
-const SUGGESTION_BUTTONS = [
-  "Which watch has the right features for me?",
-  "What features do Chronos products have?",
-  "Help me find a watch within my budget",
-  "Compare vs other models",
-  "How does cellular work?",
-  "What are the main selling points of this watch",
-];
+import { SUGGESTION_BUTTONS } from "@/data/ai/suggestion-buttons";
+import { generateInitialMessage } from "@/data/ai/initial-message";
 
 export function ChatModal({
   isOpen,
@@ -27,45 +20,6 @@ export function ChatModal({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const generateSystemPrompt = () => {
-    const { productName, color, size, cellular } = selectedOptions;
-    const basePrompt = `You are a helpful product advisor for ${productName}. The customer is currently looking at the following configuration:
-- Color: ${color}
-- Size: ${size}${cellular !== undefined ? `\n- Cellular: ${cellular ? "Yes" : "No"}` : ""}
-
-AVAILABLE PRODUCTS (use these slugs for links):
-- Chronos Elite: [Chronos Elite](/product/chronos-elite)
-- Chronos Pro: [Chronos Pro](/product/chronos-pro)
-- Chronos Active: [Chronos Active](/product/chronos-active)
-
-When suggesting other products, use markdown links with these exact URLs.`;
-
-    if (withFriction) {
-      return `${basePrompt}
-
-IMPORTANT INSTRUCTIONS FOR YOUR RESPONSES:
-1. Keep responses very concise (2-3 sentences maximum)
-2. Focus on asking investigative questions to understand user needs
-3. Ask one clear question at a time
-4. Hold off on making recommendations until you understand their needs
-5. Always end with a focused question about their specific needs or preferences
-6. Keep the conversation focused and guided
-7. When suggesting other products, use the markdown links provided above`;
-    }
-
-    return `${basePrompt}
-
-INSTRUCTIONS FOR YOUR RESPONSES:
-1. Be thorough and informative in your explanations
-2. Focus on highlighting relevant features for this configuration
-3. Feel free to make recommendations based on common use cases
-4. You can cover multiple aspects in one response
-5. Be conversational but professional
-6. Share specific benefits and comparisons when relevant
-7. When comparing with other products, use the markdown links provided above
-8. Feel free to suggest alternative products that might better suit their needs`;
-  };
-
   const { messages, input, handleInputChange, handleSubmit, isLoading } =
     useChat({
       api: "/api/ai",
@@ -73,12 +27,9 @@ INSTRUCTIONS FOR YOUR RESPONSES:
         {
           id: nanoid(),
           role: "assistant",
-          content: `Looks like you're interested in the ${selectedOptions.productName}. Is there anything you'd like to ask me about this product?`,
+          content: generateInitialMessage(selectedOptions),
         },
       ],
-      body: {
-        systemPrompt: generateSystemPrompt(),
-      },
       onFinish: (message) => {
         console.log("Message finished:", message);
       },

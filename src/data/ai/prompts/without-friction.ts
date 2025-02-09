@@ -1,4 +1,4 @@
-import { BASE_SYSTEM_PROMPT } from "./system-prompts";
+import { BASE_SYSTEM_PROMPT } from "./base-prompt";
 
 export const withoutFrictionSystemPrompt = `${BASE_SYSTEM_PROMPT}
 

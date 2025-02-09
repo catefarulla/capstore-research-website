@@ -1,6 +1,6 @@
-import { getAllProducts } from "../products/helpers";
-import { getComparisonTableData } from "../products/helpers/comparison";
-import type { Product } from "../products/type";
+import { getAllProducts } from "../../products/helpers";
+import { getComparisonTableData } from "../../products/helpers/comparison";
+import type { Product } from "../../products/type";
 
 // Helper functions for extracting product details
 function findBenefitByKeyword(benefits: Product["benefits"], keyword: string) {
