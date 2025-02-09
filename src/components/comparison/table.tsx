@@ -1,35 +1,7 @@
 import { Check, X } from "lucide-react";
+import { getComparisonTableData } from "../../data/comparison";
 
-interface Feature {
-  name: string;
-  elite: boolean;
-  pro: boolean;
-  sport: boolean;
-}
-
-const features: Feature[] = [
-  { name: "Wrist-based Heart Rate", elite: true, pro: true, sport: true },
-  { name: "Advanced Running Metrics", elite: true, pro: false, sport: false },
-  { name: "Basic Running Metrics", elite: false, pro: true, sport: true },
-  { name: "5ATM Water Resistance", elite: true, pro: false, sport: true },
-  { name: "ECG Sensor", elite: true, pro: true, sport: false },
-  { name: "Temperature Sensor", elite: true, pro: true, sport: false },
-  { name: "Smart Notifications", elite: true, pro: true, sport: false },
-  { name: "SpO2 Sensor", elite: true, pro: true, sport: false },
-  { name: "Voice Assistant", elite: true, pro: false, sport: false },
-  { name: "4-Day Battery Life", elite: true, pro: false, sport: false },
-  { name: "2-Day Battery Life", elite: false, pro: true, sport: true },
-  { name: "40+ Workout Modes", elite: true, pro: true, sport: false },
-  { name: "25+ Workout Modes", elite: false, pro: false, sport: true },
-  { name: "Built-in GPS", elite: true, pro: true, sport: true },
-  { name: "Music Storage (500 songs)", elite: true, pro: false, sport: false },
-  { name: "NFC Payments", elite: true, pro: true, sport: false },
-  { name: "Fitness Age Calculator", elite: true, pro: true, sport: false },
-  { name: "Recovery Time Advisor", elite: true, pro: false, sport: false },
-  { name: "Stress Tracking Sensor", elite: true, pro: false, sport: false },
-  { name: "Auto Workout Detection", elite: false, pro: false, sport: true },
-  { name: "Gorilla Glass", elite: false, pro: false, sport: true },
-];
+const { features, products } = getComparisonTableData();
 
 export default function ComparisonTable() {
   return (
@@ -40,16 +12,22 @@ export default function ComparisonTable() {
             <tr className="bg-gray-50">
               <th className="p-4 text-left font-medium text-gray-600"></th>
               <th className="p-4 text-center font-medium text-gray-800">
-                <div className="text-lg">Chronos Elite</div>
-                <div className="text-base font-normal text-gray-600">$299</div>
+                <div className="text-lg">{products.elite.name}</div>
+                <div className="text-base font-normal text-gray-600">
+                  ${products.elite.price}
+                </div>
               </th>
               <th className="p-4 text-center font-medium text-gray-800 hidden sm:table-cell">
-                <div className="text-lg">Chronos Pro</div>
-                <div className="text-base font-normal text-gray-600">$289</div>
+                <div className="text-lg">{products.pro.name}</div>
+                <div className="text-base font-normal text-gray-600">
+                  ${products.pro.price}
+                </div>
               </th>
               <th className="p-4 text-center font-medium text-gray-800 hidden sm:table-cell">
-                <div className="text-lg">Chronos Sport</div>
-                <div className="text-base font-normal text-gray-600">$279</div>
+                <div className="text-lg">{products.sport.name}</div>
+                <div className="text-base font-normal text-gray-600">
+                  ${products.sport.price}
+                </div>
               </th>
             </tr>
           </thead>
@@ -91,7 +69,7 @@ export default function ComparisonTable() {
       <div className="mt-8 p-4 sm:hidden space-y-8">
         <div>
           <h3 className="text-lg font-medium text-gray-800 mb-4">
-            Chronos Pro ($289)
+            {products.pro.name} (${products.pro.price})
           </h3>
           <ul className="space-y-3">
             {features.map((feature) => (
@@ -108,7 +86,7 @@ export default function ComparisonTable() {
         </div>
         <div>
           <h3 className="text-lg font-medium text-gray-800 mb-4">
-            Chronos Sport ($279)
+            {products.sport.name} (${products.sport.price})
           </h3>
           <ul className="space-y-3">
             {features.map((feature) => (

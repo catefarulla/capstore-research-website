@@ -37,7 +37,7 @@ export const sport: Product = {
   ],
   availableColors: ["red", "blue", "green"],
   availableSizes: ["40mm"],
-  price: 299.99,
+  price: 499.99,
   cellularOptionAvailable: false,
   benefits: [
     benefits.wristHeartRate,
