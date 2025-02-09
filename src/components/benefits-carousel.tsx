@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import * as Icons from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   Carousel,
   CarouselContent,
@@ -6,142 +8,22 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
+import { getCarouselBenefits } from "@/data/general-benefits";
 
-type Benefit = {
-  icon: React.ReactNode;
-  label: string;
-  title: {
-    sans: string;
-    serif?: string;
-  };
-  description: string;
-};
-
-const benefits: Benefit[] = [
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-4 h-4"
-      >
-        <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-      </svg>
-    ),
-    label: "Heart Health",
-    title: {
-      sans: "Listen to what your heart is ",
-      serif: "telling you",
-    },
-    description:
-      "Track your heart rate variability, resting heart rate, and other vital metrics to understand your cardiovascular health better.",
-  },
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-4 h-4"
-      >
-        <path d="M6.979 3.074a6 6 0 0 1 4.988 1.425l.037 .033l.034 -.03a6 6 0 0 1 4.733 -1.44l.246 .036a6 6 0 0 1 3.364 10.008l-.18 .185l-.048 .041l-7.45 7.379a1 1 0 0 1 -1.313 .082l-.094 -.082l-7.493 -7.421a6 6 0 0 1 3.176 -10.215z" />
-      </svg>
-    ),
-    label: "Activity and Fitness",
-    title: {
-      sans: "Bring your fitness goals ",
-      serif: "into focus",
-    },
-    description:
-      "Monitor your daily activity, workout intensity, and recovery needs to optimize your training and reach your fitness goals.",
-  },
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-4 h-4"
-      >
-        <path d="M12 9m-6 0a6 6 0 1 0 12 0a6 6 0 1 0 -12 0" />
-        <path d="M12 15l0 6" />
-        <path d="M9 18l6 0" />
-      </svg>
-    ),
-    label: "Women's Health",
-    title: {
-      sans: "Understand the ins and outs of ",
-      serif: "women's health",
-    },
-    description:
-      "Get insights into your menstrual cycle, fertility window, and overall reproductive health with personalized tracking and predictions.",
-  },
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-4 h-4"
-      >
-        <path d="M12 21a9 9 0 0 0 9-9H3a9 9 0 0 0 9 9z" />
-        <path d="M12 3a9 9 0 0 1 9 9" />
-        <path d="M12 3a9 9 0 0 0-9 9" />
-        <path d="M12 3v18" />
-      </svg>
-    ),
-    label: "Sleep Tracking",
-    title: {
-      sans: "Optimize your sleep for ",
-      serif: "better recovery",
-    },
-    description:
-      "Analyze your sleep stages, duration, and quality to improve your rest and wake up feeling refreshed.",
-  },
-  {
-    icon: (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        className="w-4 h-4"
-      >
-        <path d="M3 12h4l3 8l4-16l3 8h4" />
-      </svg>
-    ),
-    label: "Recovery",
-    title: {
-      sans: "Track your daily ",
-      serif: "readiness score",
-    },
-    description:
-      "Understand your body's recovery status and get personalized recommendations for training and rest.",
-  },
-];
+const benefits = getCarouselBenefits();
 
 export default function BenefitsCarousel() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+  const getIconComponent = (iconName: string) => {
+    // Convert kebab-case to PascalCase for the icon name
+    const pascalCaseName = iconName
+      .split("-")
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+      .join("") as keyof typeof Icons;
+    const IconComponent = Icons[pascalCaseName] as LucideIcon;
+    return IconComponent ? <IconComponent className="w-4 h-4" /> : null;
+  };
 
   return (
     <div className="relative overflow-hidden">
@@ -178,14 +60,14 @@ export default function BenefitsCarousel() {
                   style={{
                     background:
                       index % 3 === 0
-                        ? "linear-gradient(225deg, #162761 0%, #090f24 100%)" // Medium dark blue gradient
+                        ? "linear-gradient(225deg, #162761 0%, #090f24 100%)"
                         : index % 3 === 1
-                          ? "linear-gradient(225deg, #124024 0%, #091c10 100%)" // Medium dark green gradient
-                          : "linear-gradient(225deg, #641919 0%, #240909 100%)", // Medium dark red gradient
+                          ? "linear-gradient(225deg, #124024 0%, #091c10 100%)"
+                          : "linear-gradient(225deg, #641919 0%, #240909 100%)",
                   }}
                 />
 
-                {/* Gradient Overlay - adjusted for better blend */}
+                {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
 
                 {/* Description Overlay */}
@@ -204,13 +86,17 @@ export default function BenefitsCarousel() {
                 <div className="relative h-full p-4 md:p-8 flex flex-col">
                   {/* Label with Icon */}
                   <div className="flex items-center gap-2 justify-center text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
-                    <div className="w-4 h-4">{benefit.icon}</div>
+                    <div className="w-4 h-4">
+                      {getIconComponent(benefit.icon)}
+                    </div>
                     <span className="text-xs font-medium">{benefit.label}</span>
                   </div>
 
                   {/* Title */}
                   <div
-                    className={`mt-auto transition-opacity duration-300 ${activeIndex === index ? "opacity-0" : "opacity-100"}`}
+                    className={`mt-auto transition-opacity duration-300 ${
+                      activeIndex === index ? "opacity-0" : "opacity-100"
+                    }`}
                   >
                     <h3 className="text-white">
                       <span className="block text-xl md:text-3xl font-sans font-light leading-tight">

@@ -1,11 +1,11 @@
 import * as Icons from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-type Props = {
+interface Props {
   icon: string;
   title: string;
   description: string;
-};
+}
 
 export default function BenefitItem({ icon, title, description }: Props) {
   // Convert kebab-case to PascalCase for the icon name
@@ -17,7 +17,7 @@ export default function BenefitItem({ icon, title, description }: Props) {
 
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="bg-gray-200 p-4 rounded-lg mb-4">
+      <div className="bg-gray-100 p-4 rounded-lg mb-4">
         {IconComponent && <IconComponent className="w-6 h-6" />}
       </div>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>

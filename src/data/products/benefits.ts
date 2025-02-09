@@ -55,7 +55,7 @@ export const benefits: Benefits = {
   spo2Sensor: {
     title: "SpO2 Sensor",
     description: "Measures blood oxygen levels during sleep and workouts",
-    icon: "lungs",
+    icon: "heart",
   },
   stressTracking: {
     title: "Stress Tracking Sensor",
@@ -71,7 +71,7 @@ export const benefits: Benefits = {
     title: "Advanced running metrics",
     description:
       "Analyzes stride length, cadence, ground contact time and more",
-    icon: "running",
+    icon: "activity-square",
   },
   recoveryTimeAdvisor: {
     title: "Recovery time advisor",
@@ -116,7 +116,7 @@ export const benefits: Benefits = {
   basicRunningMetrics: {
     title: "Basic running metrics",
     description: "Tracks essential stats like pace, distance and time",
-    icon: "footprints",
+    icon: "move",
   },
   trainingStatus: {
     title: "Training status",
@@ -147,7 +147,7 @@ export const benefits: Benefits = {
   enhancedRunningBasics: {
     title: "Enhanced running basics",
     description: "Monitors pace, distance, time and heart rate zones",
-    icon: "running",
+    icon: "move",
   },
   recoverySuggestions: {
     title: "Recovery suggestions",

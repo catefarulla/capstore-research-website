@@ -14,14 +14,14 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 
-export type NavItem = {
+export interface NavItem {
   title: string;
   href: string;
-};
+}
 
-export type NavProps = {
+export interface NavProps {
   items: NavItem[];
-};
+}
 
 export default function Nav({ items }: NavProps) {
   return (
@@ -37,7 +37,7 @@ export default function Nav({ items }: NavProps) {
         <NavigationMenu>
           <NavigationMenuList className="gap-6">
             {items.map((item) => (
-              <NavigationMenuItem key={item.title}>
+              <NavigationMenuItem key={item.href}>
                 <NavigationMenuLink
                   className="text-sm font-medium leading-none"
                   href={item.href}
@@ -63,7 +63,7 @@ export default function Nav({ items }: NavProps) {
               <DrawerHeader>
                 <div className="flex flex-col space-y-4 px-4">
                   {items.map((item) => (
-                    <DrawerClose asChild key={item.title}>
+                    <DrawerClose asChild key={item.href}>
                       <a href={item.href} className="text-lg font-medium">
                         {item.title}
                       </a>

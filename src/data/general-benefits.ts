@@ -22,7 +22,7 @@ export const generalBenefits: GeneralBenefits = {
     title: "Basic Running Metrics",
     description:
       "Stay on pace with real-time tracking of distance, speed, and time.",
-    icon: "running",
+    icon: "activity-square",
   },
   ecg: {
     tag: "ECG",
@@ -49,7 +49,7 @@ export const generalBenefits: GeneralBenefits = {
     title: "SpO2 Sensor",
     description:
       "Measure your blood oxygen levels during sleep and workouts to optimize performance.",
-    icon: "lungs",
+    icon: "heart",
   },
   wellnessScore: {
     tag: "WellnessScore",
@@ -111,8 +111,26 @@ export const generalBenefits: GeneralBenefits = {
     title: "Fitness Age Calculator",
     description:
       "See how your fitness age compares to your actual age and track your progress.",
-    icon: "calendar-clock",
+    icon: "calendar",
   },
 };
 
 export const getGeneralBenefitsArray = () => Object.values(generalBenefits);
+
+// Helper function to format benefits for the carousel
+export const getCarouselBenefits = () => {
+  const benefits = getGeneralBenefitsArray();
+  return benefits.map((benefit) => {
+    // Split the title into sans and serif parts if it contains a period
+    const titleParts = benefit.title.split(".");
+    return {
+      icon: benefit.icon,
+      label: benefit.tag,
+      title: {
+        sans: titleParts[0],
+        serif: titleParts[1] || undefined,
+      },
+      description: benefit.description,
+    };
+  });
+};

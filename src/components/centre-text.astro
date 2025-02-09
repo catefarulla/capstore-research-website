@@ -2,11 +2,9 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "../lib/utils";
 import { Button, buttonVariants } from "./ui/button";
+
 type Props = {
-  title: {
-    sans: string;
-    serif?: string;
-  };
+  title: string;
   description?: string;
   cta?: {
     text: string;
@@ -16,22 +14,12 @@ type Props = {
   padding?: "sm" | "md" | "lg";
 };
 
-const sansTitleStyles = cva(["font-sans font-semibold !leading-[1.1]"], {
+const titleStyles = cva(["font-sans font-semibold !leading-[1.1]"], {
   variants: {
     size: {
       sm: "text-2xl sm:text-3xl md:text-4xl",
       md: "text-3xl sm:text-4xl md:text-5xl",
       lg: "text-4xl sm:text-5xl md:text-6xl",
-    },
-  },
-});
-
-const serifTitleStyles = cva(["font-serif !leading-[1.1]"], {
-  variants: {
-    size: {
-      sm: "text-[1.7rem] sm:text-[2.15rem] md:text-[2.5rem]",
-      md: "text-[2.15rem] sm:text-[2.5rem] md:text-[3.25rem]",
-      lg: "text-[2.5rem] sm:text-[3.25rem] md:text-[4rem]",
     },
   },
 });
@@ -56,10 +44,9 @@ const { title, description, cta, titleSize = "md", padding = "md" } = Astro.prop
   )}
 >
   <h1 class={cn("max-w-sm", titleSize === "sm" && "max-w-xs")}>
-    <span class={cn(sansTitleStyles({ size: titleSize }))}>
-      {title.sans}
+    <span class={cn(titleStyles({ size: titleSize }))}>
+      {title}
     </span>
-    {title.serif && <span class={cn(serifTitleStyles({ size: titleSize }))}>{title.serif}</span>}
   </h1>
   {
     description && (

@@ -1,51 +1,8 @@
 ---
 import Product from "./product.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
-import { z } from "zod";
+import { getProductListData } from "../../data/products/helpers";
 
-type Product = CollectionEntry<"products">;
-
-// Zod schema for product validation
-const ProductSchema = z.object({
-  Name: z.string(),
-  Blurb: z.string(),
-  Slug: z.string(),
-  Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
-  "Product Images": z
-    .array(
-      z.object({
-        id: z.string(),
-        url: z.string(),
-        filename: z.string(),
-        size: z.number().optional(),
-        type: z.string().optional(),
-      })
-    )
-    .optional(),
-});
-
-// Fetch products from Airtable
-const tableProducts = await getCollection("products");
-
-// Filter out empty products and validate
-const products = tableProducts
-  .filter((product: Product) => product.data !== undefined && Object.keys(product.data).length > 0)
-  .map((product: Product) => {
-    const validation = ProductSchema.safeParse(product.data);
-    if (!validation.success) {
-      console.error(`Product validation failed for ${product.id}:`, validation.error);
-      return null;
-    }
-    return {
-      title: validation.data.Name,
-      price: validation.data.Price,
-      href: `/product/${validation.data.Slug}`,
-      image:
-        validation.data["Product Images"]?.[0]?.url ||
-        "https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b",
-    };
-  })
-  .filter((product): product is NonNullable<typeof product> => product !== null);
+const products = getProductListData();
 ---
 
 <div class="flex flex-wrap gap-6 mx-auto px-4">

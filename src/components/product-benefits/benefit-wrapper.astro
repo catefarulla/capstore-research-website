@@ -1,28 +1,25 @@
 ---
-import { getCollection } from "astro:content";
-import ProductBenefits from "./list";
+import BenefitList from "./list";
+import type { Benefit } from "@/data/products/type";
 
-type Props = {
-  benefitIds: string[];
+interface Props {
+  benefits: Benefit[];
   productName: string;
-};
+}
 
-const { benefitIds, productName } = Astro.props;
-
-const benefitsData = await getCollection("benefits");
-const productBenefits = benefitsData
-  .filter((benefit) => benefitIds.includes(benefit.id))
-  .map((benefit) => {
-    return {
-      title: benefit.data.Title,
-      description: benefit.data.Description,
-      icon: benefit.data.Icon,
-    };
-  }) as {
-  title: string;
-  description: string;
-  icon: string;
-}[];
+const { benefits, productName } = Astro.props;
 ---
 
-<ProductBenefits benefits={productBenefits} productName={productName} />
+<section class="w-full py-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-medium text-gray-900 mb-4">
+        {productName} Benefits
+      </h2>
+      <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+        Discover all the ways {productName} can help you achieve your health and fitness goals.
+      </p>
+    </div>
+    <BenefitList benefits={benefits} />
+  </div>
+</section>
