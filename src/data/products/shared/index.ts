@@ -11,3 +11,9 @@ export const guarantees = [
   "2 Year Warranty",
   "Import duties & VAT included",
 ];
+
+export const selectionLabels = {
+  color: "COLOUR",
+  faceSize: "FACE SIZE",
+  cellular: "CELLULAR",
+} as const;

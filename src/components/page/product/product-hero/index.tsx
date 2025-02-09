@@ -1,6 +1,13 @@
 import { useState } from "react";
 import { Check } from "lucide-react";
 import Advisor from "../../../advisor";
+import SelectionButton from "./selection-button";
+import ProductGallery from "./product-gallery";
+import {
+  generateBuyNowButtonText,
+  guarantees,
+  selectionLabels,
+} from "../../../../data/products/shared";
 
 interface ProductImage {
   src: string;
@@ -57,37 +64,11 @@ export default function ProductHero({
   return (
     <div className="container mx-auto px-4 py-8 md:py-20 max-w-7xl">
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-        <div className="flex gap-4 w-full max-w-2xl mx-auto lg:mx-0">
-          {/* Thumbnails */}
-          <div className="flex flex-col gap-4">
-            {currentVariant.images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`relative w-20 h-20 border-2 rounded-lg overflow-hidden ${
-                  selectedImage === index
-                    ? "border-blue-500"
-                    : "border-gray-200"
-                }`}
-              >
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-
-          {/* Main Image */}
-          <div className="relative flex-1 aspect-square">
-            <img
-              src={currentVariant.images[selectedImage].src}
-              alt={currentVariant.images[selectedImage].alt}
-              className="w-full h-full object-cover rounded-lg border-2 border-gray-200"
-            />
-          </div>
-        </div>
+        <ProductGallery
+          images={currentVariant.images}
+          selectedImage={selectedImage}
+          onImageSelect={setSelectedImage}
+        />
 
         <div className="space-y-6">
           <div>
@@ -98,40 +79,32 @@ export default function ProductHero({
 
           {/* Color Selection */}
           <div>
-            <h3 className="font-medium mb-3">COLOUR</h3>
+            <h3 className="font-medium mb-3">{selectionLabels.color}</h3>
             <div className="flex gap-2">
               {availableColors.map((color) => (
-                <button
+                <SelectionButton
                   key={color}
+                  selected={selectedColor === color.toLowerCase()}
                   onClick={() => setSelectedColor(color.toLowerCase())}
-                  className={`px-4 py-2 rounded-full border ${
-                    selectedColor === color.toLowerCase()
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200"
-                  }`}
                 >
-                  {color}
-                </button>
+                  {color.charAt(0).toUpperCase() + color.slice(1).toLowerCase()}
+                </SelectionButton>
               ))}
             </div>
           </div>
 
           {/* Face Size Selection */}
           <div>
-            <h3 className="font-medium mb-3">FACE SIZE</h3>
+            <h3 className="font-medium mb-3">{selectionLabels.faceSize}</h3>
             <div className="flex gap-2">
               {availableSizes.map((sizeOption) => (
-                <button
+                <SelectionButton
                   key={sizeOption}
+                  selected={size === sizeOption}
                   onClick={() => setSize(sizeOption)}
-                  className={`px-4 py-2 rounded-full border ${
-                    size === sizeOption
-                      ? "border-blue-500 bg-blue-50"
-                      : "border-gray-200"
-                  }`}
                 >
                   {sizeOption}
-                </button>
+                </SelectionButton>
               ))}
             </div>
           </div>
@@ -139,23 +112,19 @@ export default function ProductHero({
           {/* Cellular Option */}
           {hasCellular && (
             <div>
-              <h3 className="font-medium mb-3">CELLULAR</h3>
+              <h3 className="font-medium mb-3">{selectionLabels.cellular}</h3>
               <div className="flex gap-2">
                 {[
                   { label: "Yes", value: true },
                   { label: "No", value: false },
                 ].map((option) => (
-                  <button
+                  <SelectionButton
                     key={option.label}
+                    selected={cellular === option.value}
                     onClick={() => setCellular(option.value)}
-                    className={`px-4 py-2 rounded-full border ${
-                      cellular === option.value
-                        ? "border-blue-500 bg-blue-50"
-                        : "border-gray-200"
-                    }`}
                   >
                     {option.label}
-                  </button>
+                  </SelectionButton>
                 ))}
               </div>
             </div>
@@ -164,8 +133,7 @@ export default function ProductHero({
           {/* Action Buttons */}
           <div className="space-y-3">
             <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2">
-              <span>Buy now</span>
-              <span className="text-sm opacity-90">£{price}</span>
+              <span>{generateBuyNowButtonText(price)}</span>
             </button>
             {aiEnabled && (
               <Advisor
@@ -177,12 +145,7 @@ export default function ProductHero({
 
           {/* Features */}
           <div className="grid grid-cols-2 gap-4 pt-6">
-            {[
-              "30 Day Money Back Gurantee",
-              "Express Shipping Worldwide",
-              "2 Year Warranty",
-              "Import duties & VAT included",
-            ].map((feature) => (
+            {guarantees.map((feature: string) => (
               <div key={feature} className="flex items-center gap-2">
                 <Check className="h-4 w-4 text-green-500" />
                 <span className="text-sm text-gray-600">{feature}</span>
