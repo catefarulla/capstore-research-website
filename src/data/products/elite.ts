@@ -37,7 +37,7 @@ export const elite: Product = {
   ],
   availableColors: ["black", "rose-gold", "silver"],
   availableSizes: ["38mm", "40mm"],
-  price: 499.99,
+  price: 499,
   cellularOptionAvailable: true,
   benefits: [
     benefits.wristHeartRate,

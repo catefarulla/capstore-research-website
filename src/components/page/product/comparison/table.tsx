@@ -5,8 +5,9 @@ const { features, products } = getComparisonTableData();
 
 export default function ComparisonTable() {
   return (
-    <div className="w-full max-w-7xl mx-auto bg-white  border border-neutral-200 overflow-hidden">
-      <div className="w-full overflow-hidden">
+    <div className="w-full max-w-7xl mx-auto">
+      {/* Desktop Table */}
+      <div className="hidden md:block bg-white border border-neutral-200 overflow-hidden">
         <table className="w-full border-collapse">
           <thead>
             <tr className="bg-ecru-light">
@@ -72,40 +73,84 @@ export default function ComparisonTable() {
           </tbody>
         </table>
       </div>
-      <div className="mt-8 p-4 sm:hidden space-y-8">
-        <div>
-          <h3 className="text-lg font-medium text-gray-800 mb-4">
-            {products.pro.name} (${products.pro.price})
-          </h3>
-          <ul className="space-y-3">
-            {features.map((feature) => (
-              <li key={`pro-${feature.name}`} className="flex items-center">
-                {feature.pro ? (
-                  <Check className="w-5 h-5 text-text-accent mr-3 flex-shrink-0" />
-                ) : (
-                  <X className="w-5 h-5 text-surface-error mr-3 flex-shrink-0" />
-                )}
-                <span className="text-text-primary">{feature.name}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-lg font-medium text-gray-800 mb-4">
-            {products.sport.name} (${products.sport.price})
-          </h3>
-          <ul className="space-y-3">
-            {features.map((feature) => (
-              <li key={`sport-${feature.name}`} className="flex items-center">
-                {feature.sport ? (
-                  <Check className="w-5 h-5 text-text-accent mr-3 flex-shrink-0" />
-                ) : (
-                  <X className="w-5 h-5 text-surface-error mr-3 flex-shrink-0" />
-                )}
-                <span className="text-text-primary">{feature.name}</span>
-              </li>
-            ))}
-          </ul>
+
+      {/* Mobile Layout */}
+      <div className="md:hidden bg-white border border-neutral-200 overflow-hidden">
+        <div className="divide-y divide-neutral-200">
+          {/* Elite */}
+          <div className="p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-heading font-bold text-text-primary">
+                {products.elite.name}
+              </h3>
+              <p className="text-lg text-text-secondary">
+                ${products.elite.price}
+              </p>
+            </div>
+            <div className="space-y-4">
+              {features.map(
+                (feature) =>
+                  feature.elite && (
+                    <div key={feature.name} className="flex items-center gap-3">
+                      <Check className="w-5 h-5 text-text-accent flex-shrink-0" />
+                      <span className="text-text-primary font-heading">
+                        {feature.name}
+                      </span>
+                    </div>
+                  ),
+              )}
+            </div>
+          </div>
+
+          {/* Pro */}
+          <div className="p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-heading font-bold text-text-primary">
+                {products.pro.name}
+              </h3>
+              <p className="text-lg text-text-secondary">
+                ${products.pro.price}
+              </p>
+            </div>
+            <div className="space-y-4">
+              {features.map(
+                (feature) =>
+                  feature.pro && (
+                    <div key={feature.name} className="flex items-center gap-3">
+                      <Check className="w-5 h-5 text-text-accent flex-shrink-0" />
+                      <span className="text-text-primary font-heading">
+                        {feature.name}
+                      </span>
+                    </div>
+                  ),
+              )}
+            </div>
+          </div>
+
+          {/* Sport */}
+          <div className="p-6">
+            <div className="mb-6">
+              <h3 className="text-xl font-heading font-bold text-text-primary">
+                {products.sport.name}
+              </h3>
+              <p className="text-lg text-text-secondary">
+                ${products.sport.price}
+              </p>
+            </div>
+            <div className="space-y-4">
+              {features.map(
+                (feature) =>
+                  feature.sport && (
+                    <div key={feature.name} className="flex items-center gap-3">
+                      <Check className="w-5 h-5 text-text-accent flex-shrink-0" />
+                      <span className="text-text-primary font-heading">
+                        {feature.name}
+                      </span>
+                    </div>
+                  ),
+              )}
+            </div>
+          </div>
         </div>
       </div>
     </div>

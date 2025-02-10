@@ -1,6 +1,7 @@
 import {
   streamText,
   generateText,
+  generateObject,
   type CoreMessage,
   type LanguageModelV1,
   smoothStream,
@@ -10,6 +11,7 @@ import { z } from "zod";
 import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { withFrictionSystemPrompt } from "@/data/ai/prompts/with-friction";
 import { withoutFrictionSystemPrompt } from "@/data/ai/prompts/without-friction";
+import { quickRepliesSystemPrompt } from "@/data/ai/prompts/quick-replies";
 
 const messageSchema = z.object({
   role: z.union([
@@ -27,6 +29,27 @@ const requestSchema = z.object({
   temperature: z.number().min(0).max(2).optional().default(0.7),
   maxTokens: z.number().positive().optional().default(1024),
 });
+
+const quickRepliesSchema = z.object({
+  replies: z.array(z.string()),
+});
+
+async function generateQuickReplies(message: string, model: LanguageModelV1) {
+  try {
+    const { object } = await generateObject({
+      model,
+      schema: quickRepliesSchema,
+      schemaName: "QuickReplies",
+      schemaDescription:
+        "Generate 2-4 short, natural follow-up questions or responses that a user might want to ask. Each reply should be 2-6 words long.",
+      prompt: `${quickRepliesSystemPrompt}\n\nGenerate quick reply suggestions for this message: "${message}"`,
+    });
+    return object.replies;
+  } catch (e) {
+    console.error("Failed to generate quick replies:", e);
+    return [];
+  }
+}
 
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
@@ -101,16 +124,23 @@ export const POST: APIRoute = async ({ request, locals }) => {
 
     // Use different methods based on friction mode
     if (withFriction) {
+      // Generate the main response
       const { text } = await generateText({
         model,
         messages: finalMessages as CoreMessage[],
         temperature,
       });
 
-      // Return just the text content for text protocol
+      // Generate quick replies for friction mode
+      const quickReplies = await generateQuickReplies(text, model);
+
+      console.log("Quick replies:", quickReplies);
+
+      // Return just the text content in the response
       return new Response(text, {
         headers: {
           "Content-Type": "text/plain",
+          "X-Quick-Replies": JSON.stringify(quickReplies),
         },
       });
     } else {
