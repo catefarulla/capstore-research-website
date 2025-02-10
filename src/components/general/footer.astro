@@ -1,0 +1,32 @@
+---
+import type { NavItem } from "./nav";
+
+interface Props {
+  items: NavItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<footer class="bg-white border-t">
+  <div class="mx-auto max-w-7xl overflow-hidden px-4 py-16 sm:px-6 lg:px-8">
+    <nav
+      aria-label="Footer"
+      class="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center gap-y-4 sm:gap-x-8"
+    >
+      {
+        items.map((item) => (
+          <a
+            href={item.href}
+            class="text-sm font-medium leading-none text-center sm:text-left text-muted-foreground hover:text-accent-foreground transition-colors"
+          >
+            {item.title}
+          </a>
+        ))
+      }
+    </nav>
+    <p class="mt-10 text-center text-sm text-muted-foreground">
+      &copy; 2024 Chronos, Inc. All rights reserved.
+    </p>
+  </div>
+</footer>
