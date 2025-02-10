@@ -6,6 +6,11 @@ import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import type { ChatProps } from "./types";
 import { SUGGESTION_BUTTONS } from "@/data/ai/suggestion-buttons";
 import { generateInitialMessage } from "@/data/ai/initial-message";
@@ -180,40 +185,59 @@ export function ChatModal({
               {/* Invisible element for scrolling */}
               <div ref={messagesEndRef} />
             </div>
-
-            {messages.length === 0 && (
-              <div className="flex flex-wrap gap-2 mt-4">
-                {SUGGESTION_BUTTONS.map((suggestion) => (
-                  <Button
-                    key={suggestion}
-                    variant="accent"
-                    className="text-sm"
-                    onClick={() => handleQuickReply(suggestion)}
-                  >
-                    {suggestion}
-                  </Button>
-                ))}
-              </div>
-            )}
           </ScrollArea>
 
-          {/* Quick Replies - Moved outside ScrollArea */}
+          {/* Quick Replies */}
           {withFriction && quickReplies.length > 0 && (
-            <div className="shrink-0 px-6 py-3 border-t border-cool-grey-200 bg-white">
-              <div className="flex flex-wrap gap-2">
-                {quickReplies.map((reply) => (
-                  <Button
-                    key={reply}
-                    variant="accent"
-                    size="sm"
-                    className="text-sm"
-                    onClick={() => handleQuickReply(reply)}
-                  >
-                    {reply}
-                  </Button>
-                ))}
-              </div>
+            <div className="shrink-0 border-t border-cool-grey-200 bg-white">
+              <Carousel
+                opts={{
+                  align: "start",
+                  dragFree: true,
+                }}
+                className="w-full px-6 py-3"
+              >
+                <CarouselContent className="-ml-2">
+                  {quickReplies.map((reply) => (
+                    <CarouselItem key={reply} className="pl-2 basis-auto">
+                      <Button
+                        variant="accent"
+                        size="sm"
+                        className="text-sm whitespace-nowrap"
+                        onClick={() => handleQuickReply(reply)}
+                      >
+                        {reply}
+                      </Button>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
             </div>
+          )}
+
+          {/* Initial suggestion buttons */}
+          {messages.length === 0 && (
+            <Carousel
+              opts={{
+                align: "start",
+                dragFree: true,
+              }}
+              className="w-full mt-4 px-6 py-3"
+            >
+              <CarouselContent className="-ml-2">
+                {SUGGESTION_BUTTONS.map((suggestion) => (
+                  <CarouselItem key={suggestion} className="pl-2 basis-auto">
+                    <Button
+                      variant="accent"
+                      className="text-sm whitespace-nowrap"
+                      onClick={() => handleQuickReply(suggestion)}
+                    >
+                      {suggestion}
+                    </Button>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
           )}
 
           {/* Input Form */}
