@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useChat } from "ai/react";
 import { nanoid } from "nanoid";
@@ -11,6 +10,16 @@ import type { ChatProps } from "./types";
 import { SUGGESTION_BUTTONS } from "@/data/ai/suggestion-buttons";
 import { generateInitialMessage } from "@/data/ai/initial-message";
 
+function LoadingDots() {
+  return (
+    <div className="flex items-center gap-0.5 py-2">
+      <div className="w-1.5 h-1.5 rounded-full bg-cool-grey-300 animate-bounce [animation-delay:-0.3s]" />
+      <div className="w-1.5 h-1.5 rounded-full bg-cool-grey-300 animate-bounce [animation-delay:-0.15s]" />
+      <div className="w-1.5 h-1.5 rounded-full bg-cool-grey-300 animate-bounce" />
+    </div>
+  );
+}
+
 export function ChatModal({
   isOpen,
   onClose,
@@ -19,26 +28,49 @@ export function ChatModal({
 }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [quickReplies, setQuickReplies] = useState<string[]>([]);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      api: "/api/ai",
-      initialMessages: [
-        {
-          id: nanoid(),
-          role: "assistant",
-          content: generateInitialMessage(selectedOptions),
-        },
-      ],
-      onFinish: (message) => {
-        console.log("Message finished:", message);
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    append,
+  } = useChat({
+    api: "/api/ai",
+    initialMessages: [
+      {
+        id: nanoid(),
+        role: "assistant",
+        content: generateInitialMessage(selectedOptions),
       },
-      onError: (error) => {
-        console.error("Chat error:", error);
-      },
-      // Use text protocol in friction mode, data protocol otherwise
-      streamProtocol: withFriction ? "text" : "data",
-    });
+    ],
+    onFinish: (message) => {
+      console.log("Message finished:", message);
+    },
+    onResponse: async (response) => {
+      if (withFriction) {
+        const quickRepliesHeader = response.headers.get("X-Quick-Replies");
+        if (quickRepliesHeader) {
+          try {
+            setQuickReplies(JSON.parse(quickRepliesHeader));
+          } catch (e) {
+            console.error("Failed to parse quick replies:", e);
+            setQuickReplies([]);
+          }
+        } else {
+          setQuickReplies([]);
+        }
+      }
+    },
+    onError: (error) => {
+      console.error("Chat error:", error);
+      setQuickReplies([]);
+    },
+    // Use text protocol in friction mode, data protocol otherwise
+    streamProtocol: withFriction ? "text" : "data",
+  });
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
@@ -62,6 +94,15 @@ export function ChatModal({
     }
   }, [isLoading, messages.length]);
 
+  const handleQuickReply = async (reply: string) => {
+    setQuickReplies([]); // Clear quick replies immediately
+    await append({
+      role: "user",
+      content: reply,
+      id: nanoid(),
+    });
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -71,7 +112,7 @@ export function ChatModal({
 
       {/* Modal container */}
       <div className="relative flex items-center justify-center p-4 min-h-screen">
-        <div className="w-full max-w-4xl bg-white  flex flex-col h-[85vh] max-h-[900px]">
+        <div className="w-full max-w-4xl bg-white flex flex-col h-[85vh] max-h-[900px]">
           {/* Header */}
           <div className="shrink-0 flex items-center justify-between border-b border-cool-grey-200 px-6 py-4">
             <span className="text-xl md:text-2xl font-heading font-black tracking-tight uppercase text-text-primary">
@@ -123,6 +164,15 @@ export function ChatModal({
                   </div>
                 ))
               )}
+              {/* Loading animation */}
+              {isLoading && (
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-8 h-8 bg-surface-accent text-white flex items-center justify-center font-semibold">
+                    C
+                  </div>
+                  <LoadingDots />
+                </div>
+              )}
               {/* Invisible element for scrolling */}
               <div ref={messagesEndRef} />
             </div>
@@ -134,12 +184,7 @@ export function ChatModal({
                     key={suggestion}
                     variant="accent"
                     className="text-sm"
-                    onClick={() => {
-                      handleInputChange({
-                        target: { value: suggestion },
-                      } as any);
-                      handleSubmit({ preventDefault: () => {} } as any);
-                    }}
+                    onClick={() => handleQuickReply(suggestion)}
                   >
                     {suggestion}
                   </Button>
@@ -147,6 +192,25 @@ export function ChatModal({
               </div>
             )}
           </ScrollArea>
+
+          {/* Quick Replies - Moved outside ScrollArea */}
+          {withFriction && quickReplies.length > 0 && (
+            <div className="shrink-0 px-6 py-3 border-t border-cool-grey-200 bg-white">
+              <div className="flex flex-wrap gap-2">
+                {quickReplies.map((reply) => (
+                  <Button
+                    key={reply}
+                    variant="accent"
+                    size="sm"
+                    className="text-sm"
+                    onClick={() => handleQuickReply(reply)}
+                  >
+                    {reply}
+                  </Button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Input Form */}
           <form
