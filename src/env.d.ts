@@ -8,6 +8,7 @@ declare namespace App {
       ANTHROPIC_API_KEY: string;
       WITH_AI_FRICTION: string;
       AI_ENABLED: string;
+      GOOGLE_AI_STUDIO_API_KEY: string;
     };
   }
 }
@@ -18,6 +19,7 @@ interface Env {
   ANTHROPIC_API_KEY: string;
   WITH_AI_FRICTION: string;
   AI_ENABLED: string;
+  GOOGLE_AI_STUDIO_API_KEY: string;
 }
 
 interface ImportMetaEnv {
@@ -26,4 +28,5 @@ interface ImportMetaEnv {
   ANTHROPIC_API_KEY: string;
   WITH_AI_FRICTION: string;
   AI_ENABLED: string;
+  GOOGLE_AI_STUDIO_API_KEY: string;
 }
