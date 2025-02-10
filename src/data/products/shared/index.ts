@@ -38,7 +38,7 @@ export function generateSurveyUrl(params: SurveyParams = {}) {
 export const purchaseConfirmation = {
   title: "Confirm Purchase",
   description: (productName: string, price: number) =>
-    `Are you sure you want to purchase the ${productName} for $${price}?`,
+    `Are you sure you want to purchase the ${productName} for $${price}? **This will conclude the experiment and redirect you to the survey.**`,
   confirmButton: "Confirm Purchase",
   cancelButton: "Cancel",
 } as const;
