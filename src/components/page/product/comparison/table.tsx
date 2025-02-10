@@ -12,19 +12,25 @@ export default function ComparisonTable() {
             <tr className="bg-ecru-light">
               <th className="p-4 text-left font-medium text-text-secondary"></th>
               <th className="p-4 text-center font-medium text-gray-800">
-                <div className="text-lg">{products.elite.name}</div>
+                <div className="text-lg font-heading font-semibold">
+                  {products.elite.name}
+                </div>
                 <div className="text-base font-normal text-text-secondary">
                   ${products.elite.price}
                 </div>
               </th>
               <th className="p-4 text-center font-medium text-gray-800 hidden sm:table-cell">
-                <div className="text-lg">{products.pro.name}</div>
+                <div className="text-lg font-heading font-semibold">
+                  {products.pro.name}
+                </div>
                 <div className="text-base font-normal text-text-secondary">
                   ${products.pro.price}
                 </div>
               </th>
               <th className="p-4 text-center font-medium text-gray-800 hidden sm:table-cell">
-                <div className="text-lg">{products.sport.name}</div>
+                <div className="text-lg font-heading font-semibold">
+                  {products.sport.name}
+                </div>
                 <div className="text-base font-normal text-text-secondary">
                   ${products.sport.price}
                 </div>
@@ -37,7 +43,7 @@ export default function ComparisonTable() {
                 key={feature.name}
                 className={index % 2 === 0 ? "bg-ecru-light" : ""}
               >
-                <td className="p-4 font-medium text-text-primary">
+                <td className="p-4 font-medium text-text-primary font-heading">
                   {feature.name}
                 </td>
                 <td className="p-4 text-center">

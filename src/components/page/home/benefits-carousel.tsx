@@ -103,7 +103,7 @@ export default function BenefitsCarousel() {
                     <h3
                       className={index % 3 === 2 ? "text-black" : "text-white"}
                     >
-                      <span className="block text-xl md:text-3xl font-sans font-light leading-tight">
+                      <span className="block text-xl md:text-3xl font-heading font-bold leading-tight">
                         {benefit.title.sans}
                       </span>
                       {benefit.title.serif && (

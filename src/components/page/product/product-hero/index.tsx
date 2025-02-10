@@ -69,8 +69,10 @@ export default function ProductHero({
 
         <div className="space-y-6">
           <div>
-            <p className="text-sm font-medium text-text-accent">{tagline}</p>
-            <h1 className="text-4xl font-bold mt-2">{name}</h1>
+            <p className="text-sm font-medium text-text-accent font-heading font-semibold">
+              {tagline}
+            </p>
+            <h1 className="text-4xl font-heading font-bold mt-2">{name}</h1>
             <p className="mt-4 text-text-secondary">{blurb}</p>
           </div>
 

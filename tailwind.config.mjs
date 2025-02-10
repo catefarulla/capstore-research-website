@@ -13,7 +13,7 @@ export default {
       },
       fontFamily: {
         sans: ["Inter", "system-ui", "sans-serif"],
-        heading: ["Montserrat", "system-ui", "sans-serif"],
+        heading: ["Jost", "system-ui", "sans-serif"],
         serif: ["IBM Plex Serif", "Georgia", "serif"],
       },
       colors: {

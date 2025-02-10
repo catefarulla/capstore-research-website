@@ -22,8 +22,8 @@ export default function BenefitItem({ icon, title, description }: Props) {
           <IconComponent className="w-6 h-6 text-text-accent" />
         )}
       </div>
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-sm text-gray-600 max-w-xs">{description}</p>
+      <h3 className="text-lg mb-2 font-heading font-semibold">{title}</h3>
+      <p className="text-sm text-text-secondary max-w-xs">{description}</p>
     </div>
   );
 }

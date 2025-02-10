@@ -20,7 +20,7 @@ export default function SelectionButtonsList({
 }: SelectionButtonsListProps) {
   return (
     <div>
-      <h3 className="font-medium mb-3">{label}</h3>
+      <h3 className="mb-3 font-heading font-semibold text-sm">{label}</h3>
       <div className="flex gap-2">
         {options.map((option) => (
           <SelectionButton
