@@ -1,4 +1,5 @@
 ---
+import { SEO } from "astro-seo";
 import "@fontsource-variable/inter";
 import "@fontsource-variable/montserrat";
 import "@fontsource-variable/jost";
@@ -7,21 +8,25 @@ import Nav from "@/components/general/nav";
 import Footer from "@/components/general/footer.astro";
 import "../../../lib/styles.css";
 import { getAllProducts } from "@/data/products/helpers";
+import { defaultSEO, getSEOImageUrl, getCanonicalURL } from "@/data/seo";
 
 type Props = {
   title?: string;
   description?: string;
 };
 
-const {
-  title = "Chronos",
-  description = "Chronos is a smart watch that helps you stay on top of your health and fitness goals.",
-} = Astro.props;
+const baseUrl =
+  import.meta.env.SITE ?? "capstone-with-friction.caterina-capstone-project.workers.dev";
+
+const { title = defaultSEO.title, description = defaultSEO.description } = Astro.props;
 
 const products = getAllProducts().map((product) => ({
   title: product.name,
   href: `/product/${product.slug}`,
 }));
+
+const canonicalURL = getCanonicalURL(Astro.url.pathname, baseUrl);
+const ogImage = getSEOImageUrl();
 ---
 
 <!doctype html>
@@ -29,10 +34,38 @@ const products = getAllProducts().map((product) => ({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
-    <meta name="description" content={description} />
+    <SEO
+      title={title}
+      description={description}
+      canonical={canonicalURL}
+      openGraph={{
+        basic: {
+          title,
+          type: "website",
+          image: ogImage,
+          url: canonicalURL,
+        },
+        optional: {
+          siteName: defaultSEO.siteName,
+          description,
+        },
+        image: {
+          alt: defaultSEO.imageAlt,
+        },
+      }}
+      extend={{
+        link: [
+          { rel: "icon", href: "/favicon/favicon.ico" },
+          { rel: "icon", type: "image/svg+xml", href: "/favicon/favicon.svg" },
+          { rel: "apple-touch-icon", href: "/favicon/apple-touch-icon.png" },
+          { rel: "manifest", href: "/favicon/site.webmanifest" },
+        ],
+        meta: [
+          { name: "theme-color", content: "#ffffff" },
+          { name: "generator", content: Astro.generator },
+        ],
+      }}
+    />
   </head>
   <body>
     <Nav client:load items={products} />
