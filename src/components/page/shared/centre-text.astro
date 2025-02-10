@@ -1,0 +1,65 @@
+---
+import { cva } from "class-variance-authority";
+import { cn } from "@/lib/utils";
+import { buttonVariants } from "@/components/ui/button";
+
+type Props = {
+  title: string;
+  description?: string;
+  cta?: {
+    text: string;
+    href: string;
+  };
+  titleSize?: "sm" | "md" | "lg";
+  padding?: "sm" | "md" | "lg";
+};
+
+const titleStyles = cva(["font-heading font-bold !leading-[1.1]"], {
+  variants: {
+    size: {
+      sm: "text-2xl sm:text-3xl md:text-4xl",
+      md: "text-3xl sm:text-4xl md:text-5xl",
+      lg: "text-4xl sm:text-5xl md:text-6xl",
+    },
+  },
+});
+
+const paddingStyles = cva(["py-16 md:py-24 px-4 md:px-8"], {
+  variants: {
+    padding: {
+      sm: "py-16 md:py-24 px-4",
+      md: "py-24 md:py-32 px-4",
+      lg: "py-32 md:py-40 px-4",
+    },
+  },
+});
+
+const { title, description, cta, titleSize = "md", padding = "md" } = Astro.props;
+---
+
+<div
+  class={cn(
+    "flex flex-col gap-4 md:gap-6 py-16 md:py-24 px-4 md:px-8 items-center justify-center text-center",
+    paddingStyles({ padding })
+  )}
+>
+  <h1 class={cn("max-w-3xl", titleSize === "sm" && "max-w-xl")}>
+    <span class={cn(titleStyles({ size: titleSize }))}>
+      {title}
+    </span>
+  </h1>
+  {
+    description && (
+      <p class="text-sm max-w-xl sm:text-base md:text-lg text-text-secondary">{description}</p>
+    )
+  }
+  {
+    cta && (
+      <div>
+        <a class={cn(buttonVariants({ variant: "default" }))} href={cta.href}>
+          {cta.text}
+        </a>
+      </div>
+    )
+  }
+</div>

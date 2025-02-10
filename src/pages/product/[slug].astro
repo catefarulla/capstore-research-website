@@ -1,185 +1,50 @@
 ---
-import CentreText from "@/components/centre-text.astro";
-import FullWidthImage from "@/components/full-width-image.astro";
-import ProductHero from "@/components/product-hero";
-import Layout from "@/layouts/Layout.astro";
-import ProductBenefits from "@/components/product-benefits/benefit-wrapper.astro";
-import ProductShowcase from "@/components/product-showcase";
-import ComparisonWrapper from "@/components/comparison/comparison-wrapper.astro";
-import { getCollection, type CollectionEntry } from "astro:content";
-import { z } from "zod";
+import CentreText from "@/components/page/shared/centre-text.astro";
+import FullWidthImage from "@/components/page/shared/full-width-image.astro";
+import ProductHero from "@/components/page/product/product-hero";
+import Layout from "@/components/page/shared/layout.astro";
+import BenefitWrapper from "@/components/page/product/product-benefits/benefit-wrapper.astro";
+import ProductShowcase from "@/components/page/product/product-showcase";
+import ComparisonWrapper from "@/components/page/product/comparison/comparison-wrapper.astro";
+import { getProductBySlug, getProductHeroData } from "@/data/products/helpers";
 
 const { env } = Astro.locals.runtime;
-
 const withFriction = env.WITH_AI_FRICTION === "true" ? true : false;
-
 const aiEnabled = env.AI_ENABLED === "true" ? true : false;
 
-type Product = CollectionEntry<"products">;
-type Color = CollectionEntry<"colors">;
-type Size = CollectionEntry<"sizes">;
-
-// Zod schemas for validation
-const ColorSchema = z.object({
-  Name: z.string(),
-});
-
-const SizeSchema = z.object({
-  Name: z.string(),
-});
-
-const ProductSchema = z.object({
-  Name: z.string(),
-  Blurb: z.string(),
-  Tagline: z.string(),
-  "Has Cellular": z.boolean().optional().default(false),
-  "Available Colours": z.array(z.string()),
-  "Available Sizes": z.array(z.string()),
-  Benefits: z.array(z.string()),
-  Slug: z.string(),
-  Price: z.union([z.number(), z.string().transform((val) => Number(val))]).default(299),
-  "Product Images": z
-    .array(
-      z.object({
-        id: z.string(),
-        url: z.string(),
-        filename: z.string(),
-        size: z.number().optional(),
-        type: z.string().optional(),
-      })
-    )
-    .optional(),
-});
-
-const tableProducts = await getCollection("products");
-
-const colorsData = await getCollection("colors");
-const sizesData = await getCollection("sizes");
-
-const productData = tableProducts.filter(
-  (product: Product) => product.data !== undefined && Object.keys(product.data).length > 0
-);
-
-const productsWithSeo = productData.map((product: Product) => {
-  return {
-    slug: product.data.Slug,
-    title: product.data.Name,
-    description: product.data.Blurb,
-    ...product,
-  };
-});
-
 const { slug } = Astro.params;
-const product = productsWithSeo.find((product) => product.slug === slug);
+if (!slug) {
+  return Astro.redirect("/404");
+}
+
+const product = getProductBySlug(slug);
 if (!product) {
   return Astro.redirect("/404");
 }
 
-// Validate product data
-const validationResult = ProductSchema.safeParse(product.data);
-if (!validationResult.success) {
-  console.error("Product validation failed:", validationResult.error);
-  return Astro.redirect("/404");
-}
-
-const validatedProduct = validationResult.data;
-const hasCellular = validatedProduct["Has Cellular"];
-
-// Filter and validate colors
-const availableColors = colorsData
-  .filter((color: Color) => validatedProduct["Available Colours"].includes(color.id))
-  .map((color: Color) => {
-    const colorValidation = ColorSchema.safeParse(color.data);
-    return colorValidation.success ? colorValidation.data.Name : null;
-  })
-  .filter((name): name is string => name !== null);
-
-// Filter and validate sizes
-const availableSizes = sizesData
-  .filter((size: Size) => validatedProduct["Available Sizes"].includes(size.id))
-  .map((size: Size) => {
-    const sizeValidation = SizeSchema.safeParse(size.data);
-    return sizeValidation.success ? sizeValidation.data.Name : null;
-  })
-  .filter((name): name is string => name !== null);
-
-// Validate that we have at least one color and size
-if (availableColors.length === 0 || availableSizes.length === 0) {
-  console.error("Product has no valid colors or sizes");
-  return Astro.redirect("/404");
-}
-
-// Create product variants with validated colors
-const productVariants = availableColors.reduce<
-  Record<string, { color: string; images: { src: string; alt: string }[] }>
->((acc, color) => {
-  acc[color.toLowerCase()] = {
-    color,
-    images: validatedProduct["Product Images"]
-      ? validatedProduct["Product Images"].map((img, index) => ({
-          src: img.url,
-          alt: `${color} ${validatedProduct.Name} - View ${index + 1}`,
-        }))
-      : [
-          {
-            src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-1.png",
-            alt: `${color} ${validatedProduct.Name} - View 1`,
-          },
-          {
-            src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-2.png",
-            alt: `${color} ${validatedProduct.Name} - View 2`,
-          },
-          {
-            src: "https://files.duckhou.se/caterina-capstone-placeholder-product-images/black-3.png",
-            alt: `${color} ${validatedProduct.Name} - View 3`,
-          },
-        ],
-  };
-  return acc;
-}, {});
-
-const { title, description } = product;
+const heroData = getProductHeroData(product);
 ---
 
-<Layout title={title} description={description}>
-  <ProductHero
-    client:load
-    name={validatedProduct.Name}
-    tagline={validatedProduct.Tagline}
-    blurb={validatedProduct.Blurb}
-    hasCellular={hasCellular}
-    availableColors={availableColors}
-    availableSizes={availableSizes}
-    variants={productVariants}
-    price={validatedProduct.Price}
-    withFriction={withFriction}
-    aiEnabled={aiEnabled}
-  />
+<Layout title={product.name} description={product.blurb}>
+  <ProductHero client:load {...heroData} withFriction={withFriction} aiEnabled={aiEnabled} />
   <CentreText
-    title={{ sans: "Bring your fitness goals", serif: "into focus" }}
+    title={product.centreTextBlock.title}
     titleSize="sm"
-    description="Kelvin is a cost effective, smart electric heater, designed to help you reduce energy consumption, save money and live more sustainably. Comes included with a truly wireless smart thermostat and access to the Boldr Energy mobile app. Simple to install, with zero maintenance."
+    description={product.centreTextBlock.description}
   />
-  <FullWidthImage
-    src="https://reebok.bynder.com/transform/992a1d94-a3ad-4ce3-87b0-b11dafa03826/SS25_NanoGym-Barrys_Masthead_DT?fm=jpg&q=90&fit=fill&w=1200p"
-    alt="Black-2"
-  />
-  <ProductBenefits benefitIds={validatedProduct.Benefits} productName={validatedProduct.Name} />
+  <FullWidthImage src={product.lifestyleImage} alt={`${product.name} lifestyle image`} />
+  <BenefitWrapper benefits={product.benefits} productName={product.name} />
   <ComparisonWrapper />
-  {/* Normal layout */}
-  <ProductShowcase
-    label="LIGHTWEIGHT AND AFFORDABLE"
-    title="Lily 2 Active"
-    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared heaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
-    image="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
-  />
-
-  {/* Reversed layout */}
-  <ProductShowcase
-    reverse
-    label="LIGHTWEIGHT AND AFFORDABLE"
-    title="Lily 2 Active"
-    description="Kelvin uses sustainable far infrared heating technology to heat your home. Unlike traditional convection heaters that heat the air first, infrared heaters directly radiate heat to warm objects first. By not relying on convection heat, Kelvin can keep your environment warm whilst using 30% less energy than traditional electric heaters."
-    image="https://ourahealth.imgix.net/home/OR3-bfcm.jpg?ixlib=js-3.8.0&auto=format&fit=max&fm=png&q=70&w=3840&s=3aa4dcf4f6b3dbedd3d326402307de1b"
-  />
+  {/* Feature blocks */}
+  {
+    product.featureBlocks.map((block, index) => (
+      <ProductShowcase
+        reverse={index % 2 === 1}
+        label={block.subtitle}
+        title={block.title}
+        description={block.description}
+        image={block.image}
+      />
+    ))
+  }
 </Layout>
