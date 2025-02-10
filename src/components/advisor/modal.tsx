@@ -71,10 +71,10 @@ export function ChatModal({
 
       {/* Modal container */}
       <div className="relative flex items-center justify-center p-4 min-h-screen">
-        <div className="w-full max-w-4xl bg-white rounded-lg shadow-lg flex flex-col h-[85vh] max-h-[900px]">
+        <div className="w-full max-w-4xl bg-white  flex flex-col h-[85vh] max-h-[900px]">
           {/* Header */}
-          <div className="shrink-0 flex items-center justify-between border-b px-6 py-4">
-            <h2 className="text-xl font-semibold">CHRONOS</h2>
+          <div className="shrink-0 flex items-center justify-between border-b border-cool-grey-200 px-6 py-4">
+            <h2 className="text-xl font-semibold text-text-accent">CHRONOS</h2>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
               <span className="sr-only">Close</span>
@@ -85,7 +85,7 @@ export function ChatModal({
           <ScrollArea className="flex-1 px-6">
             <div className="space-y-4 py-6 pr-4">
               {messages.length === 0 ? (
-                <div className="text-2xl font-semibold text-center py-8">
+                <div className="text-2xl font-semibold text-center py-8 text-text-primary">
                   How can I help you today?
                 </div>
               ) : (
@@ -97,15 +97,15 @@ export function ChatModal({
                     }`}
                   >
                     {message.role === "assistant" && (
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary bg-slate-200 text-primary-foreground flex items-center justify-center font-semibold">
+                      <div className="flex-shrink-0 w-8 h-8 bg-surface-accent text-white flex items-center justify-center font-semibold">
                         C
                       </div>
                     )}
                     <div
                       className={`max-w-[80%] ${
                         message.role === "user"
-                          ? "text-gray-900"
-                          : "bg-slate-100 rounded-xl px-4 py-2"
+                          ? "text-text-primary"
+                          : "bg-ecru px-4 py-2"
                       }`}
                     >
                       <div
@@ -130,7 +130,7 @@ export function ChatModal({
                 {SUGGESTION_BUTTONS.map((suggestion) => (
                   <Button
                     key={suggestion}
-                    variant="secondary"
+                    variant="accent"
                     className="text-sm"
                     onClick={() => {
                       handleInputChange({
@@ -147,7 +147,10 @@ export function ChatModal({
           </ScrollArea>
 
           {/* Input Form */}
-          <form onSubmit={handleSubmit} className="shrink-0 border-t p-6">
+          <form
+            onSubmit={handleSubmit}
+            className="shrink-0 border-t border-cool-grey-200 p-6"
+          >
             <div className="flex gap-2">
               <Input
                 ref={inputRef}
@@ -155,9 +158,14 @@ export function ChatModal({
                 onChange={handleInputChange}
                 placeholder="Message Chronos advisor..."
                 disabled={isLoading}
-                className="flex-1"
+                className="flex-1 border-surface-coolGrey focus-visible:ring-surface-accent focus-visible:ring-2 focus-visible:ring-offset-0"
               />
-              <Button type="submit" disabled={isLoading || !input.trim()}>
+              <Button
+                variant="accent"
+                type="submit"
+                disabled={isLoading || !input.trim()}
+                className={`${isLoading || !input.trim() ? "bg-cool-grey-400 hover:bg-cool-grey-400 text-neutral-700" : ""}`}
+              >
                 Send
               </Button>
             </div>
