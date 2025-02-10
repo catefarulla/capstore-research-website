@@ -1,0 +1,25 @@
+---
+import BenefitList from "./list";
+import type { Benefit } from "@/data/products/type";
+
+interface Props {
+  benefits: Benefit[];
+  productName: string;
+}
+
+const { benefits, productName } = Astro.props;
+---
+
+<section class="w-full py-16 px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto">
+    <div class="text-center mb-20">
+      <h2 class="text-3xl font-bold text-heading text-gray-900 mb-4">
+        {productName} Benefits
+      </h2>
+      <p class="text-lg text-text-secondary max-w-2xl mx-auto">
+        Discover all the ways {productName} can help you achieve your health and fitness goals.
+      </p>
+    </div>
+    <BenefitList benefits={benefits} />
+  </div>
+</section>

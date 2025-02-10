@@ -1,15 +1,16 @@
 ---
-import Layout from "../layouts/Layout.astro";
-import Hero from "@/components/hero.astro";
-import CentreText from "@/components/centre-text.astro";
-import ProductList from "@/components/list/product-list.astro";
-import BenefitsCarousel from "@/components/benefits-carousel";
+import Layout from "@/components/page/shared/layout.astro";
+import Hero from "@/components/page/home/hero.astro";
+import CentreText from "@/components/page/shared/centre-text.astro";
+import ProductList from "@/components/page/home/list/product-list.astro";
+import BenefitsCarousel from "@/components/page/home/benefits-carousel";
+import { homeData } from "@/data/home";
 ---
 
 <Layout>
-  <Hero />
-  <CentreText title={{ sans: "Your health", serif: "your way" }} titleSize="lg" padding="lg" />
+  <Hero {...homeData.hero} />
+  <CentreText title={homeData.centreBlockTextOne.title} titleSize="lg" padding="lg" />
   <ProductList />
-  <CentreText title={{ sans: "How it works", serif: "in 3 steps" }} titleSize="md" padding="sm" />
+  <CentreText title={homeData.centreBlockTextTwo.title} titleSize="md" padding="sm" />
   <BenefitsCarousel client:load />
 </Layout>
