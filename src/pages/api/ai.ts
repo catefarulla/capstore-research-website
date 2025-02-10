@@ -1,7 +1,13 @@
-import { streamText, generateText, type CoreMessage } from "ai";
+import {
+  streamText,
+  generateText,
+  type CoreMessage,
+  type LanguageModelV1,
+  smoothStream,
+} from "ai";
 import type { APIRoute } from "astro";
 import { z } from "zod";
-import { createAnthropic } from "@ai-sdk/anthropic";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
 import { withFrictionSystemPrompt } from "@/data/ai/prompts/with-friction";
 import { withoutFrictionSystemPrompt } from "@/data/ai/prompts/without-friction";
 
@@ -55,9 +61,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
       { role: "system", content: fullSystemPrompt },
       ...messages,
     ];
-    console.log("withFriction", withFriction);
-    console.log("systemPrompt", systemPrompt);
-    console.log("fullSystemPrompt", fullSystemPrompt);
 
     if (finalMessages.length === 0) {
       return new Response(
@@ -71,11 +74,30 @@ export const POST: APIRoute = async ({ request, locals }) => {
       );
     }
 
-    // Create Anthropic instance with API key from runtime
-    const anthropicClient = createAnthropic({
-      apiKey: locals.runtime.env.ANTHROPIC_API_KEY,
+    // Create Google Gemini instance with API key from runtime
+    const google = createGoogleGenerativeAI({
+      apiKey: locals.runtime.env.GOOGLE_AI_STUDIO_API_KEY,
     });
-    const model = anthropicClient("claude-3-5-sonnet-latest");
+    const model = google("gemini-2.0-flash-001", {
+      safetySettings: [
+        {
+          category: "HARM_CATEGORY_HATE_SPEECH",
+          threshold: "BLOCK_NONE",
+        },
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+          threshold: "BLOCK_NONE",
+        },
+        {
+          category: "HARM_CATEGORY_HARASSMENT",
+          threshold: "BLOCK_NONE",
+        },
+        {
+          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          threshold: "BLOCK_NONE",
+        },
+      ],
+    }) as LanguageModelV1;
 
     // Use different methods based on friction mode
     if (withFriction) {
@@ -96,6 +118,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
         model,
         messages: finalMessages as CoreMessage[],
         temperature,
+        experimental_transform: smoothStream({
+          delayInMs: 10,
+          chunking: "word",
+        }),
       });
 
       // For streaming mode, use the default data stream response
