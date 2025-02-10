@@ -29,6 +29,7 @@ export function ChatModal({
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [quickReplies, setQuickReplies] = useState<string[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
 
   const {
     messages,
@@ -48,8 +49,10 @@ export function ChatModal({
     ],
     onFinish: (message) => {
       console.log("Message finished:", message);
+      setIsStreaming(false);
     },
     onResponse: async (response) => {
+      setIsStreaming(true);
       if (withFriction) {
         const quickRepliesHeader = response.headers.get("X-Quick-Replies");
         if (quickRepliesHeader) {
@@ -67,6 +70,7 @@ export function ChatModal({
     onError: (error) => {
       console.error("Chat error:", error);
       setQuickReplies([]);
+      setIsStreaming(false);
     },
     // Use text protocol in friction mode, data protocol otherwise
     streamProtocol: withFriction ? "text" : "data",
@@ -112,7 +116,7 @@ export function ChatModal({
 
       {/* Modal container */}
       <div className="relative flex items-stretch md:items-center justify-center h-[100dvh] md:p-4">
-        <div className="w-full h-[100dvh] bg-white flex flex-col md:w-auto md:max-w-4xl md:h-[85dvh] md:max-h-[900px]">
+        <div className="w-full h-[100dvh] bg-white flex flex-col md:w-[800px] md:h-[85dvh] md:max-h-[900px]">
           {/* Header */}
           <div className="shrink-0 flex items-center justify-between border-b border-cool-grey-200 px-6 py-4">
             <span className="text-xl md:text-2xl font-heading font-black tracking-tight uppercase text-text-primary">
@@ -165,7 +169,7 @@ export function ChatModal({
                 ))
               )}
               {/* Loading animation */}
-              {isLoading && (
+              {isLoading && !isStreaming && (
                 <div className="flex items-start gap-2">
                   <div className="flex-shrink-0 w-8 h-8 bg-surface-accent text-white flex items-center justify-center font-semibold">
                     C
