@@ -111,8 +111,8 @@ export function ChatModal({
       <div className="absolute inset-0 bg-black/20 backdrop-blur-md" />
 
       {/* Modal container */}
-      <div className="relative flex items-center justify-center p-4 min-h-screen">
-        <div className="w-full max-w-4xl bg-white flex flex-col h-[85vh] max-h-[900px]">
+      <div className="relative flex items-stretch md:items-center justify-center h-[100dvh] md:p-4">
+        <div className="w-full h-[100dvh] bg-white flex flex-col md:w-auto md:max-w-4xl md:h-[85dvh] md:max-h-[900px]">
           {/* Header */}
           <div className="shrink-0 flex items-center justify-between border-b border-cool-grey-200 px-6 py-4">
             <span className="text-xl md:text-2xl font-heading font-black tracking-tight uppercase text-text-primary">
