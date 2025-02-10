@@ -77,7 +77,7 @@ export default function Nav({ items }: NavProps) {
       </div>
 
       <div className="hidden md:block">
-        <Button>Contact us</Button>
+        <Button variant="accent">Contact us</Button>
       </div>
     </div>
   );

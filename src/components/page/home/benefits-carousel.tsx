@@ -12,6 +12,11 @@ import { getCarouselBenefits } from "@/data/general-benefits";
 
 const benefits = getCarouselBenefits();
 
+const formatLabelText = (text: string) => {
+  // Add space before capital letters and trim any extra spaces
+  return text.replace(/([A-Z])/g, " $1").trim();
+};
+
 export default function BenefitsCarousel() {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
@@ -41,7 +46,7 @@ export default function BenefitsCarousel() {
               className="pl-4 basis-[45%] md:basis-[calc(30%)]"
             >
               <div
-                className="relative h-[400px] overflow-hidden rounded-3xl group cursor-pointer"
+                className="relative h-[400px] overflow-hidden group cursor-pointer"
                 onClick={() =>
                   setActiveIndex(activeIndex === index ? null : index)
                 }
@@ -54,21 +59,16 @@ export default function BenefitsCarousel() {
                   }
                 }}
               >
-                {/* Gradient Background */}
+                {/* Background */}
                 <div
-                  className="absolute inset-0 w-full h-full transition-transform duration-500 group-hover:scale-105"
-                  style={{
-                    background:
-                      index % 3 === 0
-                        ? "linear-gradient(225deg, #162761 0%, #090f24 100%)"
-                        : index % 3 === 1
-                          ? "linear-gradient(225deg, #124024 0%, #091c10 100%)"
-                          : "linear-gradient(225deg, #641919 0%, #240909 100%)",
-                  }}
+                  className={`absolute inset-0 w-full h-full transition-transform duration-500 group-hover:scale-105 ${
+                    index % 3 === 0
+                      ? "bg-surface-accent"
+                      : index % 3 === 1
+                        ? "bg-surface-error"
+                        : "bg-surface-coolGrey"
+                  }`}
                 />
-
-                {/* Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
 
                 {/* Description Overlay */}
                 {activeIndex === index && (
@@ -85,11 +85,13 @@ export default function BenefitsCarousel() {
                 {/* Content */}
                 <div className="relative h-full p-4 md:p-8 flex flex-col">
                   {/* Label with Icon */}
-                  <div className="flex items-center gap-2 justify-center text-white/90 bg-white/10 backdrop-blur-sm rounded-full py-1.5 px-3 w-fit">
+                  <div className="flex items-center gap-2 justify-center text-white/90 bg-black/20 py-1.5 px-3 w-fit">
                     <div className="w-4 h-4">
                       {getIconComponent(benefit.icon)}
                     </div>
-                    <span className="text-xs font-medium">{benefit.label}</span>
+                    <span className="text-xs font-medium">
+                      {formatLabelText(benefit.label)}
+                    </span>
                   </div>
 
                   {/* Title */}
@@ -98,7 +100,9 @@ export default function BenefitsCarousel() {
                       activeIndex === index ? "opacity-0" : "opacity-100"
                     }`}
                   >
-                    <h3 className="text-white">
+                    <h3
+                      className={index % 3 === 2 ? "text-black" : "text-white"}
+                    >
                       <span className="block text-xl md:text-3xl font-sans font-light leading-tight">
                         {benefit.title.sans}
                       </span>
@@ -116,7 +120,7 @@ export default function BenefitsCarousel() {
                       e.stopPropagation();
                       setActiveIndex(activeIndex === index ? null : index);
                     }}
-                    className={`absolute top-4 right-4 md:top-8 md:right-8 w-8 h-8 rounded-full bg-white hover:bg-white/90 transition-all flex items-center justify-center text-black z-50 ${
+                    className={`absolute top-4 right-4 md:top-8 md:right-8 w-8 h-8 bg-white hover:bg-white/90 transition-all flex items-center justify-center text-black z-50 ${
                       activeIndex === index ? "rotate-45 transform" : ""
                     }`}
                   >

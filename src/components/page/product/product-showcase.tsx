@@ -38,7 +38,7 @@ export default function ProductShowcase({
         {/* Content */}
         <div className="flex-1 space-y-4">
           <div className="space-y-2">
-            <p className="text-sm font-medium tracking-wide uppercase">
+            <p className="text-sm font-medium tracking-wide uppercase text-text-accent">
               {label}
             </p>
             <h2 className="text-3xl font-bold">{title}</h2>
