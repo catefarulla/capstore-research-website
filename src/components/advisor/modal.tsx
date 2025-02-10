@@ -74,7 +74,9 @@ export function ChatModal({
         <div className="w-full max-w-4xl bg-white  flex flex-col h-[85vh] max-h-[900px]">
           {/* Header */}
           <div className="shrink-0 flex items-center justify-between border-b border-cool-grey-200 px-6 py-4">
-            <h2 className="text-xl font-semibold text-text-accent">CHRONOS</h2>
+            <span className="text-xl md:text-2xl font-heading font-black tracking-tight uppercase text-text-primary">
+              Chronos
+            </span>
             <Button variant="ghost" size="icon" onClick={onClose}>
               <X className="h-5 w-5" />
               <span className="sr-only">Close</span>
@@ -105,7 +107,7 @@ export function ChatModal({
                       className={`max-w-[80%] ${
                         message.role === "user"
                           ? "text-text-primary"
-                          : "bg-ecru px-4 py-2"
+                          : "bg-ecru border border-neutral-200 px-4 py-2"
                       }`}
                     >
                       <div
