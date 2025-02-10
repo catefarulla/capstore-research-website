@@ -39,18 +39,18 @@ const { title, description, cta, titleSize = "md", padding = "md" } = Astro.prop
 
 <div
   class={cn(
-    "flex flex-col gap-8 md:gap-10 py-16 md:py-24 px-4 md:px-8 items-center justify-center text-center",
+    "flex flex-col gap-4 md:gap-6 py-16 md:py-24 px-4 md:px-8 items-center justify-center text-center",
     paddingStyles({ padding })
   )}
 >
-  <h1 class={cn("max-w-2xl", titleSize === "sm" && "max-w-xl")}>
+  <h1 class={cn("max-w-3xl", titleSize === "sm" && "max-w-xl")}>
     <span class={cn(titleStyles({ size: titleSize }))}>
       {title}
     </span>
   </h1>
   {
     description && (
-      <p class="text-base max-w-xl sm:text-lg md:text-xl text-text-secondary">{description}</p>
+      <p class="text-sm max-w-xl sm:text-base md:text-lg text-text-secondary">{description}</p>
     )
   }
   {

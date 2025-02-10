@@ -74,7 +74,7 @@ export const pro: Product = {
       title: "Seamless Integration",
       description:
         "NFC payments and smart notifications keep you connected while maintaining focus on your wellbeing.",
-      image: `${r2BaseUrl}/product/pro/feature-block-2.jpg`,
+      image: `${r2BaseUrl}/product/elite/feature-block-2.jpg`,
     },
   ],
   lifestyleImage: `${r2BaseUrl}/product/pro/lifestyle.jpg`,
