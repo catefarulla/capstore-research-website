@@ -3,6 +3,7 @@ import {
   generateText,
   type CoreMessage,
   type LanguageModelV1,
+  smoothStream,
 } from "ai";
 import type { APIRoute } from "astro";
 import { z } from "zod";
@@ -117,6 +118,10 @@ export const POST: APIRoute = async ({ request, locals }) => {
         model,
         messages: finalMessages as CoreMessage[],
         temperature,
+        experimental_transform: smoothStream({
+          delayInMs: 10,
+          chunking: "word",
+        }),
       });
 
       // For streaming mode, use the default data stream response
