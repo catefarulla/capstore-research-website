@@ -27,7 +27,7 @@ function formatProductDetails(product: Product, features: string[]) {
   return `
 PRODUCT: ${product.name} (${product.tagline})
 ────────────────────────────────────────────────
-Price: £${product.price}
+Price: $${product.price}
 Overview: ${product.blurb}
 
 SPECIFICATIONS:

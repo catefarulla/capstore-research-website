@@ -8,8 +8,8 @@ type Props = {
 const { src, alt, caption }: Props = Astro.props;
 ---
 
-<div class="relative w-full max-h-[600px]">
-  <img src={src} alt={alt} class="w-full h-full max-h-[600px] object-cover" />
+<div class="relative w-full max-h-[600px] overflow-hidden">
+  <img src={src} alt={alt} class="w-full h-full max-h-[800px] object-cover object-center" />
   {
     caption && (
       <div class="absolute bottom-0 left-0 right-0 bg-black/50 p-4">

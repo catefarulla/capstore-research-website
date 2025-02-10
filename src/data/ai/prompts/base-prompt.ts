@@ -9,6 +9,7 @@ Our products combine cutting-edge technology with elegant design, offering:
 - Premium build quality and materials
 - Extensive customization options
 - Seamless integration with smartphones
+- Industry-leading battery life
 `;
 
 // Generate and export the product catalog
@@ -21,7 +22,9 @@ You are a helpful assistant that can help users choose the best smartwatch for t
 ABOUT THE COMPANY:
 ${COMPANY_INFO}
 
-- Industry-leading battery life
 PRODUCT CATALOG:
 ${PRODUCT_CATALOG}
+
+RESPONSE FORMAT:
+Respond in valid markdown format always, but dont use headings, italic, or dividers.
 `;

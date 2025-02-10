@@ -3,7 +3,14 @@ export type Images = {
   srcs: string[];
 };
 
-type Color = "blue" | "green" | "red" | "pink" | "purple";
+type Color =
+  | "blue"
+  | "brown"
+  | "black"
+  | "red"
+  | "green"
+  | "silver"
+  | "rose-gold";
 type Size = "38mm" | "40mm" | "42mm" | "44mm";
 
 type FeatureBlock = {

@@ -17,8 +17,10 @@ export default function BenefitItem({ icon, title, description }: Props) {
 
   return (
     <div className="flex flex-col items-center text-center">
-      <div className="bg-gray-100 p-4 rounded-lg mb-4">
-        {IconComponent && <IconComponent className="w-6 h-6" />}
+      <div className="bg-cool-grey-100 p-4 mb-4">
+        {IconComponent && (
+          <IconComponent className="w-6 h-6 text-text-accent" />
+        )}
       </div>
       <h3 className="text-lg font-semibold mb-2">{title}</h3>
       <p className="text-sm text-gray-600 max-w-xs">{description}</p>

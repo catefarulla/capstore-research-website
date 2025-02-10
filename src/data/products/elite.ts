@@ -1,43 +1,43 @@
 import type { Product } from "./type";
 import { benefits } from "./shared/benefits";
+import { r2BaseUrl } from "@/lib/constants";
 
 export const elite: Product = {
   name: "Chronos Elite",
   blurb:
     "Meet our flagship smartwatch with industry-leading battery life and comprehensive health tracking. The Elite combines premium sensors, advanced fitness metrics, and smart features in a sleek aluminum design with Gorilla Glass DX+. Perfect for tech enthusiasts who want the complete package, from ECG monitoring to voice control.",
   tagline: "PRECISION MEETS PREMIUM PERFORMANCE.",
-  thumbnail:
-    "https://placehold.co/600/1a1a1a/ffffff?text=Chronos+Elite&font=montserrat",
+  thumbnail: `${r2BaseUrl}/product/elite/black/png/1.png`,
   slug: "elite",
   images: [
     {
-      color: "blue",
+      color: "black",
       srcs: [
-        "https://placehold.co/600/000066/ffffff?text=Elite+Blue+1&font=montserrat",
-        "https://placehold.co/600/000066/ffffff?text=Elite+Blue+2&font=montserrat",
-        "https://placehold.co/600/000066/ffffff?text=Elite+Blue+3&font=montserrat",
+        `${r2BaseUrl}/product/elite/black/png/1.png`,
+        `${r2BaseUrl}/product/elite/black/png/2.png`,
+        `${r2BaseUrl}/product/elite/black/png/3.png`,
       ],
     },
     {
-      color: "pink",
+      color: "rose-gold",
       srcs: [
-        "https://placehold.co/600/ff69b4/ffffff?text=Elite+Pink+1&font=montserrat",
-        "https://placehold.co/600/ff69b4/ffffff?text=Elite+Pink+2&font=montserrat",
-        "https://placehold.co/600/ff69b4/ffffff?text=Elite+Pink+3&font=montserrat",
+        `${r2BaseUrl}/product/elite/rose-gold/png/1.png`,
+        `${r2BaseUrl}/product/elite/rose-gold/png/2.png`,
+        `${r2BaseUrl}/product/elite/rose-gold/png/3.png`,
       ],
     },
     {
-      color: "purple",
+      color: "silver",
       srcs: [
-        "https://placehold.co/600/800080/ffffff?text=Elite+Purple+1&font=montserrat",
-        "https://placehold.co/600/800080/ffffff?text=Elite+Purple+2&font=montserrat",
-        "https://placehold.co/600/800080/ffffff?text=Elite+Purple+3&font=montserrat",
+        `${r2BaseUrl}/product/elite/silver/png/1.png`,
+        `${r2BaseUrl}/product/elite/silver/png/2.png`,
+        `${r2BaseUrl}/product/elite/silver/png/3.png`,
       ],
     },
   ],
-  availableColors: ["pink", "blue", "purple"],
+  availableColors: ["black", "rose-gold", "silver"],
   availableSizes: ["38mm", "40mm"],
-  price: 299.99,
+  price: 499.99,
   cellularOptionAvailable: true,
   benefits: [
     benefits.wristHeartRate,
@@ -73,18 +73,15 @@ export const elite: Product = {
       title: "Advanced Health Monitoring",
       description:
         "From heart rate variability to sleep stages, our sophisticated sensors provide detailed insights into your wellbeing. Make informed decisions about your health with comprehensive data at your fingertips.",
-      image:
-        "https://placehold.co/600/1a1a1a/ffffff?text=Elite+Health+Monitoring&font=montserrat",
+      image: `${r2BaseUrl}/product/elite/feature-block-1.jpg`,
     },
     {
       subtitle: "PERFORMANCE FOCUSED",
       title: "Personalized Fitness Guidance",
       description:
         "Whether you're training for a marathon or starting your fitness journey, Chronos adapts to your goals. Get real-time metrics, custom workouts, and recovery insights tailored to your performance level.",
-      image:
-        "https://placehold.co/600/1a1a1a/ffffff?text=Elite+Fitness+Guidance&font=montserrat",
+      image: `${r2BaseUrl}/product/elite/feature-block-2.jpg`,
     },
   ],
-  lifestyleImage:
-    "https://placehold.co/1600x900/1a1a1a/ffffff?text=Elite+Lifestyle&font=montserrat",
+  lifestyleImage: `${r2BaseUrl}/product/elite/lifestyle.jpg`,
 };

@@ -22,8 +22,10 @@ export default function ProductGallery({
           <button
             key={index}
             onClick={() => onImageSelect(index)}
-            className={`relative w-20 h-20 border-2 rounded-lg overflow-hidden ${
-              selectedImage === index ? "border-blue-500" : "border-gray-200"
+            className={`relative w-20 h-20 border-2 overflow-hidden bg-surface-coolGrey ${
+              selectedImage === index
+                ? "border-surface-accent"
+                : "border-surface-coolGrey"
             }`}
           >
             <img
@@ -40,7 +42,7 @@ export default function ProductGallery({
         <img
           src={images[selectedImage].src}
           alt={images[selectedImage].alt}
-          className="w-full h-full object-cover rounded-lg border-2 border-gray-200"
+          className="w-full h-full object-cover  border-2 border-surface-coolGrey bg-surface-coolGrey"
         />
       </div>
     </div>

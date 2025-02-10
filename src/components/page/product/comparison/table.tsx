@@ -5,27 +5,27 @@ const { features, products } = getComparisonTableData();
 
 export default function ComparisonTable() {
   return (
-    <div className="w-full max-w-7xl mx-auto bg-white rounded-lg shadow-sm overflow-hidden">
+    <div className="w-full max-w-7xl mx-auto bg-white  border border-neutral-200 overflow-hidden">
       <div className="w-full overflow-hidden">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-50">
-              <th className="p-4 text-left font-medium text-gray-600"></th>
+            <tr className="bg-ecru-light">
+              <th className="p-4 text-left font-medium text-text-secondary"></th>
               <th className="p-4 text-center font-medium text-gray-800">
                 <div className="text-lg">{products.elite.name}</div>
-                <div className="text-base font-normal text-gray-600">
+                <div className="text-base font-normal text-text-secondary">
                   ${products.elite.price}
                 </div>
               </th>
               <th className="p-4 text-center font-medium text-gray-800 hidden sm:table-cell">
                 <div className="text-lg">{products.pro.name}</div>
-                <div className="text-base font-normal text-gray-600">
+                <div className="text-base font-normal text-text-secondary">
                   ${products.pro.price}
                 </div>
               </th>
               <th className="p-4 text-center font-medium text-gray-800 hidden sm:table-cell">
                 <div className="text-lg">{products.sport.name}</div>
-                <div className="text-base font-normal text-gray-600">
+                <div className="text-base font-normal text-text-secondary">
                   ${products.sport.price}
                 </div>
               </th>
@@ -35,30 +35,30 @@ export default function ComparisonTable() {
             {features.map((feature, index) => (
               <tr
                 key={feature.name}
-                className={index % 2 === 0 ? "bg-gray-50/50" : ""}
+                className={index % 2 === 0 ? "bg-ecru-light" : ""}
               >
-                <td className="p-4 font-medium text-gray-700">
+                <td className="p-4 font-medium text-text-primary">
                   {feature.name}
                 </td>
                 <td className="p-4 text-center">
                   {feature.elite ? (
-                    <Check className="w-5 h-5 text-emerald-500 mx-auto" />
+                    <Check className="w-5 h-5 text-text-accent mx-auto" />
                   ) : (
-                    <X className="w-5 h-5 text-red-400 mx-auto" />
+                    <X className="w-5 h-5 text-surface-error mx-auto" />
                   )}
                 </td>
                 <td className="p-4 text-center hidden sm:table-cell">
                   {feature.pro ? (
-                    <Check className="w-5 h-5 text-emerald-500 mx-auto" />
+                    <Check className="w-5 h-5 text-text-accent mx-auto" />
                   ) : (
-                    <X className="w-5 h-5 text-red-400 mx-auto" />
+                    <X className="w-5 h-5 text-surface-error mx-auto" />
                   )}
                 </td>
                 <td className="p-4 text-center hidden sm:table-cell">
                   {feature.sport ? (
-                    <Check className="w-5 h-5 text-emerald-500 mx-auto" />
+                    <Check className="w-5 h-5 text-text-accent mx-auto" />
                   ) : (
-                    <X className="w-5 h-5 text-red-400 mx-auto" />
+                    <X className="w-5 h-5 text-surface-error mx-auto" />
                   )}
                 </td>
               </tr>
@@ -75,11 +75,11 @@ export default function ComparisonTable() {
             {features.map((feature) => (
               <li key={`pro-${feature.name}`} className="flex items-center">
                 {feature.pro ? (
-                  <Check className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-text-accent mr-3 flex-shrink-0" />
                 ) : (
-                  <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
+                  <X className="w-5 h-5 text-surface-error mr-3 flex-shrink-0" />
                 )}
-                <span className="text-gray-700">{feature.name}</span>
+                <span className="text-text-primary">{feature.name}</span>
               </li>
             ))}
           </ul>
@@ -92,11 +92,11 @@ export default function ComparisonTable() {
             {features.map((feature) => (
               <li key={`sport-${feature.name}`} className="flex items-center">
                 {feature.sport ? (
-                  <Check className="w-5 h-5 text-emerald-500 mr-3 flex-shrink-0" />
+                  <Check className="w-5 h-5 text-text-accent mr-3 flex-shrink-0" />
                 ) : (
-                  <X className="w-5 h-5 text-red-400 mr-3 flex-shrink-0" />
+                  <X className="w-5 h-5 text-surface-error mr-3 flex-shrink-0" />
                 )}
-                <span className="text-gray-700">{feature.name}</span>
+                <span className="text-text-primary">{feature.name}</span>
               </li>
             ))}
           </ul>

@@ -14,6 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "../../../ui/alert-dialog";
+import { Button } from "../../../ui/button";
 import { useEffect, useState } from "react";
 
 interface BuyNowButtonProps {
@@ -51,9 +52,9 @@ export default function BuyNowButton({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <button className="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2">
-          <span>{generateBuyNowButtonText(price)}</span>
-        </button>
+        <Button variant="accent" className="w-full" size="lg">
+          {generateBuyNowButtonText(price)}
+        </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>

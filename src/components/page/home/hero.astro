@@ -9,7 +9,7 @@ const { title, description, video } = Astro.props;
 ---
 
 <div class="px-4">
-  <div class="relative w-full h-[80vh] max-h-[700px] overflow-hidden rounded-3xl">
+  <div class="relative w-full h-[80vh] max-h-[700px] overflow-hidden">
     {/* Video Background */}
     <video class="absolute top-0 left-0 w-full h-full object-cover" autoplay loop muted playsinline>
       <source src={video} type="video/mp4" />

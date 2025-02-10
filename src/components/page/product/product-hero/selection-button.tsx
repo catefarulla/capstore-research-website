@@ -14,8 +14,8 @@ export default function SelectionButton({
   return (
     <button
       onClick={onClick}
-      className={`px-4 py-2 rounded-full border ${
-        selected ? "border-blue-500 bg-blue-50" : "border-gray-200"
+      className={`px-4 py-2 border ${
+        selected ? "border-surface-accent" : "border-surface-coolGrey"
       }`}
     >
       {children}

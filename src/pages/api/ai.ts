@@ -48,12 +48,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
       withFriction ? withFrictionSystemPrompt : withoutFrictionSystemPrompt
     }
 
-${systemPrompt || ""}`;
+    
+    ${systemPrompt || ""}`;
 
     const finalMessages = [
       { role: "system", content: fullSystemPrompt },
       ...messages,
     ];
+    console.log("withFriction", withFriction);
+    console.log("systemPrompt", systemPrompt);
+    console.log("fullSystemPrompt", fullSystemPrompt);
 
     if (finalMessages.length === 0) {
       return new Response(
@@ -71,7 +75,7 @@ ${systemPrompt || ""}`;
     const anthropicClient = createAnthropic({
       apiKey: locals.runtime.env.ANTHROPIC_API_KEY,
     });
-    const model = anthropicClient("claude-3-5-haiku-latest");
+    const model = anthropicClient("claude-3-5-sonnet-latest");
 
     // Use different methods based on friction mode
     if (withFriction) {
