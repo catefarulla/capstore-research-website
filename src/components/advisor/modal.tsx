@@ -193,7 +193,8 @@ export function ChatModal({
               <Carousel
                 opts={{
                   align: "start",
-                  dragFree: true,
+                  dragFree: false,
+                  containScroll: "trimSnaps",
                 }}
                 className="w-full px-6 py-3"
               >
@@ -220,7 +221,8 @@ export function ChatModal({
             <Carousel
               opts={{
                 align: "start",
-                dragFree: true,
+                dragFree: false,
+                containScroll: "trimSnaps",
               }}
               className="w-full mt-4 px-6 py-3"
             >
