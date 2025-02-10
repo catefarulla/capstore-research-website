@@ -37,7 +37,7 @@ export const pro: Product = {
   ],
   availableColors: ["blue", "brown", "black"],
   availableSizes: ["40mm", "42mm"],
-  price: 399.99,
+  price: 399,
   cellularOptionAvailable: false,
   benefits: [
     benefits.wristHeartRate,

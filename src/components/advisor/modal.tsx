@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { X } from "lucide-react";
 import { useChat } from "ai/react";
 import { nanoid } from "nanoid";
@@ -7,9 +6,24 @@ import ReactMarkdown from "react-markdown";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
 import type { ChatProps } from "./types";
 import { SUGGESTION_BUTTONS } from "@/data/ai/suggestion-buttons";
 import { generateInitialMessage } from "@/data/ai/initial-message";
+
+function LoadingDots() {
+  return (
+    <div className="flex items-center gap-0.5 py-2">
+      <div className="w-1.5 h-1.5 rounded-full bg-cool-grey-300 animate-bounce [animation-delay:-0.3s]" />
+      <div className="w-1.5 h-1.5 rounded-full bg-cool-grey-300 animate-bounce [animation-delay:-0.15s]" />
+      <div className="w-1.5 h-1.5 rounded-full bg-cool-grey-300 animate-bounce" />
+    </div>
+  );
+}
 
 export function ChatModal({
   isOpen,
@@ -19,26 +33,53 @@ export function ChatModal({
 }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const [quickReplies, setQuickReplies] = useState<string[]>([]);
+  const [isStreaming, setIsStreaming] = useState(false);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      api: "/api/ai",
-      initialMessages: [
-        {
-          id: nanoid(),
-          role: "assistant",
-          content: generateInitialMessage(selectedOptions),
-        },
-      ],
-      onFinish: (message) => {
-        console.log("Message finished:", message);
+  const {
+    messages,
+    input,
+    handleInputChange,
+    handleSubmit,
+    isLoading,
+    append,
+  } = useChat({
+    api: "/api/ai",
+    initialMessages: [
+      {
+        id: nanoid(),
+        role: "assistant",
+        content: generateInitialMessage(selectedOptions),
       },
-      onError: (error) => {
-        console.error("Chat error:", error);
-      },
-      // Use text protocol in friction mode, data protocol otherwise
-      streamProtocol: withFriction ? "text" : "data",
-    });
+    ],
+    onFinish: (message) => {
+      console.log("Message finished:", message);
+      setIsStreaming(false);
+    },
+    onResponse: async (response) => {
+      setIsStreaming(true);
+      if (withFriction) {
+        const quickRepliesHeader = response.headers.get("X-Quick-Replies");
+        if (quickRepliesHeader) {
+          try {
+            setQuickReplies(JSON.parse(quickRepliesHeader));
+          } catch (e) {
+            console.error("Failed to parse quick replies:", e);
+            setQuickReplies([]);
+          }
+        } else {
+          setQuickReplies([]);
+        }
+      }
+    },
+    onError: (error) => {
+      console.error("Chat error:", error);
+      setQuickReplies([]);
+      setIsStreaming(false);
+    },
+    // Use text protocol in friction mode, data protocol otherwise
+    streamProtocol: withFriction ? "text" : "data",
+  });
 
   // Scroll to bottom when new messages arrive
   useEffect(() => {
@@ -62,6 +103,15 @@ export function ChatModal({
     }
   }, [isLoading, messages.length]);
 
+  const handleQuickReply = async (reply: string) => {
+    setQuickReplies([]); // Clear quick replies immediately
+    await append({
+      role: "user",
+      content: reply,
+      id: nanoid(),
+    });
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -70,8 +120,8 @@ export function ChatModal({
       <div className="absolute inset-0 bg-black/20 backdrop-blur-md" />
 
       {/* Modal container */}
-      <div className="relative flex items-center justify-center p-4 min-h-screen">
-        <div className="w-full max-w-4xl bg-white  flex flex-col h-[85vh] max-h-[900px]">
+      <div className="relative flex items-stretch md:items-center justify-center h-[100dvh] md:p-4">
+        <div className="w-full h-[100dvh] bg-white flex flex-col md:w-[800px] md:h-[85dvh] md:max-h-[900px]">
           {/* Header */}
           <div className="shrink-0 flex items-center justify-between border-b border-cool-grey-200 px-6 py-4">
             <span className="text-xl md:text-2xl font-heading font-black tracking-tight uppercase text-text-primary">
@@ -123,30 +173,74 @@ export function ChatModal({
                   </div>
                 ))
               )}
+              {/* Loading animation */}
+              {isLoading && !isStreaming && (
+                <div className="flex items-start gap-2">
+                  <div className="flex-shrink-0 w-8 h-8 bg-surface-accent text-white flex items-center justify-center font-semibold">
+                    C
+                  </div>
+                  <LoadingDots />
+                </div>
+              )}
               {/* Invisible element for scrolling */}
               <div ref={messagesEndRef} />
             </div>
-
-            {messages.length === 0 && (
-              <div className="flex flex-wrap gap-2 mt-4">
-                {SUGGESTION_BUTTONS.map((suggestion) => (
-                  <Button
-                    key={suggestion}
-                    variant="accent"
-                    className="text-sm"
-                    onClick={() => {
-                      handleInputChange({
-                        target: { value: suggestion },
-                      } as any);
-                      handleSubmit({ preventDefault: () => {} } as any);
-                    }}
-                  >
-                    {suggestion}
-                  </Button>
-                ))}
-              </div>
-            )}
           </ScrollArea>
+
+          {/* Quick Replies */}
+          {withFriction && quickReplies.length > 0 && (
+            <div className="shrink-0 border-t border-cool-grey-200 bg-white">
+              <Carousel
+                opts={{
+                  align: "start",
+                  dragFree: false,
+                  containScroll: "trimSnaps",
+                }}
+                className="w-full px-6 py-3"
+              >
+                <CarouselContent className="-ml-2">
+                  {quickReplies.map((reply) => (
+                    <CarouselItem key={reply} className="pl-2 basis-auto">
+                      <Button
+                        variant="accent"
+                        size="sm"
+                        className="text-sm whitespace-nowrap"
+                        onClick={() => handleQuickReply(reply)}
+                      >
+                        {reply}
+                      </Button>
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+              </Carousel>
+            </div>
+          )}
+
+          {/* Initial suggestion buttons */}
+          {messages.length === 0 && (
+            <Carousel
+              opts={{
+                align: "start",
+                dragFree: false,
+                containScroll: "trimSnaps",
+              }}
+              className="w-full mt-4 px-6 py-3"
+            >
+              <CarouselContent className="-ml-2">
+                {SUGGESTION_BUTTONS.map((suggestion) => (
+                  <CarouselItem key={suggestion} className="pl-2 basis-auto">
+                    <Button
+                      variant="accent"
+                      className="text-sm whitespace-nowrap"
+                      onClick={() => handleQuickReply(suggestion)}
+                    >
+                      {suggestion}
+                    </Button>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+          )}
 
           {/* Input Form */}
           <form
